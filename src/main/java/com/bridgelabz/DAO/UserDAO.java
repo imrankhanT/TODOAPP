@@ -7,4 +7,17 @@ public interface UserDAO {
 
 	public String login(User user);
 
+	public User getUserById(int id);
+
+	public int userActive(int id, User user);
+
+	public int getUserByMail(String email);
+
+	public User forgotPassword(String email);
+
+	public boolean checkActiveUser(String email);
+
+	public int updatePassword(int id, User user);
+
+	public User getUserByEmail(String email);
 }

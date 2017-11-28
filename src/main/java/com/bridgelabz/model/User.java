@@ -1,5 +1,6 @@
 package com.bridgelabz.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,13 +14,20 @@ public class User {
 	@GeneratedValue
 	private int id;
 
+	@Column(name = "name")
 	private String name;
 
+	@Column(name = "email")
 	private String email;
 
+	@Column(name = "password")
 	private String password;
 
+	@Column(name = "mobileNumber")
 	private String mobileNumber;
+
+	@Column(name = "isActive")
+	private boolean isActive;
 
 	public int getId() {
 		return id;
@@ -61,4 +69,11 @@ public class User {
 		this.mobileNumber = mobileNumber;
 	}
 
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
 }

@@ -29,4 +29,12 @@ public class Validation {
 		}
 		return valid;
 	}
+
+	public static boolean checkPassword(User user) {
+		if (user.getPassword().length() < 7 || user.getPassword().length() > 16) {
+			System.out.println("length");
+			return false;
+		}
+		return true;
+	}
 }

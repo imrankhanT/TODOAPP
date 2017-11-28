@@ -14,6 +14,29 @@ import javax.mail.internet.MimeMessage;
 public class Email {
 
 	public static void sendMail(String email, String subject, String url) {
+
+		Session session = emailInfornmation();
+
+		try {
+			MimeMessage message = new MimeMessage(session);
+			message.addHeader("Content-type", "text/HTMl; charset=UTF-8");
+			message.addHeader("format", "flowed");
+			message.addHeader("Content-Transfer-Encoding", "8-bit");
+			message.setReplyTo(InternetAddress.parse("imterdal@gmail.com", false));
+			message.setSubject(subject, "UTF-8");
+			// message.setText("Please Click To verfiy" + url, "UTF-8");
+			message.setContent("Please Click To verfiy<a href='" + url + "'>Click</a>", "text/html");
+			message.setSentDate(new Date(System.currentTimeMillis()));
+
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email, false));
+
+			Transport.send(message);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static Session emailInfornmation() {
 		Properties properties = new Properties();
 		properties.put("mail.smtp.host", "smtp.gmail.com"); // SMTP Host
 		properties.put("mail.smtp.port", "587"); // TLS Port
@@ -30,22 +53,6 @@ public class Email {
 
 		Session session = Session.getInstance(properties, authenticator);
 
-		try {
-			MimeMessage message = new MimeMessage(session);
-			message.addHeader("Content-type", "text/HTMl; charset=UTF-8");
-			message.addHeader("format", "flowed");
-			message.addHeader("Content-Transfer-Encoding", "8-bit");
-			message.setReplyTo(InternetAddress.parse("imterdal@gmail.com", false));
-			message.setSubject(subject, "UTF-8");
-			//message.setText("Please Click To verfiy" + url, "UTF-8");
-			message.setContent("Please Click To verfiy<a href='" + url + "'>Click</a>", "text/html");
-			message.setSentDate(new Date(System.currentTimeMillis()));
-
-			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email, false));
-
-			Transport.send(message);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		return session;
 	}
 }
