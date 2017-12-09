@@ -2,6 +2,7 @@ package com.bridgelabz.model;
 
 import java.sql.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -26,6 +27,14 @@ public class Notes {
 	private Date creationDate;
 
 	private Date modificationDate;
+
+	private String color;
+	
+	private boolean isPin;
+	
+	private boolean isTrash;
+	
+	private boolean isArchive;
 
 	@ManyToOne
 	@JsonIgnore
@@ -72,6 +81,38 @@ public class Notes {
 		this.modificationDate = modificationDate;
 	}
 
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	public boolean isPin() {
+		return isPin;
+	}
+
+	public void setPin(boolean isPin) {
+		this.isPin = isPin;
+	}
+
+	public boolean isTrash() {
+		return isTrash;
+	}
+
+	public void setTrash(boolean isTrash) {
+		this.isTrash = isTrash;
+	}
+
+	public boolean isArchive() {
+		return isArchive;
+	}
+
+	public void setArchive(boolean isArchive) {
+		this.isArchive = isArchive;
+	}
+
 	public User getUser() {
 		return user;
 	}
@@ -79,4 +120,6 @@ public class Notes {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
+	
 }

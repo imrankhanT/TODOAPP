@@ -1,0 +1,21 @@
+<div layout="row" layout-align="center center">
+	<md-content flex="35" layout-padding="layout-padding"> <md-card>
+
+	<md-toolbar>
+	<div class="md-toolbar-tools" style="background-color: white;">
+		<h2>
+			<span style="color: black;">FORGOT PASSWORD</span>
+		</h2>
+	</div>
+	</md-toolbar>
+
+	<form name="myForm">
+		<md-input-container class="md-block"> <label>Email</label>
+		<input type="email" name="email" ng-model="email" required></input>
+		<div ng-messages="myForm.email.$error">
+			<div ng-message="required">Please! Enter The Email</div>
+			<div ng-message="email">Please! Enter The Valid Email Adress</div>
+		</div>
+		</md-input-container>
+	</form>
+</div>

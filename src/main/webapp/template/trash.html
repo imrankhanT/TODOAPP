@@ -1,0 +1,128 @@
+<div layout="column" layout-fill>
+	<md-toolbar>
+
+	<div class="md-toolbar-tools" style="background-color:  #555;">
+		<md-button class="md-icon-button" aria-label="Menu"
+			style="color:black;" ng-click="openLeftMenu()"> <md-icon
+			md-svg-icon="images/icon/menu.svg"></md-icon> </md-button>
+		<div flex="5"></div>
+		<h2 md-truncate flex>Google Keep</h2>
+
+		<div flex="50" layout-align="start center" style="margin: 120px;">
+			<md-autocomplete  md-no-cache="true" md-selected-item="selectedItem"
+				md-items="item in items" md-search-text="searchText"
+				md-svg-icon="images/icon/search.svg" md-item-text="item.display" placeholder="Search here">
+		</div>
+		 
+		    <div>
+		    <md-button class="md-icon-button test-tooltip" aria-label="Menu"
+			style="color:black;"> 
+			<md-icon md-svg-icon="images/icon/list.svg">
+			</md-icon> 
+			</md-button>
+		    </div>
+		    <md-button class="md-icon-button" aria-label="Logout"
+			style="color:black;" ng-click="logout()">
+			 <md-icon
+			md-svg-icon="images/icon/logout.svg">
+			</md-icon> 
+			</md-button>
+	</div>
+	</md-toolbar>
+	
+	
+	
+	<div class="container" layout="row" flex>
+		<md-sidenav id="left" md-is-locked-open="true" md-disable-backdrop class="md-whiteframe-5dp"> 
+	    <md-list>
+		<md-list-item>
+		<md-button> 
+		<md-icon md-svg-icon="images/icon/notes.svg" class="avatar">
+		</md-icon> 
+		<a ui-sref="home">Notes</a>
+		</md-button>
+		</md-list-item> 
+		</md-list> 
+		
+		<md-list> 
+		<md-list-item> 
+		<md-button>
+		<md-icon md-svg-icon="images/icon/reminder.svg" class="avatar">
+		</md-icon>
+		Reminder </md-button> 
+		</md-list-item> 
+		</md-list> 
+		
+		<md-list> 
+		<md-list-item> 
+		<md-button>
+		<md-icon md-svg-icon="images/icon/archive.svg" class="avatar">
+		</md-icon>
+		Archive
+		</md-button> 
+		</md-list-item> 
+		</md-list> 
+		
+		<md-list> 
+		<md-list-item> 
+		<md-button>
+		<md-icon md-svg-icon="images/icon/trash.svg" class="avatar">
+		</md-icon>
+		Trash
+		</md-button> 
+		</md-list-item> 
+		</md-list> 
+			
+		<md-list> 
+		<md-list-item> 
+		<md-button>
+		<md-icon md-svg-icon="images/icon/label.svg" class="avatar">
+		</md-icon>
+		Create New Label
+		</md-button> 
+		</md-list-item> 
+		</md-list> 
+		</md-sidenav>
+</div>
+		<div flex="50"></div>
+		
+		
+		 <div flex="5" style="margin:40px;">
+			    <md-card layout-align="center center" ng-repeat="dat in data | filter :{trash :true,archive:false}" style="height: 30%;width:90%">
+				<md-input-container layout="row" flex layout="row"> 
+				<div layout="column">{{dat.title}}</div>
+				</md-input-container>
+
+				<md-input-container layout="row" flex layout="row"> 
+				<div layout="column">{{dat.description}}</div>
+			    </md-input-container>
+		
+     
+			       <md-menu>
+			      <md-button aria-label="Open menu with custom trigger" class="md-icon-button" ng-mouseenter="$mdMenu.open()">
+			        <md-icon md-menu-origin md-svg-src="images/icon/more.svg" style="width: 24px; height: 24px"></md-icon>
+			      </md-button>
+			      <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
+			        <md-menu-item >
+			          <md-button ng-click="deleteNotes(data)">
+			            Delete Forever
+			          </md-button>
+			        </md-menu-item>
+			        
+			        <md-menu-item >
+			          <md-button ng-click="">
+			            Restore
+			          </md-button>
+			        </md-menu-item>
+			        
+			      </md-menu-content>
+			    </md-menu>
+              
+		       </div>
+               
+		       </md-list>
+		       </div> 
+               <div>
+       </md-card>
+</div>
+		

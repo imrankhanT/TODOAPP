@@ -11,8 +11,15 @@ public interface NotesService {
 
 	public int deleteNotes(int id);
 
-	public List<Notes> getAllNotes();
+	public List<Notes> getAllNotes(int id);
 
 	public Notes getNotesById(int id);
-
+    
+	public void updateColor(Notes notes,int userId);
+	
+    public void updatePin(Notes notes,int userId);
+	
+	public void updateTrash(Notes notes,int userId);
+	
+	public void updateArchive(Notes notes,int userId);
 }

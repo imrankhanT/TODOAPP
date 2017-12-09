@@ -1,11 +1,17 @@
 package com.bridgelabz.DAO;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
+import com.bridgelabz.model.Notes;
 import com.bridgelabz.model.User;
 
 @Repository
@@ -19,7 +25,13 @@ public class UserDAOImpl implements UserDAO {
 		query.setParameter("email", user.getEmail());
 		query.setParameter("number", user.getMobileNumber());
 		User checkedUser = (User) query.uniqueResult();
-
+		/*String encryptedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+		user.setPassword(encryptedPassword);*/
+		
+		BCryptPasswordEncoder bcryptPasswordEncoder=new BCryptPasswordEncoder();
+		String encryptPassword=bcryptPasswordEncoder.encode(user.getPassword());
+		user.setPassword(encryptPassword);
+		
 		if (checkedUser != null) {
 			return false;
 
@@ -31,13 +43,36 @@ public class UserDAOImpl implements UserDAO {
 
 	public String login(User user) {
 		Session session = sessionFactory.getCurrentSession();
-		Query<?> query = session.createQuery("select name from User where email = :email and password = :password");
+		/*String encryptedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+		user.setPassword(encryptedPassword);
+		Query<?> query = session.createQuery("select name from User where email = :email ");
 		query.setParameter("email", user.getEmail());
+		User loginUser=(User) query.uniqueResult();
 		query.setParameter("password", user.getPassword());
 		String name = (String) query.uniqueResult();
-
-		if (name != null)
-			return name;
+		String name=null;
+		if(BCrypt.checkpw(user.getPassword(), loginUser.getPassword()))
+		{
+		 name=loginUser.getName();
+		}
+			return name;*/
+		
+		
+		
+		try{
+			Criteria criteria=session.createCriteria(User.class);
+			Criterion email1=Restrictions.eq("email", user.getEmail());
+			criteria.add(email1);
+			User user1=(User) criteria.uniqueResult();
+				if(BCrypt.checkpw(user.getPassword(), user1.getPassword()))
+				{
+					return user1.getName();
+				}
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 		return null;
 	}
 
@@ -108,4 +143,5 @@ public class UserDAOImpl implements UserDAO {
 		return user;
 	}
 
+	
 }

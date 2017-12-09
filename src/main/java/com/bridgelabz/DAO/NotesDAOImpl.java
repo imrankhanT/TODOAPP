@@ -1,6 +1,5 @@
 package com.bridgelabz.DAO;
 
-import java.sql.Date;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -62,11 +61,12 @@ public class NotesDAOImpl implements NotesDAO {
 		return null;
 	}
 
-	public List<Notes> getAllNotes() {
+	public List<Notes> getAllNotes(int User_Id) {
 		Session session = sessionFactory.getCurrentSession();
 
 		try {
-			Query<?> query = session.createQuery("from Notes");
+			Query<?> query = session.createQuery("from Notes where User_Id =:User_Id");
+			query.setParameter("User_Id", User_Id);
 			List<Notes> allNotes = (List<Notes>) query.list();
 			System.out.println(allNotes);
 			return allNotes;
@@ -74,5 +74,61 @@ public class NotesDAOImpl implements NotesDAO {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public void updateColor(Notes notes, int id) {
+		Session session = sessionFactory.getCurrentSession();
+		String color = notes.getColor();
+		Query<?> query = session.createQuery("update User set color =:color where id =:id");
+		query.setParameter("color", color);
+		query.setParameter("id", id);
+		query.executeUpdate();
+	}
+
+	public void updatePin(Notes notes, int id) {
+		Session session = sessionFactory.getCurrentSession();
+		boolean isPin = notes.isPin();
+		if (isPin) {
+			Query<?> query = session.createQuery("update Notes set isPin =:isPin where id =:id");
+			query.setParameter("isPin", false);
+			query.setParameter("id", id);
+			query.executeUpdate();
+		} else {
+			Query<?> query = session.createQuery("update Notes set isPin =:isPin where id =:id");
+			query.setParameter("isPin", true);
+			query.setParameter("id", id);
+			query.executeUpdate();
+		}
+	}
+
+	public void updateTrash(Notes notes, int id) {
+		Session session = sessionFactory.getCurrentSession();
+		boolean isTrash = notes.isTrash();
+		if (isTrash) {
+			Query<?> query = session.createQuery("update Notes set  isTrash =:isTrash where id :id");
+			query.setParameter("isTrash", false);
+			query.setParameter("id", id);
+			query.executeUpdate();
+		} else {
+			Query<?> query = session.createQuery("update Notes set  isTrash =:isTrash where id :id");
+			query.setParameter("isTrash", true);
+			query.setParameter("id", id);
+			query.executeUpdate();
+		}
+	}
+
+	public void updateArchive(Notes notes, int id) {
+		Session session = sessionFactory.getCurrentSession();
+		boolean isArchive = notes.isArchive();
+		Query<?> query = session.createQuery("update Notes set  isArchive =:isArchive where id :id");
+		if (isArchive) {
+			query.setParameter("isArchive", false);
+			query.setParameter("id", id);
+		} else {
+			
+			query.setParameter("isArchive", true);
+			query.setParameter("id", id);
+		}
+		query.executeUpdate();
 	}
 }

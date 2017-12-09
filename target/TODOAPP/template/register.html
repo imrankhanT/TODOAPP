@@ -1,0 +1,61 @@
+<div layout="row" layout-align="center center">
+	<md-card> <md-content> <md-toolbar>
+	<div class="md-toolbar-tools" style="background-color: white;">
+		<h2>
+			<span style="color: black;">New Registration Form</span>
+		</h2>
+	</div>
+	</md-toolbar>
+
+	<form name="myForm" >
+
+		<md-input-container class="md-block"> <label>User
+			Name</label> <input type="text" name="name" ng-model="name" minlength="2"
+			maxlength="30" required></input>
+		<div ng-messages="myForm.name.$error">
+			<div ng-message="required">Please! Enter The username</div>
+			<div ng-message="minlength">That's To Short</div>
+			<div ng-message="maxlength">That's To Long</div>
+		</div>
+		</md-input-container>
+
+
+		<md-input-container class="md-block"> <label>Email</label>
+		<input type="email" name="email" ng-model="email" required></input>
+		<div ng-messages="myForm.email.$error">
+			<div ng-message="required">Please! Enter The Email</div>
+			<div ng-message="email">Please! Enter The Valid Email Adress</div>
+		</div>
+		</md-input-container>
+
+		<md-input-container class="md-block"> <label>Password</label>
+		<input type="password" name="password" ng-model="password" required
+			md-maxlength="16" minlength="7"></input>
+		<div ng-messages="myForm.password.$error">
+			<div ng-message="required">Please! Enter The Password</div>
+			<div ng-message="md-maxlength">That's too long!</div>
+			<div ng-message="minlength">That's too short!</div>
+		</div>
+		</md-input-container>
+
+		<md-input-container class="md-block"> <label>Mobile
+			Number</label> <input type="number" name="phone" ng-model="phone"
+			ng-minlength="10" ng-maxlength="10" required></input>
+		<div ng-messages="myForm.phone.$error">
+			<div ng-message="required">Please! Enter The Mobile Number</div>
+		</div>
+		<span style="color: red;"
+			ng-show="((myForm.phone.$error.minlength ||
+                myForm.phone.$error.maxlength) && 
+                myForm.phone.$dirty) ">
+			Error! phone number should be 10 digits </span> </md-input-container>
+
+		<md-button class="md-primary"
+			style="background-color:#39A03B;text-transform:lowercase;color:white;"
+			layout-align="center center" ng-disabled="!myForm.$valid" ng-click="registerUser()">regisetr</md-button>
+		<md-button class="md-primary"
+			style="background-color:#1647aa;color:white;text-transform:lowercase;margin-left:200px;"
+			layout-align="center center" ng-click="login.html">Signin</md-button>
+	</form>
+	</md-content> </md-card>
+</div>

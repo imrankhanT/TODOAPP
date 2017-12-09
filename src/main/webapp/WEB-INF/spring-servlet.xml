@@ -53,4 +53,46 @@
 	</bean>
 
 	<tx:annotation-driven transaction-manager="transactionManeger" />
+	<mvc:resources location="/template/" mapping="/template/**" />
+	<mvc:resources location="/css/" mapping="/css/**" />
+	<mvc:resources location="/controller/" mapping="/controller/**" />
+	<mvc:resources location="/service/" mapping="/service/**" />
+	<mvc:resources location="/script/" mapping="/script/**" />
+	<mvc:resources location="/bower_components/" mapping="/bower_components/**" />
+		<mvc:resources location="/images/" mapping="/images/**" />
+
+	<bean id="amqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<!-- brokerURL, You may have different IP or port -->
+		<constructor-arg index="0" value="tcp://localhost:61616" />
+	</bean>
+	<!-- Pooled Spring connection factory -->
+	<bean id="connectionFactory"
+		class="org.springframework.jms.connection.CachingConnectionFactory">
+		<constructor-arg ref="amqConnectionFactory" />
+	</bean>
+
+	<!-- JMS Send, define default destination and JmsTemplate -->
+	<bean id="defaultDestination" class="org.apache.activemq.command.ActiveMQQueue">
+		<!-- name of the queue -->
+		<constructor-arg index="0" value="myQueue" />
+	</bean>
+	<!-- JmsTemplate Definition -->
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="defaultDestination" ref="defaultDestination" />
+	</bean>
+
+	<!-- JMS receive, define JmsListenerContainerFactory -->
+	<bean id="jmsListenerContainerFactory"
+		class="org.springframework.jms.config.DefaultJmsListenerContainerFactory">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="concurrency" value="3-10" />
+	</bean>
+	<bean id="producer" class="com.bridgelabz.service.ProducerMsg" />
+	<bean id="consumer" class="com.bridgelabz.service.ConsumerMsg" />
+	<jms:listener-container container-type="default"
+		connection-factory="connectionFactory" acknowledge="auto">
+		<jms:listener destination="myQueue" ref="consumer"
+			method="onMessage"></jms:listener>
+	</jms:listener-container>
 </beans>

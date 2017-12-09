@@ -1,12 +1,16 @@
 package com.bridgelabz.controller;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,11 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bridgelabz.model.Response;
 import com.bridgelabz.model.User;
+import com.bridgelabz.service.ProducerService;
 import com.bridgelabz.service.UserService;
-import com.bridgelabz.utility.Email;
 import com.bridgelabz.utility.TokenGenerator;
-import com.bridgelabz.validation.EncryptPassword;
 import com.bridgelabz.validation.Validation;
+import com.bridgelabz.model.Email;
 
 @RestController
 public class UserController {
@@ -27,30 +31,35 @@ public class UserController {
 	@Autowired
 	UserService service;
 
+	@Autowired
+	ProducerService producer;
+
 	public static int id;
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Response> userRegister(@RequestBody User user, HttpServletRequest request) {
 		Response response = new Response();
-		if (Validation.isValid(user)) {
-			boolean found = service.register(user);
-			if (found == true) {
-				String url = request.getRequestURL().toString();
-				String token = TokenGenerator.generateToken(user.getId());
-				url = url.substring(0, url.lastIndexOf("/")) + "/active/" + token;
-				System.out.println(url);
-				Email.sendMail(user.getEmail(), "Validation Message", url);
-				response.setMessage("Register sucessfully......");
-				return new ResponseEntity<Response>(response, HttpStatus.CREATED);
 
-			} else {
-				response.setMessage("email or phone number already exist");
-				return new ResponseEntity<Response>(response, HttpStatus.OK);
-			}
+		boolean found = service.register(user);
+		if (found == true) {
+			String url = request.getRequestURL().toString();
+			String token = TokenGenerator.generateToken(user.getId());
+			url = url.substring(0, url.lastIndexOf("/")) + "/active/" + token;
+			System.out.println(url);
+			/* Email.sendMail(user.getEmail(), "Validation Message", url); */
+
+			Email email = new com.bridgelabz.model.Email();
+			email.setTo(user.getEmail());
+			email.setSetBody(url);
+			email.setSubject("Register Sucessfull");
+			email.setUrl(url);
+			producer.send(email);
+			response.setMessage("Register sucessfully......");
+			return new ResponseEntity<Response>(response, HttpStatus.OK);
+
 		} else {
-			response.setMessage("Invalid Credential");
-			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
-
+			response.setMessage("email or phone number already exist");
+			return new ResponseEntity<Response>(response, HttpStatus.OK);
 		}
 	}
 
@@ -67,7 +76,6 @@ public class UserController {
 			}
 			service.activeUser(id, user);
 			response.setMessage("User Activated");
-			response.setToken(jwt);
 			return new ResponseEntity<Response>(response, HttpStatus.OK);
 		}
 		response.setMessage("Invalid User Id");
@@ -77,6 +85,7 @@ public class UserController {
 	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Response> login(@RequestBody User user, HttpSession session) {
 		Response response = new Response();
+		System.out.println("%$%$\n\n\nn7836578435");
 		String name = service.login(user);
 		System.out.println(name);
 		if (name != null) {
@@ -85,23 +94,28 @@ public class UserController {
 				session.setAttribute("user", name);
 				int id = service.getUserByMail(user.getEmail());
 				String token = TokenGenerator.generateToken(id);
-				response.setMessage("welcome " + name + " Login Sucessfully....");
-				return new ResponseEntity<Response>(response, HttpStatus.OK);
+				response.setMessage(token);
+				return ResponseEntity.status(HttpStatus.OK).body(response);
 			} else {
 				response.setMessage("User is InActive Please! Verfiy your email to activate User");
 				return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 			}
 		} else {
 			response.setMessage("mail id Or password Not Exist");
-			return new ResponseEntity<Response>(response, HttpStatus.OK);
+			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	@RequestMapping(value = "/logout", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Response> logout(HttpSession session) {
+	public ResponseEntity<Response> logout(HttpSession session,HttpServletResponse response1) {
 		Response response = new Response();
 		session.removeAttribute("user");
 		session.invalidate();
+		try {
+			response1.sendRedirect("http://localhost:8080/TODOAPP/#!/login");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		response.setMessage("Logout sucessfully......");
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
@@ -123,7 +137,13 @@ public class UserController {
 			String url = request.getRequestURL().toString();
 
 			url = url.substring(0, url.lastIndexOf("/")) + "/setPassword/" + token;
-			Email.sendMail(users.getEmail(), "Password Reset", url);
+			/* Email.sendMail(users.getEmail(), "Password Reset", url); */
+			Email email = new com.bridgelabz.model.Email();
+			email.setTo(user.getEmail());
+			email.setSetBody(token);
+			email.setSubject("Register Sucessfull");
+			email.setUrl(url);
+			producer.send(email);
 			response.setMessage("Email verified	Sucessfully......");
 			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 		}
@@ -137,7 +157,8 @@ public class UserController {
 			response.setMessage("Please Enter the password between 7 to 16 charcters");
 			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 		} else {
-			user.setPassword(EncryptPassword.encryptPassword(user.getPassword()));
+			String encryptedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+			user.setPassword(encryptedPassword);
 			int id = (Integer) session.getAttribute("UserId");
 			user.setId(id);
 			int count = service.updatePassword(id, user);

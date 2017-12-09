@@ -15,7 +15,7 @@ public class TokenGenerator {
 		Calendar calendar = Calendar.getInstance();
 
 		Date issuerTime = calendar.getTime();
-		calendar.add(Calendar.MINUTE, 30);
+		calendar.add(Calendar.MINUTE, 300);
 		Date expirationtime = calendar.getTime();
 
 		String token = Jwts.builder().setId(String.valueOf(id)).setIssuedAt(issuerTime)
