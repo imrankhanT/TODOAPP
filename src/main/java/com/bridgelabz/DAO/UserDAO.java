@@ -1,6 +1,5 @@
 package com.bridgelabz.DAO;
 
-import com.bridgelabz.model.Notes;
 import com.bridgelabz.model.User;
 
 public interface UserDAO {
@@ -21,5 +20,6 @@ public interface UserDAO {
 	public int updatePassword(int id, User user);
 
 	public User getUserByEmail(String email);
-	
+
+	public void update(User user);	
 }

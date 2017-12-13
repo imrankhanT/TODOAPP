@@ -57,24 +57,4 @@ public class NotesImpl implements NotesService {
 		Notes notes = dao.getNotesById(id);
 		return notes;
 	}
-
-	@Transactional
-	public void updateColor(Notes notes, int userId) {
-		dao.updateColor(notes, userId);
-	}
-
-	@Transactional
-	public void updatePin(Notes notes, int userId) {
-		dao.updatePin(notes, userId);
-	}
-
-	@Transactional
-	public void updateTrash(Notes notes, int userId) {
-		dao.updateTrash(notes, userId);
-	}
-
-	@Transactional
-	public void updateArchive(Notes notes, int userId) {
-		dao.updateArchive(notes, userId);
-	}
 }

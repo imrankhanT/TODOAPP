@@ -94,6 +94,9 @@ public class UserController {
 				session.setAttribute("user", name);
 				int id = service.getUserByMail(user.getEmail());
 				String token = TokenGenerator.generateToken(id);
+				User user7 = service.getUserByEmail(user.getEmail()) ;
+				response.setEmail(user7.getEmail());
+				response.setProfilePic(user7.getProfilePicture());
 				response.setMessage(token);
 				return ResponseEntity.status(HttpStatus.OK).body(response);
 			} else {

@@ -1,5 +1,7 @@
 package com.bridgelabz.controller;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -63,6 +65,11 @@ public class GoogleLoginController {
 				}
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			response.sendRedirect("http://localhost:8080/TODOAPP/#!/home");
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return ResponseEntity.status(HttpStatus.OK).body("new Registered");

@@ -18,7 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bridgelabz.model.Notes;
 import com.bridgelabz.model.Response;
+import com.bridgelabz.model.User;
+import com.bridgelabz.model.UserDTO;
 import com.bridgelabz.service.NotesService;
+import com.bridgelabz.service.UserService;
 import com.bridgelabz.utility.TokenGenerator;
 
 @RestController
@@ -26,6 +29,9 @@ public class NotesController {
 
 	@Autowired
 	NotesService note;
+
+	@Autowired
+	UserService userService;
 
 	@RequestMapping(value = "/addNotes", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Response> saveNotes(@RequestBody Notes notes, HttpServletRequest request) {
@@ -43,13 +49,11 @@ public class NotesController {
 			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 	}
 
-	@RequestMapping(value = "/updateNotes", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "updateNotes", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Response> updateNotes(@RequestBody Notes notes1) {
-	
-	
+
 		Notes retNotes = note.getNotesById(notes1.getId());
 		Response response = new Response();
-		System.out.println("hinnjgnfkdjnfkdjfkdngfkdjgdjkgjdkgbkfd");
 		if (retNotes == null) {
 			response.setMessage("Notes Not Found...");
 			return new ResponseEntity<Response>(response, HttpStatus.OK);
@@ -57,7 +61,6 @@ public class NotesController {
 
 			notes1.setModificationDate(new Date(System.currentTimeMillis()));
 			notes1.setUser(retNotes.getUser());
-			notes1.setCreationDate(retNotes.getCreationDate());
 
 			note.updateNote(notes1);
 			response.setMessage("Update Sucessfully.......");
@@ -94,8 +97,9 @@ public class NotesController {
 	public ResponseEntity<List<Notes>> getAllNotes(HttpServletRequest request) {
 		System.out.println("Hi......");
 		String token = request.getHeader("accToken");
+		System.out.println("Token---------> " + token);
 		int id = TokenGenerator.verfiyToken(token);
-		System.out.println("id--------->"+id);
+		System.out.println("id--------->" + id);
 		List<Notes> list = note.getAllNotes(id);
 
 		if (list == null) {
@@ -105,64 +109,30 @@ public class NotesController {
 
 	}
 
-	@RequestMapping(value = "/updateColor", method = RequestMethod.POST)
-	public ResponseEntity<Response> color(@RequestBody Notes notes, HttpServletRequest request) {
-		int userId = TokenGenerator.verfiyToken(request.getHeader("accToken"));
-		Response response = new Response();
-		if (userId != 0) {
-			note.updateColor(notes, userId);
-			response.setMessage("Color Updated Sucessfully...");
-			return new ResponseEntity<Response>(response, HttpStatus.OK);
-		} else {
-			response.setMessage("Invalid Id......");
-			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+	@RequestMapping(value = "/getUser", method = RequestMethod.GET)
+	public ResponseEntity<?> getUser(HttpServletRequest request) {
+		System.out.println("inside get user");
+		String token = request.getHeader("accToken");
+		
+		int id = TokenGenerator.verfiyToken(token);
+		System.out.println("inside get user token =="+id);
+		User user = userService.getUserById(id);
+		/*System.out.println(user.getId());*/
+		
+		
+		if (user == null) {
+			Response response = new Response();
+			response.setMessage("User Not Found......");
+			return new ResponseEntity<Response>(response, HttpStatus.NOT_FOUND);
 		}
 
-	}
+		else {
+			UserDTO userDto = new UserDTO();
+			userDto.setEmail(user.getEmail());
+			userDto.setProfilePic(user.getProfilePicture());
+			userDto.setName(user.getName());
+			return new ResponseEntity<UserDTO>(userDto, HttpStatus.OK);
+		}
 
-	@RequestMapping(value = "/pin", method = RequestMethod.POST)
-	public ResponseEntity<Response> isPin(@RequestBody Notes notes, HttpServletRequest request) {
-		int userId = TokenGenerator.verfiyToken(request.getHeader("accToken"));
-		Response response = new Response();
-		if (userId != 0) {
-			note.updatePin(notes, userId);
-			response.setMessage("IsPin value Changed Sucessfully...");
-			return new ResponseEntity<Response>(response, HttpStatus.OK);
-		} else {
-			response.setMessage("Invalid Id......");
-			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
-		}
-	}
-	
-	@RequestMapping(value = "/trash", method = RequestMethod.POST)
-	public ResponseEntity<Response> isTrash(@RequestBody Notes notes, HttpServletRequest request) {
-		int userId = TokenGenerator.verfiyToken(request.getHeader("accToken"));
-		System.out.println("TRASH........................");
-		Response response = new Response();
-		if (userId != 0) {
-			note.updateTrash(notes, userId);
-			response.setMessage("trash value Changed Sucessfully...");
-			return new ResponseEntity<Response>(response, HttpStatus.OK);
-		} else {
-			response.setMessage("Invalid Id......");
-			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
-		}
-	}
-	
-	
-	@RequestMapping(value = "/archive", method = RequestMethod.POST)
-	public ResponseEntity<Response> isArchive(@RequestBody Notes notes, HttpServletRequest request) {
-		int userId = TokenGenerator.verfiyToken(request.getHeader("accToken"));
-		System.out.println(userId+"sfsdjffsfdjhfkskdfhsjfsjdkhsdjk");
-		Response response = new Response();
-		if (userId != 0) {
-			note.updateArchive(notes, userId);
-			response.setMessage("IsPin Changed Sucessfully...");
-			return new ResponseEntity<Response>(response, HttpStatus.OK);
-		} else {
-			response.setMessage("Invalid Id......");
-			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
-		}
 	}
 }
-

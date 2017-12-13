@@ -1,4 +1,4 @@
-<div layout="column" layout-fill>
+<div layout="column" layout-fill >
 	<md-toolbar>
 
 	<div class="md-toolbar-tools" style="background-color:  #008B8B;">
@@ -33,7 +33,7 @@
 	
 	
 	<div class="container" layout="row" flex>
-		<md-sidenav id="left" md-is-locked-open="true" md-disable-backdrop class="md-whiteframe-5dp"> 
+		<md-sidenav id="left" md-is-locked-open="true" md-disable-backdrop class="md-whiteframe-4dp"> 
 	    <md-list>
 		<md-list-item>
 		<md-button> 
@@ -58,7 +58,7 @@
 		<md-button>
 		<md-icon md-svg-icon="images/icon/archive.svg" class="avatar">
 		</md-icon>
-		Archive
+		archive
 		</md-button> 
 		</md-list-item> 
 		</md-list> 
@@ -68,7 +68,7 @@
 		<md-button>
 		<md-icon md-svg-icon="images/icon/trash.svg" class="avatar">
 		</md-icon>
-		Trash
+		<a ui-sref="trash">Trash</a>
 		</md-button> 
 		</md-list-item> 
 		</md-list> 
@@ -83,18 +83,16 @@
 		</md-list-item> 
 		</md-list> 
 		</md-sidenav>
-</div>
-		<div flex="10"></div>
-		
-		
-		 <div flex="5" style="margin:40px;">
-			    <md-card layout-align="center center" ng-repeat="dat in data | filter :{trash :false,archive:true}" style="height: 30%;width:90%">
-				<md-input-container layout="row" flex layout="row"> 
-				<div layout="column">{{dat.title}}</div>
+
+	
+		 <div layout-wrap layout="row" layout-align="strat start" ng-repeat="dat in data | filter :{trash :false,archive:true}">
+			    <md-card>
+				<md-input-container layout="row" flex> 
+				<div layout="row" layout-align="center center">{{dat.title}}</div>
 				</md-input-container>
 
-				<md-input-container layout="row" flex layout="row"> 
-				<div layout="column">{{dat.description}}</div>
+				<md-input-container layout="row" flex> 
+				<div layout="row">{{dat.description}}</div>
 			    </md-input-container>
 			   
 			   <div role="toolbar" layout="row" layout-align="start end">
@@ -110,9 +108,9 @@
                </md-icon>
                </md-button>
       
-               <md-button class="md-icon-button test-tooltip" aria-label="Archive" ng-click="archive(data)">
-               <md-tooltip md-direction="bottom">archive</md-tooltip>
-               <md-icon md-svg-src="images/icon/archive.svg" style="width: 24px; height: 24px">
+               <md-button class="md-icon-button test-tooltip" aria-label="Archive" ng-click="archive(dat)">
+               <md-tooltip md-direction="bottom">Unarchive</md-tooltip>
+               <md-icon md-svg-src="images/icon/unarchive.svg" style="width: 24px; height: 24px">
                </md-icon>
                </md-button>
       
@@ -129,7 +127,7 @@
 			      </md-button>
 			      <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
 			        <md-menu-item >
-			          <md-button ng-click="deleteNotes(data)">
+			          <md-button ng-click="deleteForver(dat)">
 			            Delete
 			          </md-button>
 			        </md-menu-item>
@@ -155,5 +153,6 @@
 		       </div> 
                <div>
        </md-card>
+       </div>
 </div>
 		

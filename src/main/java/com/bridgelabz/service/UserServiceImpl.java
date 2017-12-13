@@ -65,4 +65,8 @@ public class UserServiceImpl implements UserService {
 		User user = dao.getUserByEmail(email);
 		return user;
 	}
+	@Transactional
+	public void updateUser(User user) {
+		dao.update(user);	
+	}
 }

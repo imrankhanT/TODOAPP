@@ -1,8 +1,8 @@
 package com.bridgelabz.model;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table
-public class Notes {
+public class Notes implements Serializable {
 
 	@Id
 	@GeneratedValue
@@ -29,11 +29,11 @@ public class Notes {
 	private Date modificationDate;
 
 	private String color;
-	
+
 	private boolean isPin;
-	
+
 	private boolean isTrash;
-	
+
 	private boolean isArchive;
 
 	@ManyToOne
@@ -120,6 +120,4 @@ public class Notes {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
-	
 }

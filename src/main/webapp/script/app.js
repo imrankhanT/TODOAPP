@@ -1,5 +1,4 @@
-var ToDo = angular.module('ToDo', [ 'ui.router', 'ngSanitize', 'ngAnimate',
-		'ngMaterial' ]);
+var ToDo = angular.module('ToDo', [ 'ui.router', 'ngAnimate','ngMaterial' ]);
 
 ToDo.config([ '$stateProvider', '$urlRouterProvider',
 		function($stateProvider, $urlRouterProvider) {
@@ -20,17 +19,29 @@ ToDo.config([ '$stateProvider', '$urlRouterProvider',
 				templateUrl : 'template/home.html',
 				controller : 'noteController'
 			})
-			
-			$stateProvider.state('trash',{
+
+			$stateProvider.state('trash', {
 				url : '/trash',
 				templateUrl : 'template/trash.html',
-			    controller : 'noteController'
+				controller : 'noteController'
 			})
-			
-			$stateProvider.state('archive',{
+
+			$stateProvider.state('archive', {
 				url : '/archive',
 				templateUrl : 'template/archive.html',
-			    controller : 'noteController'
+				controller : 'noteController'
+			})
+
+			$stateProvider.state('dailog', {
+				url : '/dailog',
+				templateUrl : 'template/dailog.html',
+				controller : 'noteController'
+			})
+			
+			$stateProvider.state('dummy', {
+				url : '/dummy',
+				templateUrl : 'template/dummy.html',
+				controller : 'dummyController'
 			})
 			$urlRouterProvider.otherwise('login');
 		} ]);

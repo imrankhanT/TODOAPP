@@ -58,7 +58,7 @@
 		<md-button>
 		<md-icon md-svg-icon="images/icon/archive.svg" class="avatar">
 		</md-icon>
-		Archive
+		 <a ui-sref="archive">Archive</a>
 		</md-button> 
 		</md-list-item> 
 		</md-list> 
@@ -68,7 +68,7 @@
 		<md-button>
 		<md-icon md-svg-icon="images/icon/trash.svg" class="avatar">
 		</md-icon>
-		Trash
+		 <a ui-sref="trash">Trash</a>
 		</md-button> 
 		</md-list-item> 
 		</md-list> 
@@ -83,18 +83,16 @@
 		</md-list-item> 
 		</md-list> 
 		</md-sidenav>
-</div>
-		<div flex="50"></div>
+
 		
-		
-		 <div flex="5" style="margin:40px;">
-			    <md-card layout-align="center center" ng-repeat="dat in data | filter :{trash :true,archive:false}" style="height: 30%;width:90%">
-				<md-input-container layout="row" flex layout="row"> 
-				<div layout="column">{{dat.title}}</div>
+		 <div layout="row" layout-align="start start" ng-repeat="dat in data | filter :{trash :true,archive:false}">
+			    <md-card >
+				<md-input-container layout="row" flex"> 
+				<div layout="row">{{dat.title}}</div>
 				</md-input-container>
 
-				<md-input-container layout="row" flex layout="row"> 
-				<div layout="column">{{dat.description}}</div>
+				<md-input-container layoutruet="row" flex> 
+				<div layout="row">{{dat.description}}</div>
 			    </md-input-container>
 		
      
@@ -104,13 +102,13 @@
 			      </md-button>
 			      <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
 			        <md-menu-item >
-			          <md-button ng-click="deleteNotes(data)">
+			          <md-button ng-click="deleteForver(dat)">
 			            Delete Forever
 			          </md-button>
 			        </md-menu-item>
 			        
 			        <md-menu-item >
-			          <md-button ng-click="">
+			          <md-button  ng-click="deleteNotes(dat)">
 			            Restore
 			          </md-button>
 			        </md-menu-item>
@@ -124,5 +122,6 @@
 		       </div> 
                <div>
        </md-card>
+       </div>
 </div>
 		

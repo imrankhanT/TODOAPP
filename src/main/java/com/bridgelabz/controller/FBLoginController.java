@@ -1,5 +1,7 @@
 package com.bridgelabz.controller;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -11,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bridgelabz.model.Response;
 import com.bridgelabz.model.User;
 import com.bridgelabz.service.UserService;
 import com.bridgelabz.socialLogin.FBConnection;
 import com.bridgelabz.utility.TokenGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
@@ -35,16 +39,17 @@ public class FBLoginController {
 	}
 
 	@RequestMapping(value = "/getFacebookLogin", method = RequestMethod.GET)
-	public ResponseEntity<String> getFbToken(HttpServletRequest request, HttpServletResponse response) {
+	public void getFbToken(HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException, IOException {
 		HttpSession session = request.getSession();
 		String fbCode = request.getParameter("code");
 		System.out.println("code: " + fbCode);
 		String fbtoken = FBConnection.getFBAcessToken(fbCode);
 		System.out.println("token is: " + fbtoken);
 		String fbProfileInfo = FBConnection.getFbProfileInfo(fbtoken);
-		System.out.println("fbProfileInfo: " + fbProfileInfo);
+		System.out.println("Fburl-->" + fbProfileInfo);
+		Response responseMessage = new Response();
 		ObjectMapper mapper = new ObjectMapper();
-		try {
+	
 			String email = mapper.readTree(fbProfileInfo).get("email").asText();
 			User user = service.getUserByEmail(email);
 			if (user == null) {
@@ -53,23 +58,42 @@ public class FBLoginController {
 				String firstName = mapper.readTree(fbProfileInfo).get("first_name").asText();
 				fbUser.setName(firstName);
 
+				String fbProfilePic = mapper.readTree(fbProfileInfo).get("picture").get("data").get("url").asText();
+				System.out.println("profilePic......................." + fbProfilePic);
 				fbUser.setActive(true);
-				service.register(fbUser);
-				int id = fbUser.getId();
-
-				if (id == -1) {
-				} else {
-					String accessToken = TokenGenerator.generateToken(id);
-					session.setAttribute("ToDoAccessToken", accessToken);
+				fbUser.setProfilePicture(fbProfilePic);
+				boolean flag=service.register(fbUser);
+				if(flag) {
+				String token = TokenGenerator.generateToken(fbUser.getId());
+				System.out.println("------------------->"+token);
+				session.setAttribute("token", token);
+				response.sendRedirect("http://localhost:8080/TODOAPP/#!/dummy");
 				}
-			} else {
-				String accessToken = TokenGenerator.generateToken(user.getId());
-				session.setAttribute("ToDoAccessToken", accessToken);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return ResponseEntity.status(HttpStatus.OK).body("new Registered");
+				else
+				{
+					response.sendRedirect("http://localhost:8080/TODOAPP/#!/login");
+				}
 
+			} else {
+				System.out.println("user already exits in database");
+				String token = TokenGenerator.generateToken(user.getId());
+				user.setProfilePicture(mapper.readTree(fbProfileInfo).get("picture").get("data").get("url").asText());
+				service.updateUser(user);
+				session.setAttribute("token", token);
+				response.sendRedirect("http://localhost:8080/TODOAPP/#!/dummy");
+			}
+			
+		
+	}
+
+	@RequestMapping(value = "/dummy", method = RequestMethod.GET)
+	public ResponseEntity<Response> getToken(HttpSession session) {
+
+
+		Response response = new Response();
+		response.setMessage((String)session.getAttribute("token"));
+		session.removeAttribute("token");
+		return  ResponseEntity.ok(response);
+		
 	}
 }

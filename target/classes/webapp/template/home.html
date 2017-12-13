@@ -8,7 +8,7 @@
 		<div flex="5"></div>
 		<h2 md-truncate flex>Google Keep</h2>
 
-		<div flex="50" layout-align="start center" style="margin: 120px;">
+		<div flex="50" layout-align="start center" style="margin: 100px;">
 			<md-autocomplete  md-no-cache="true" md-selected-item="selectedItem"
 				md-items="item in items" md-search-text="searchText"
 				md-svg-icon="images/icon/search.svg" md-item-text="item.display" placeholder="Search here">
@@ -21,12 +21,26 @@
 			</md-icon> 
 			</md-button>
 		    </div>
-		    <md-button class="md-icon-button" aria-label="Logout"
-			style="color:black;" ng-click="logout()">
-			 <md-icon
-			md-svg-icon="images/icon/logout.svg">
+			
+			 <md-menu-bar>
+          <md-menu>
+            <button ng-click="$mdMenu.open()">
+            <md-icon>
+              <img ng-src={{user.profilePic}} style="border-radius : 20px;margin-top:-12px;margin-left:-12px;" ></img>
+           </md-icon>
+            </button>
+            <md-menu-content>
+            <div align="center">{{user.name}}</div>
+            <div align="center">{{user.email}}</div>
+            <md-menu-divider></md-menu-divider>
+                <md-button ng-click="logout()"> 
+                Logout
+                </md-button>
+                 </md-menu-content>
 			</md-icon> 
-			</md-button>
+              
+               </md-menu>
+               </md-menu-bar>
 	</div>
 	</md-toolbar>
 
@@ -37,7 +51,7 @@
 		<md-button> 
 		<md-icon md-svg-icon="images/icon/notes.svg" class="avatar">
 		</md-icon> 
-		Notes 
+		 <a ui-sref="home">Notes</a> 
 		</md-button>
 		</md-list-item> 
 		</md-list> 
@@ -84,7 +98,7 @@
 
 		<div flex="10"></div>
 		<div>
-			<md-card layout="row" layout-align="center center">
+			<md-card layout="row" class="cards" layout-align="center center">
 			<form>
 				<md-input-container layout="row" flex> <input
 					ng-model="notes.title" style="border: 0px;" placeholder="Title"
@@ -111,6 +125,12 @@
       </md-icon>
       </md-button>
       
+      <md-button class="md-icon-button test-tooltip" aria-label="Collaborator">
+      <md-tooltip md-direction="bottom">change color</md-tooltip>
+      <md-icon md-svg-src="images/icon/color.svg" style="width: 24px; height: 24px">
+      </md-icon>
+      </md-button>
+      
       <md-button class="md-icon-button test-tooltip" aria-label="Archive">
       <md-tooltip md-direction="bottom">archive</md-tooltip>
       <md-icon md-svg-src="images/icon/archive.svg" style="width: 24px; height: 24px">
@@ -128,7 +148,7 @@
 			        <md-icon md-menu-origin md-svg-src="images/icon/more.svg" style="width: 24px; height: 24px"></md-icon>
 			      </md-button>
 			      <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
-			        <md-menu-item ng-repeat="item in ['Delete','Add Label', 'Make Copy']">
+			        <md-menu-item ng-repeat="item in ['Add Label', 'Make Copy']">
 			          <md-button>
 			             {{item}}
 			          </md-button>
@@ -143,8 +163,8 @@
 			</md-card>
 			
 	 	        <div flex="25" style="margin:40px;">
-			    <md-card layout-align="center center" ng-repeat="data in data | filter :{trash :false} | filter :{archive:false}" style="height: 30%;width:90%">
-				<md-input-container layout="row" flex layout="row"> 
+			    <md-card ng-click="showDailog($event,data)" layout-align="center center" class="cards" ng-repeat="data in data | filter :{trash :false} | filter :{archive:false} | filter :{pin:false}" style="height: 30%;width:90%">
+				<md-input-container layout="row" flex> 
 				<div layout="column">{{data.title}}</div>
 				</md-input-container>
 
@@ -165,6 +185,12 @@
                </md-icon>
                </md-button>
       
+               <md-button class="md-icon-button test-tooltip" aria-label="Collaborator">
+               <md-tooltip md-direction="bottom">change color</md-tooltip>
+               <md-icon md-svg-src="images/icon/color.svg" style="width: 24px; height: 24px">
+               </md-icon>
+               </md-button>
+               
                <md-button class="md-icon-button test-tooltip" aria-label="Archive" ng-click="archive(data)">
                <md-tooltip md-direction="bottom">archive</md-tooltip>
                <md-icon md-svg-src="images/icon/archive.svg" style="width: 24px; height: 24px">
@@ -202,31 +228,85 @@
 			        </md-menu-item>
 			        
 			      </md-menu-content>
-			    </md-menu>
-			  
-              <!--  <md-menu>
-	               <button class="md-raised md-default" ng-click="$mdOpenMenu()">
-	               <md-tooltip md-direction="bottom">more</md-tooltip>
-	               <md-icon md-svg-src="images/icon/more.svg" style="width: 24px; height: 24px"></md-icon>
-               </button>
-	               <md-menu-content>           
-		               <md-menu-item>
-		                   <md-button ng-click="deleteNotes(data)">Delete Note</md-button>
-		              </md-menu-item>
-		               <md-menu-item>
-			               <md-button ng-click="">Add Label</md-button>
-		               </md-menu-item>
-		               <md-menu-item>
-			               <md-button ng-click="">Make a copy</md-button>
-		               </md-menu-item>           
-	               </md-menu-content>
-               </md-menu>    -->
-              
+			    </md-menu> 
 		       </div>
                
 		       </md-list>
 		       </div> 
-               <div>
+               </div>
+       </md-card>
+       
+        <md-card ng-click="showDailog($event,data)" layout-align="center center" class="cards" ng-repeat="data in data | filter :{trash :false} | filter :{archive:false} | filter :{pin:true}" style="height: 30%;width:90%">
+				<md-input-container layout="row" flex> 
+				<div layout="column">{{data.title}}</div>
+				</md-input-container>
+
+				<md-input-container layout="row" flex layout="row"> 
+				<div layout="column">{{data.description}}</div>
+			    </md-input-container>
+			   
+			   <div role="toolbar" layout="row" layout-align="start end">
+			   <md-button class="md-icon-button test-tooltip" aria-label="Reminder">
+               <md-tooltip md-direction="bottom">remind me</md-tooltip>
+               <md-icon md-svg-src="images/icon/reminder.svg" style="width: 24px; height: 24px">
+               </md-icon>
+               </md-button>
+              
+               <md-button class="md-icon-button test-tooltip" aria-label="Reminder">
+               <md-tooltip md-direction="bottom">collaborator</md-tooltip>
+               <md-icon md-svg-src="images/icon/collaborator.svg" style="width: 24px; height: 24px">
+               </md-icon>
+               </md-button>
+      
+               <md-button class="md-icon-button test-tooltip" aria-label="Collaborator">
+               <md-tooltip md-direction="bottom">change color</md-tooltip>
+               <md-icon md-svg-src="images/icon/color.svg" style="width: 24px; height: 24px">
+               </md-icon>
+               </md-button>
+               
+               <md-button class="md-icon-button test-tooltip" aria-label="Archive" ng-click="archive(data)">
+               <md-tooltip md-direction="bottom">archive</md-tooltip>
+               <md-icon md-svg-src="images/icon/archive.svg" style="width: 24px; height: 24px">
+               </md-icon>
+               </md-button>
+      
+               <md-button class="md-icon-button test-tooltip" aria-label="Add Images">
+               <md-tooltip md-direction="bottom">Add Images</md-tooltip>
+               <md-icon  md-svg-src="images/icon/photo.svg" style="width: 24px; height: 24px">
+               </md-icon>
+               </md-button>
+     
+     
+			       <md-menu>
+			      <md-button aria-label="Open menu with custom trigger" class="md-icon-button" ng-mouseenter="$mdMenu.open()">
+			        <md-icon md-menu-origin md-svg-src="images/icon/more.svg" style="width: 24px; height: 24px"></md-icon>
+			      </md-button>
+			      <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
+			        <md-menu-item >
+			          <md-button ng-click="deleteNotes(data)">
+			            Delete
+			          </md-button>
+			        </md-menu-item>
+			        
+			        <md-menu-item >
+			          <md-button ng-click="">
+			            Add Label
+			          </md-button>
+			        </md-menu-item>
+			        
+			        <md-menu-item >
+			          <md-button ng-click="">
+			            Make Copy
+			          </md-button>
+			        </md-menu-item>
+			        
+			      </md-menu-content>
+			    </md-menu> 
+		       </div>
+               
+		       </md-list>
+		       </div> 
+               </div>
        </md-card>
 </div>
 </div>

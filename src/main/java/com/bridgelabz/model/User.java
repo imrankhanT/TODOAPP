@@ -3,15 +3,20 @@ package com.bridgelabz.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "USER")
 public class User {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY, generator="idgen")
+	@GenericGenerator(name="idgen", strategy="increment")
 	private int id;
 
 	@Column(name = "name")
@@ -28,6 +33,10 @@ public class User {
 
 	@Column(name = "isActive")
 	private boolean isActive;
+
+	@Lob
+	@Column(name="profilePicture",columnDefinition="LONGBLOB")
+	private String profilePicture;
 
 	public int getId() {
 		return id;
@@ -76,4 +85,13 @@ public class User {
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
+
+	public String getProfilePicture() {
+		return profilePicture;
+	}
+
+	public void setProfilePicture(String profilePicture) {
+		this.profilePicture = profilePicture;
+	}
+
 }

@@ -7,6 +7,8 @@ todo.controller('loginController', function($scope, loginService, $location) {
 		user.then(function(response) {
 			console.log(response.data.message);
 			localStorage.setItem('token', response.data.message);
+			console.log(response.data);
+			// $scope.user = response.data;
 			$location.path('home');
 			console.log('Login Sucessfully...........');
 		}, function(response) {

@@ -8,46 +8,56 @@ todo.factory('notesService', function($http, $location) {
 			method : 'post',
 			url : 'addNotes',
 			data : notes,
-			headers:{
-				'accToken':localStorage.getItem('token')
+			headers : {
+				'accToken' : localStorage.getItem('token')
 			}
 		});
 	}
-	
-	
-	notes.getAllNotes = function(){
+
+	notes.getAllNotes = function(data) {
 		return $http({
 			method : 'get',
 			url : 'getAllNotes',
-			headers:{
-				'accToken':localStorage.getItem('token')
+			headers : {
+				'accToken' : localStorage.getItem('token')
 			}
 		});
 	}
-	
-	notes.updateNotes = function(data){
-		console.log(data.isTrash);
+
+	notes.updateNotes = function(data) {
+		console.log(data);
 		return $http({
-			
+
 			method : 'POST',
 			url : 'updateNotes',
 			data : data,
-			headers:{
-				'accToken':localStorage.getItem('token')
+			headers : {
+				'accToken' : localStorage.getItem('token')
 			}
 		});
 	}
+
+	notes.deleteNotes = function(data) {
+		return $http({
+			method : 'delete',
+			url : 'deleteNotes/'+ data.id,
+			data : data,
+			headers : {
+				'accToken' : localStorage.getItem('token')
+			}
+		})
+
+	}
 	
-	
-	/*notes.archive=function(data){
-		 $http({
-				method : 'post',
-				url : 'archive',
-				data : data,
-				headers:{
-					'accToken':localStorage.getItem('token')
-				}
-			});
-	}*/
+	notes.getUser = function(){
+		console.log("inside get user service");
+		return $http({
+			method : 'get',
+			url : 'getUser',
+			headers : {
+				'accToken' : localStorage.getItem('token')
+			}
+		})
+	}
 	return notes;
 })
