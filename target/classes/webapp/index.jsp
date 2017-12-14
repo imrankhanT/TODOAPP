@@ -6,6 +6,8 @@
 
 <link rel="stylesheet"
 	href="bower_components/material-icons/css/material-icons.min.css">
+	
+<link rel="stylesheet" href="directive/colorPickerStyle.css">
 
 
 <!-- STYLE CSS -->
@@ -38,6 +40,8 @@
 <script src="service/notesService.js"></script>
 <script src="service/dummyService.js"></script>
 
+<!-- <Directive> -->
+<script src="directive/colorPicker.js"></script>
 </head>
 <body ng-app="ToDo">
 	<div ui-view></div>

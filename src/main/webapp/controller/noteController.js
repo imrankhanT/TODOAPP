@@ -2,7 +2,22 @@ var app = angular.module('ToDo');
 
 app.controller('noteController', function($scope, notesService, $location,
 		$mdDialog) {
-	
+
+	$scope.options = [ 'transparent', '#FF8A80', '#FFD180', '#FFFF8D',
+			'#CFD8DC', '#80D8FF', '#A7FFEB', '#CCFF90' ];
+	$scope.color = '#FF8A80';
+
+	$scope.colorChanged = function(newColor, data) {
+		data.color = newColor;
+		console.log(newColor);
+
+		var update = notesService.updateNotes(data);
+		update.then(function(response) {
+			getNotes();
+			console.log(response.data);
+		});
+
+	}
 	var getNotes = function() {
 		var getAllNotes = notesService.getAllNotes();
 		getAllNotes.then(function(response) {
@@ -113,7 +128,7 @@ app.controller('noteController', function($scope, notesService, $location,
 		} else {
 			data.pin = false;
 			console.log(data);
-			var pin = notesService.update(data);
+			var pin = notesService.updateNotes(data);
 			pin.then(function(response) {
 				getNotes();
 			})
