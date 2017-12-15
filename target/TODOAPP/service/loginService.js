@@ -1,14 +1,13 @@
 var todo = angular.module('ToDo');
 
-todo.factory('loginService', function($http, $location) {
-	var login = {};
+todo.service('loginService', function($http, $location) {
 
-	login.loginUser = function(user) {
+	this.loginUser = function(user) {
+		console.log(user);
 		return $http({
-			method : "post",
+			method : 'POST',
 			url : 'login',
 			data : user
 		})
 	}
-	return login;
 })

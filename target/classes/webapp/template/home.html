@@ -125,11 +125,10 @@
       </md-icon>
       </md-button>
       
-      <md-button class="md-icon-button test-tooltip" aria-label="Collaborator">
       <md-tooltip md-direction="bottom">change color</md-tooltip>
-      <md-icon md-svg-src="images/icon/color.svg" style="width: 24px; height: 24px">
-      </md-icon>
-      </md-button>
+      <color-picker color="color" options="options" on-color-changed="colorChanged(newColor,data)">
+      <div></div>
+      </color-picker>
       
       <md-button class="md-icon-button test-tooltip" aria-label="Archive">
       <md-tooltip md-direction="bottom">archive</md-tooltip>
@@ -148,7 +147,7 @@
 			        <md-icon md-menu-origin md-svg-src="images/icon/more.svg" style="width: 24px; height: 24px"></md-icon>
 			      </md-button>
 			      <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
-			        <md-menu-item ng-repeat="item in ['Add Label', 'Make Copy']">
+			        <md-menu-item ng-repeat="item in ['Add Label', 'Show Checkbox']">
 			          <md-button>
 			             {{item}}
 			          </md-button>
@@ -195,11 +194,10 @@
                </md-button>
       
               <!--  <md-button class="md-icon-button test-tooltip" aria-label="Collaborator"> -->
-               <md-tooltip md-direction="bottom">change color</md-tooltip>
+                <md-tooltip md-direction="bottom">change color</md-tooltip>
                 <color-picker color="color" options="options" on-color-changed="colorChanged(newColor,data)">
                 <div></div>
-       </color-picker>
-               </md-icon>
+               </color-picker>
                <!-- </md-button> -->
                
                <md-button class="md-icon-button test-tooltip" aria-label="Archive" ng-click="archive(data)">
@@ -233,7 +231,7 @@
 			        </md-menu-item>
 			        
 			        <md-menu-item >
-			          <md-button ng-click="">
+			          <md-button ng-click="makeCopy(data)">
 			            Make Copy
 			          </md-button>
 			        </md-menu-item>
@@ -255,9 +253,7 @@
                 <md-icon md-svg-src="images/icon/pin.svg" style="width: 24px; height: 24px">
                 </md-icon>
                 </md-button>
-                
-                <div>{{data.color}}</div>
-               
+    
 				<md-input-container layout="row" flex> 
 				<div layout="column">{{data.title}}</div>
 				</md-input-container>
@@ -279,12 +275,8 @@
                </md-icon>
                </md-button>
       
-               <md-button class="md-icon-button test-tooltip" aria-label="Collaborator">
-               <md-tooltip md-direction="bottom">change color</md-tooltip>
-               <md-icon md-svg-src="images/icon/color.svg" style="width: 24px; height: 24px">
-               <color-picker color="color" options="options" on-color-changed="colorChanged(newColor, oldColor)"></color-picker>
-               </md-icon>
-               </md-button>
+              <md-tooltip md-direction="bottom">change color</md-tooltip>
+                <color-picker color="color" options="options" on-color-changed="colorChanged(newColor,data)">
                
                <md-button class="md-icon-button test-tooltip" aria-label="Archive" ng-click="archive(data)">
                <md-tooltip md-direction="bottom">archive</md-tooltip>

@@ -5,3 +5,11 @@ a {
 #NR {
 	margin-left: 160px;
 }
+
+.md-icon{
+	curser:pointer;
+}
+
+a{
+	text-deocration:none;
+}

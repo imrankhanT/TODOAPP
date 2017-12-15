@@ -1,10 +1,8 @@
 package com.bridgelabz.controller;
 
-import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bridgelabz.model.Response;
 import com.bridgelabz.model.User;
 import com.bridgelabz.service.UserService;
 import com.bridgelabz.socialLogin.GoogleLogin;
@@ -72,19 +69,6 @@ public class GoogleLoginController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		try {
-			response.sendRedirect("http://localhost:8080/TODOAPP/#!/home");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		return ResponseEntity.status(HttpStatus.OK).body("new Registered");
-	}
-
-	public ResponseEntity<Response> getToken(HttpSession session) {
-		Response response = new Response();
-		String token = (String) session.getAttribute("token");
-		response.setMessage(token);
-		session.removeAttribute(token);
-		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 }

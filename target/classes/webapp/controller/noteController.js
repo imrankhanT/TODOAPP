@@ -9,7 +9,6 @@ app.controller('noteController', function($scope, notesService, $location,
 
 	$scope.colorChanged = function(newColor, data) {
 		data.color = newColor;
-		console.log(newColor);
 
 		var update = notesService.updateNotes(data);
 		update.then(function(response) {
@@ -24,6 +23,16 @@ app.controller('noteController', function($scope, notesService, $location,
 			$scope.data = response.data;
 			$scope.user = {};
 			console.log(response.data);
+		});
+	}
+	
+
+		 $scope.makeCopy = function(data){
+			console.log("sdjhdhghfhfdjgfdkgfdjghkdg"+data);
+		var makeCopies = notesService.addNotes(data);
+		makeCopies.then(function(response){
+			console.log(response.data);
+			getNotes();
 		});
 	}
 

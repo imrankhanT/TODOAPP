@@ -5,7 +5,7 @@ todo.factory('registerService', function($http, $location) {
 
 	register.registerUser = function(user) {
 		return $http({
-			method : "POST",
+			method : "post",
 			url : 'register',
 			data : user
 		})

@@ -1,5 +1,6 @@
 com/bridgelabz/model/User.class
 com/bridgelabz/DAO/NotesDAOImpl.class
+com/bridgelabz/model/UserDTO.class
 com/bridgelabz/service/UserServiceImpl.class
 com/bridgelabz/validation/EncryptPassword.class
 com/bridgelabz/service/ProducerService.class

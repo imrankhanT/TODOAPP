@@ -20,7 +20,7 @@ public class NotesDAOImpl implements NotesDAO {
 		Session session = sessionFactory.getCurrentSession();
 
 		try {
-			session.persist(notes);
+			session.save(notes);
 			return "saved";
 		} catch (Exception e) {
 			e.printStackTrace();
