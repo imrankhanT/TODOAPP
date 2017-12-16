@@ -26,11 +26,11 @@ public class UserDAOImpl implements UserDAO {
 		query.setParameter("number", user.getMobileNumber());
 		User checkedUser = (User) query.uniqueResult();
 
-		if(user.getPassword()!=null) {
-		BCryptPasswordEncoder bcryptPasswordEncoder = new BCryptPasswordEncoder();
-		String encryptPassword = bcryptPasswordEncoder.encode(user.getPassword());
-		user.setPassword(encryptPassword);
-		}else {
+		if (user.getPassword() != null) {
+			BCryptPasswordEncoder bcryptPasswordEncoder = new BCryptPasswordEncoder();
+			String encryptPassword = bcryptPasswordEncoder.encode(user.getPassword());
+			user.setPassword(encryptPassword);
+		} else {
 			user.setPassword(null);
 		}
 		if (checkedUser != null) {
@@ -44,17 +44,6 @@ public class UserDAOImpl implements UserDAO {
 
 	public String login(User user) {
 		Session session = sessionFactory.getCurrentSession();
-		/*
-		 * String encryptedPassword = BCrypt.hashpw(user.getPassword(),
-		 * BCrypt.gensalt()); user.setPassword(encryptedPassword); Query<?> query =
-		 * session.createQuery("select name from User where email = :email ");
-		 * query.setParameter("email", user.getEmail()); User loginUser=(User)
-		 * query.uniqueResult(); query.setParameter("password", user.getPassword());
-		 * String name = (String) query.uniqueResult(); String name=null;
-		 * if(BCrypt.checkpw(user.getPassword(), loginUser.getPassword())) {
-		 * name=loginUser.getName(); } return name;
-		 */
-
 		try {
 			Criteria criteria = session.createCriteria(User.class);
 			Criterion email1 = Restrictions.eq("email", user.getEmail());
@@ -138,9 +127,9 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	public void update(User user) {
-			Session session = sessionFactory.getCurrentSession();
-			session.update(user);
-			
+		Session session = sessionFactory.getCurrentSession();
+		session.update(user);
+
 	}
 
 }

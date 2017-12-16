@@ -1,7 +1,5 @@
 package com.bridgelabz.controller;
 
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -46,7 +44,6 @@ public class UserController {
 			String token = TokenGenerator.generateToken(user.getId());
 			url = url.substring(0, url.lastIndexOf("/")) + "/active/" + token;
 			System.out.println(url);
-			/* Email.sendMail(user.getEmail(), "Validation Message", url); */
 
 			Email email = new com.bridgelabz.model.Email();
 			email.setTo(user.getEmail());
@@ -64,7 +61,8 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/active/{jwt:.+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Response> verifyToken(@PathVariable String jwt) {
+	public ResponseEntity<Response> verifyToken(@PathVariable String jwt, HttpServletResponse response1)
+			throws Exception {
 		int id = TokenGenerator.verfiyToken(jwt);
 		Response response = new Response();
 		System.out.println("Token verfied id is......" + id);
@@ -75,6 +73,7 @@ public class UserController {
 				return new ResponseEntity<Response>(response, HttpStatus.NOT_FOUND);
 			}
 			service.activeUser(id, user);
+			response1.sendRedirect("http://localhost:8080/TODOAPP/#!/activatedUser");
 			response.setMessage("User Activated");
 			return new ResponseEntity<Response>(response, HttpStatus.OK);
 		}
@@ -85,7 +84,6 @@ public class UserController {
 	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Response> login(@RequestBody User user, HttpSession session) {
 		Response response = new Response();
-		System.out.println("%$%$\n\n\nn7836578435");
 		String name = service.login(user);
 		System.out.println(name);
 		if (name != null) {
@@ -94,7 +92,7 @@ public class UserController {
 				session.setAttribute("user", name);
 				int id = service.getUserByMail(user.getEmail());
 				String token = TokenGenerator.generateToken(id);
-				User user7 = service.getUserByEmail(user.getEmail()) ;
+				User user7 = service.getUserByEmail(user.getEmail());
 				response.setEmail(user7.getEmail());
 				response.setProfilePic(user7.getProfilePicture());
 				response.setMessage(token);
@@ -107,20 +105,6 @@ public class UserController {
 			response.setMessage("mail id Or password Not Exist");
 			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 		}
-	}
-
-	@RequestMapping(value = "/logout", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Response> logout(HttpSession session,HttpServletResponse response1) {
-		Response response = new Response();
-		session.removeAttribute("user");
-		session.invalidate();
-		try {
-			response1.sendRedirect("http://localhost:8080/TODOAPP/#!/login");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		response.setMessage("Logout sucessfully......");
-		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/forgotPassword", method = RequestMethod.POST)
@@ -140,7 +124,6 @@ public class UserController {
 			String url = request.getRequestURL().toString();
 
 			url = url.substring(0, url.lastIndexOf("/")) + "/setPassword/" + token;
-			/* Email.sendMail(users.getEmail(), "Password Reset", url); */
 			Email email = new com.bridgelabz.model.Email();
 			email.setTo(user.getEmail());
 			email.setSetBody(token);
@@ -150,7 +133,6 @@ public class UserController {
 			response.setMessage("Email verified	Sucessfully......");
 			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 		}
-
 	}
 
 	@RequestMapping(value = "/resetPassword", method = RequestMethod.PUT)

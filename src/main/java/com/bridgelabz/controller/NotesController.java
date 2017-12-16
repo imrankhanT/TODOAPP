@@ -1,9 +1,12 @@
 package com.bridgelabz.controller;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.swing.plaf.synth.SynthSpinnerUI;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,16 +113,15 @@ public class NotesController {
 	}
 
 	@RequestMapping(value = "/getUser", method = RequestMethod.GET)
-	public ResponseEntity<?> getUser(HttpServletRequest request) {
+	public ResponseEntity<?> getUser(HttpServletRequest request, HttpSession session) {
 		System.out.println("inside get user");
 		String token = request.getHeader("accToken");
-		
+		session.setAttribute("token", token);
 		int id = TokenGenerator.verfiyToken(token);
-		System.out.println("inside get user token =="+id);
+		System.out.println("inside get user token ==" + id);
 		User user = userService.getUserById(id);
-		/*System.out.println(user.getId());*/
-		
-		
+		/* System.out.println(user.getId()); */
+
 		if (user == null) {
 			Response response = new Response();
 			response.setMessage("User Not Found......");
@@ -134,5 +136,19 @@ public class NotesController {
 			return new ResponseEntity<UserDTO>(userDto, HttpStatus.OK);
 		}
 
+	}
+
+	@RequestMapping(value = "/logout", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Response> logout(HttpSession session, HttpServletResponse response1) {
+		Response response = new Response();
+		session.removeAttribute("token");
+		session.invalidate();
+		try {
+			response1.sendRedirect("http://localhost:8080/TODOAPP/#!/login");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		response.setMessage("Logout sucessfully......");
+		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 }

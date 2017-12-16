@@ -18,6 +18,7 @@
   "dependencies": {
     "angular-material": "^1.1.5",
     "angular": "^1.6.7",
-    "angular-messages": "^1.6.7"
+    "angular-messages": "^1.6.7",
+    "smDateTimeRangePicker": "^2.0.11"
   }
 }

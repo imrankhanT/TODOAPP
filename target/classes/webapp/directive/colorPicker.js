@@ -1,7 +1,7 @@
 angular.module('tb-color-picker', [])
     .run(['$templateCache', function($templateCache) {
         $templateCache.put('color-picker.tpl.html', '<div class="color-picker">'+
-            '<div class="selected-color" ng-style="{\'background-color\': vm.color}"></div>' +
+            '<div><md-icon md-svg-src="images/icon/color.svg" ></md-icon></div>' +
             '<div class="color-palette">'+
                 '<div ng-repeat="option in vm.options"'+
                 'ng-style="{\'background-color\': option}"'+

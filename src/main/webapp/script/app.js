@@ -1,4 +1,5 @@
-var ToDo = angular.module('ToDo', [ 'ui.router', 'ngAnimate','ngMaterial','tb-color-picker']);
+var ToDo = angular.module('ToDo', [ 'ui.router', 'ngAnimate', 'ngMaterial',
+		'ngMaterialDatePicker', 'tb-color-picker' ]);
 
 ToDo.config([ '$stateProvider', '$urlRouterProvider',
 		function($stateProvider, $urlRouterProvider) {
@@ -37,11 +38,18 @@ ToDo.config([ '$stateProvider', '$urlRouterProvider',
 				templateUrl : 'template/dailog.html',
 				controller : 'noteController'
 			})
-			
+
 			$stateProvider.state('dummy', {
 				url : '/dummy',
 				templateUrl : 'template/dummy.html',
 				controller : 'dummyController'
 			})
+
+			$stateProvider.state('activatedUser', {
+				url : '/activatedUser',
+				templateUrl : 'template/activatedUser.html',
+			// controller : 'dummyController'
+			})
+
 			$urlRouterProvider.otherwise('login');
 		} ]);

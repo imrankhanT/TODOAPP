@@ -15,7 +15,7 @@
 		</div>
 		 
 		    <div>
-		    <md-button class="md-icon-button test-tooltip" aria-label="Menu"
+		    <md-button class="md-icon-button test-tooltip" ng-click="openLeftMenu()" aria-label="Menu"
 			style="color:black;"> 
 			<md-icon md-svg-icon="images/icon/list.svg">
 			</md-icon> 
@@ -45,7 +45,9 @@
 	</md-toolbar>
 
 	<div class="container" layout="row" flex>
-		<md-sidenav id="left" md-is-locked-open="true" md-disable-backdrop class="md-whiteframe-5dp"> 
+		<md-sidenav md-component-id="right" md-is-locked-open="$mdMedia('min-width: 333px')" class="md-sidenav-right" class="md-whiteframe-5dp"> 
+	    
+	    <div layout="row">
 	    <md-list>
 		<md-list-item>
 		<md-button> 
@@ -55,7 +57,9 @@
 		</md-button>
 		</md-list-item> 
 		</md-list> 
+		</div>
 		
+		<div layout="row">
 		<md-list> 
 		<md-list-item> 
 		<md-button>
@@ -63,8 +67,10 @@
 		</md-icon>
 		Reminder </md-button> 
 		</md-list-item> 
-		</md-list> 
+		</md-list>
+		</div> 
 		
+		<div layout="row">
 		<md-list> 
 		<md-list-item> 
 		<md-button>
@@ -74,7 +80,9 @@
 		</md-button> 
 		</md-list-item> 
 		</md-list> 
+		</div>
 		
+		<div layout="row">
 		<md-list> 
 		<md-list-item> 
 		<md-button>
@@ -83,8 +91,10 @@
 		<a ui-sref="trash">Trash </a>
 		</md-button> 
 		</md-list-item> 
-		</md-list> 
+		</md-list>
+		</div> 
 			
+	    <div layout-align="center">
 		<md-list> 
 		<md-list-item> 
 		<md-button>
@@ -94,6 +104,7 @@
 		</md-button> 
 		</md-list-item> 
 		</md-list> 
+		</div>
 		</md-sidenav>
 
 		<div flex="10"></div>
@@ -161,57 +172,71 @@
 			</form>
 			</md-card>
 			
-	 	        <div flex="25" style="margin:40px;">
-			    <md-card ng-style="{'background-color' : data.color}" layout-align="center center" class="cards" ng-repeat="data in data | filter :{trash :false} | filter :{archive:false} | filter :{pin:false}" style="height: 30%;width:90%">
+	 	        <div layout-align="space-around center" style="margin:40px;">
+			    <md-card flex style="height:35%;" ng-style="{'background-color' : data.color}" class="cards" ng-repeat="data in data | filter :{trash :false} | filter :{archive:false} | filter :{pin:false}">
 				
-			   <md-button ng-click="pin(data)" class="md-icon-button test-tooltip" aria-label="Pin" style="margin-left:230px;">
+			   <md-button ng-click="pin(data)" class="md-icon-button test-tooltip" aria-label="Pin" style="margin-left:200px;">
                <md-tooltip md-direction="bottom">Pin</md-tooltip>
                <md-icon md-svg-src="images/icon/pin.svg" style="width: 24px; height: 24px">
                </md-icon>
                </md-button>
-               
+              
                <div ng-click="showDailog($event,data)" style="width:260px;">
+				<div layout="row" layout-align="center center">
 				<md-input-container layout="row" flex> 
 				<div layout="column">{{data.title}}</div>
 				</md-input-container>
+				</div>
 
+                <div layout="row" layout-align="center center">
 				<md-input-container layout="row" flex layout="row"> 
 				<div layout="column">{{data.description}}</div>
 			    </md-input-container>
+			    </div>
 			   </div>
-			   
-			   <div role="toolbar" layout="row" layout-align="start end">
-			   <md-button class="md-icon-button test-tooltip" aria-label="Reminder">
-               <md-tooltip md-direction="bottom">remind me</md-tooltip>
-               <md-icon md-svg-src="images/icon/reminder.svg" style="width: 24px; height: 24px">
-               </md-icon>
-               </md-button>
+               
+               <div layout="row" layout-align="center center">
+               <md-menu aria-label="Open menu with custom trigger" class="md-icon-button" ng-mouseenter="$mdMenu.open()">
+			      <md-icon md-menu-origin md-svg-src="images/icon/reminder.svg" style="width: 24px; height: 24px"></md-icon>
+			      <md-menu-content ng-mouseleave="$mdMenu.close()">
+			        <md-menu-item>
+			        <input flex mdc-datetime-picker="" date="true" time="true" type="text" id="datetime"
+                    placeholder="Date" show-todays-date="" min-date="date" ng-model="dateTime" class=" md-input"
+                     readonly="readonly">
+			        </md-menu-item>
+			      </md-menu-content>
+			    </md-menu> 
               
+
+			   <div layout="row" layout-align="center center">
                <md-button class="md-icon-button test-tooltip" aria-label="Reminder">
                <md-tooltip md-direction="bottom">collaborator</md-tooltip>
                <md-icon md-svg-src="images/icon/collaborator.svg" style="width: 24px; height: 24px">
                </md-icon>
                </md-button>
-      
-              <!--  <md-button class="md-icon-button test-tooltip" aria-label="Collaborator"> -->
-                <md-tooltip md-direction="bottom">change color</md-tooltip>
-                <color-picker color="color" options="options" on-color-changed="colorChanged(newColor,data)">
-                <div></div>
-               </color-picker>
-               <!-- </md-button> -->
+               </div>
                
+               <div layout="row" layout-align="center center">
                <md-button class="md-icon-button test-tooltip" aria-label="Archive" ng-click="archive(data)">
                <md-tooltip md-direction="bottom">archive</md-tooltip>
                <md-icon md-svg-src="images/icon/archive.svg" style="width: 24px; height: 24px">
                </md-icon>
                </md-button>
-      
+               </div>
+               
+               <div layout="row" layout-align="center center">
+               <md-tooltip md-direction="bottom">change color</md-tooltip>
+               <color-picker color="color" options="options" on-color-changed="colorChanged(newColor,data)">
+               </color-picker>
+               </div>
+               
+               <div layout="row" layout-align="center center">
                <md-button class="md-icon-button test-tooltip" aria-label="Add Images">
                <md-tooltip md-direction="bottom">Add Images</md-tooltip>
                <md-icon  md-svg-src="images/icon/photo.svg" style="width: 24px; height: 24px">
                </md-icon>
                </md-button>
-     
+               </div>
      
 			       <md-menu>
 			      <md-button aria-label="Open menu with custom trigger" class="md-icon-button" ng-mouseenter="$mdMenu.open()">
@@ -274,9 +299,6 @@
                <md-icon md-svg-src="images/icon/collaborator.svg" style="width: 24px; height: 24px">
                </md-icon>
                </md-button>
-      
-              <md-tooltip md-direction="bottom">change color</md-tooltip>
-                <color-picker color="color" options="options" on-color-changed="colorChanged(newColor,data)">
                
                <md-button class="md-icon-button test-tooltip" aria-label="Archive" ng-click="archive(data)">
                <md-tooltip md-direction="bottom">archive</md-tooltip>
@@ -290,14 +312,13 @@
                </md-icon>
                </md-button>
      
-     
 			       <md-menu>
 			      <md-button aria-label="Open menu with custom trigger" class="md-icon-button" ng-mouseenter="$mdMenu.open()">
 			        <md-icon md-menu-origin md-svg-src="images/icon/more.svg" style="width: 24px; height: 24px"></md-icon>
 			      </md-button>
 			      <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
 			        <md-menu-item >
-			          <md-button ng-click="deleteNotes(data)">
+			          <md-button ng-click="deleteNotes(data)" class="md-raised" ng-click="showActionToast()">
 			            Delete
 			          </md-button>
 			        </md-menu-item>
