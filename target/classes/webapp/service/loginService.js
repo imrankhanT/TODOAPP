@@ -9,5 +9,15 @@ todo.service('loginService', function($http, $location) {
 			url : 'login',
 			data : user
 		})
+
 	}
+
+	this.logout = function() {
+		return $http({
+			method : 'get',
+			url : 'logout',
+		})
+
+	}
+
 })

@@ -1,7 +1,7 @@
 var app = angular.module('ToDo');
 
 app.controller('noteController', function($scope, notesService, $location,
-		$mdDialog,$mdSidenav) {
+		$mdDialog, $mdSidenav, loginService, $interval, $filter,$mdToast,toastr) {
 
 	$scope.options = [ 'transparent', '#FF8A80', '#FFD180', '#FFFF8D',
 			'#CFD8DC', '#80D8FF', '#A7FFEB', '#CCFF90' ];
@@ -25,11 +25,31 @@ app.controller('noteController', function($scope, notesService, $location,
 
 	var getNotes = function() {
 		var getAllNotes = notesService.getAllNotes();
+
 		getAllNotes.then(function(response) {
 			$scope.data = response.data;
-			$scope.user = {};
-			console.log(response.data);
+			var notes = response.data;
+			$interval(function() {
+				for (var i = 0; i < $scope.data.length; i++) {
+
+					if (notes[i].reminderDate != "") {
+						var reminderNotesDate = notes[i].reminderDate;
+						var dates = $filter('date')(new Date(),
+								'MMM dd yyyy HH:mm');
+						console.log("Date------->" + dates);
+						console.log("ReminderNotesDate---->"
+								+ reminderNotesDate);
+						if (dates == reminderNotesDate) {
+							toastr.success("Notes title : " + notes[i].title+
+									+ "Notes Description : "
+									+ notes[i].description );
+						}
+					}
+				}
+			}, 20000);
+
 		});
+
 	}
 
 	// function to make a exact copy of notes
@@ -42,7 +62,7 @@ app.controller('noteController', function($scope, notesService, $location,
 		});
 	}
 
-	// functio to show the user information like pic,name and Email
+	// function to show the user information like pic,name and Email
 	var getUser = function() {
 		console.log("inside get user controller");
 		var getUsers = notesService.getUser();
@@ -152,12 +172,12 @@ app.controller('noteController', function($scope, notesService, $location,
 
 	$scope.logout = function() {
 
-		var logout = notesService.logout();
+		var logout = loginService.logout();
 
 		logout.then(function(response) {
 			cosnole.log("Inside Logout.......");
 			localStorage.removeItem('token');
-			$loactio.path('home');
+			$loactio.path('login');
 		})
 	}
 
@@ -191,6 +211,33 @@ app.controller('noteController', function($scope, notesService, $location,
 			getNotes();
 		}
 
+	}
+
+	// function to update reminder date
+	$scope.reminder = function(data, reminderDateTime) {
+		// console.log("Inside Remainder..........");
+		console.log(data);
+		var date = new Date(reminderDateTime);
+		var dates = $filter('date')(new Date(date), 'MMM dd yyyy HH:mm');
+		// var parseDate = Date.parse();
+		data.reminderDate = dates;
+		var updateReminderTime = notesService.updateNotes(data);
+
+		updateReminderTime.then(function(response) {
+			getNotes();
+		})
+		console.log("date------>" + data.reminderDate);
+	}
+
+	// fucntion to delete the reminder date
+	$scope.deleteReminder = function(data) {
+		console.log("jkdgkogodgnfodjgnfjdgnfdgjfd");
+		data.reminderDate = "";
+		var updateReminderTime = notesService.updateNotes(data);
+
+		updateReminderTime.then(function(response) {
+			getNotes();
+		})
 	}
 
 	getNotes();

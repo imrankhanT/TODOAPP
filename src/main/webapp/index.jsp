@@ -15,6 +15,7 @@
 <link rel="stylesheet" type="text/css" href="css/register.css">
 <link rel="stylesheet" type="text/css" href="css/home.css">
 <link rel="stylesheet" type="text/css" href="css/dailog.css">
+<link rel="stylesheet" type="text/css" href="bower_components/angular-toastr/dist/angular-toastr.css">
 
 
 <script src="bower_components/angular/angular.js"></script>
@@ -26,6 +27,7 @@
 <script src="bower_components/angular-messages/angular-messages.min.js"></script>
 <script src="bower_components/angular-material-datetimepicker/js/angular-material-datetimepicker.js"></script>
 <script src="bower_components/moment/moment.js"></script>
+<script src="bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
 
 <!-- SCRIPT -->
 <script type="text/javascript" src="script/app.js"></script>

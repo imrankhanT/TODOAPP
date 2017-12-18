@@ -36,6 +36,8 @@ public class Notes implements Serializable {
 
 	private boolean isArchive;
 
+	private String reminderDate;
+
 	@ManyToOne
 	@JsonIgnore
 	@JoinColumn(name = "User_Id")
@@ -119,5 +121,13 @@ public class Notes implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public String getReminderDate() {
+		return reminderDate;
+	}
+
+	public void setReminderDate(String reminderDate) {
+		this.reminderDate = reminderDate;
 	}
 }

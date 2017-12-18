@@ -173,7 +173,7 @@
 			</md-card>
 			
 	 	        <div layout-align="space-around center" style="margin:40px;">
-			    <md-card flex style="height:35%;" ng-style="{'background-color' : data.color}" class="cards" ng-repeat="data in data | filter :{trash :false} | filter :{archive:false} | filter :{pin:false}">
+			    <md-card flex style="height:40%;" ng-style="{'background-color' : data.color}" class="cards" ng-repeat="data in data | filter :{trash :false} | filter :{archive:false} | filter :{pin:false}">
 				
 			   <md-button ng-click="pin(data)" class="md-icon-button test-tooltip" aria-label="Pin" style="margin-left:200px;">
                <md-tooltip md-direction="bottom">Pin</md-tooltip>
@@ -189,24 +189,39 @@
 				</div>
 
                 <div layout="row" layout-align="center center">
-				<md-input-container layout="row" flex layout="row"> 
+				<md-input-container layout="row" flex> 
 				<div layout="column">{{data.description}}</div>
 			    </md-input-container>
 			    </div>
 			   </div>
+			   
+			   <div layout="row" layout-align="start center">
+			   <md-input-container layout="row" flex>
+			   <div layout="column">{{data.reminderDate | date:'yyyy-MM-dd HH:mm:ss'}}
+			   <span ng-click="deleteReminder(data)">
+			    <md-icon ng-if="data.reminderDate" md-svg-src="images/icon/cancel.svg" style="margin-left:100%;margin-top:-15%;">
+               </md-icon>
+               </span>
+			   </md-input-container>
+			   </div>
+			   </div>
                
                <div layout="row" layout-align="center center">
-               <md-menu aria-label="Open menu with custom trigger" class="md-icon-button" ng-mouseenter="$mdMenu.open()">
-			      <md-icon md-menu-origin md-svg-src="images/icon/reminder.svg" style="width: 24px; height: 24px"></md-icon>
-			      <md-menu-content ng-mouseleave="$mdMenu.close()">
-			        <md-menu-item>
-			        <input flex mdc-datetime-picker="" date="true" time="true" type="text" id="datetime"
-                    placeholder="Date" show-todays-date="" min-date="date" ng-model="dateTime" class=" md-input"
-                     readonly="readonly">
-			        </md-menu-item>
-			      </md-menu-content>
-			    </md-menu> 
-              
+               <md-menu-bar> <md-menu>
+				<div role="button" ng-click="$mdMenu.open()">
+					 <md-icon md-svg-icon="images/icon/reminder.svg"  aria-label="Remind me" >
+	 			</div>
+	            <md-menu-content>
+	             <div layout="column">
+	           	<md-input-container>	
+		        <label>Select Date and Time</label>
+                <input mdc-datetime-picker date="true" time="true" type="text" id="datetime"
+                placeholder="Date" show-todays-date="" min-date="date" ng-model="reminderDateTime"   class=" md-input" readonly="readonly">
+                </md-input-container>
+
+
+				<md-button ng-click="reminder(data,reminderDateTime)">save</md-button> 	
+		        </div></md-menu-content> </md-menu> </md-menu-bar>
 
 			   <div layout="row" layout-align="center center">
                <md-button class="md-icon-button test-tooltip" aria-label="Reminder">
