@@ -1,5 +1,5 @@
 var ToDo = angular.module('ToDo', [ 'ui.router', 'ngAnimate', 'ngMaterial',
-		'ngMaterialDatePicker', 'tb-color-picker','toastr' ]);
+		'ngMaterialDatePicker', 'tb-color-picker', 'toastr','ngFileUpload']);
 
 ToDo.config([ '$stateProvider', '$urlRouterProvider',
 		function($stateProvider, $urlRouterProvider) {
@@ -43,6 +43,12 @@ ToDo.config([ '$stateProvider', '$urlRouterProvider',
 				url : '/dummy',
 				templateUrl : 'template/dummy.html',
 				controller : 'dummyController'
+			})
+
+			$stateProvider.state('reminder', {
+				url : '/reminder',
+				templateUrl : 'template/reminder.html',
+				controller : 'noteController'
 			})
 			$urlRouterProvider.otherwise('login');
 		} ]);

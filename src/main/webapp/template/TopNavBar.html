@@ -1,0 +1,43 @@
+<md-toolbar>
+	<div class="md-toolbar-tools" ng-style="{'background-color':navBarColor}">
+		<md-button class="md-icon-button" aria-label="Menu"
+			style="color:black;" ng-click="openLeftMenu()"> <md-icon
+			md-svg-icon="images/icon/menu.svg"></md-icon> </md-button>
+		<div flex="5"></div>
+		<h2 md-truncate flex>Google Keep</h2>
+
+		<div flex="50" layout-align="start center" style="margin: 100px;">
+			<md-autocomplete  md-no-cache="true" md-selected-item="selectedItem"
+				md-items="item in items" md-search-text="searchText"
+				md-svg-icon="images/icon/search.svg" md-item-text="item.display" placeholder="Search here">
+		</div>
+		 
+		    <div>
+		    <md-button class="md-icon-button test-tooltip" ng-click="openLeftMenu()" aria-label="Menu"
+			style="color:black;"> 
+			<md-icon md-svg-icon="images/icon/list.svg">
+			</md-icon> 
+			</md-button>
+		    </div>
+			
+		   <md-menu-bar>
+           <md-menu>
+           <button ng-click="$mdMenu.open()">
+           <md-icon>
+           <img ng-src={{user.profilePic}} style="border-radius : 20px;margin-top:-12px;margin-left:-12px;" ></img>
+           </md-icon>
+           </button>
+           <md-menu-content>
+           <div align="center">{{user.name}}</div>
+           <div align="center">{{user.email}}</div>
+           <md-menu-divider></md-menu-divider>
+               <md-button ng-click="logout()"> 
+                Logout
+                </md-button>
+                 </md-menu-content>
+			</md-icon> 
+              
+               </md-menu>
+               </md-menu-bar>
+	</div>
+	</md-toolbar>

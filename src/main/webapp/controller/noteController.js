@@ -1,7 +1,8 @@
 var app = angular.module('ToDo');
 
-app.controller('noteController', function($scope, notesService, $location,
-		$mdDialog, $mdSidenav, loginService, $interval, $filter,$mdToast,toastr) {
+app.controller('noteController', function($scope, $state, notesService,
+		$location, $mdDialog, $mdSidenav, loginService, $interval, $filter,
+		$mdToast, toastr) {
 
 	$scope.options = [ 'transparent', '#FF8A80', '#FFD180', '#FFFF8D',
 			'#CFD8DC', '#80D8FF', '#A7FFEB', '#CCFF90' ];
@@ -40,13 +41,12 @@ app.controller('noteController', function($scope, notesService, $location,
 						console.log("ReminderNotesDate---->"
 								+ reminderNotesDate);
 						if (dates == reminderNotesDate) {
-							toastr.success("Notes title : " + notes[i].title+
-									+ "Notes Description : "
-									+ notes[i].description );
+							toastr.success("Title : " + notes[i].title + " "
+									+ "Description : " + notes[i].description);
 						}
 					}
 				}
-			}, 20000);
+			},10000);
 
 		});
 
@@ -102,9 +102,20 @@ app.controller('noteController', function($scope, notesService, $location,
 		})
 	}
 
+	// code Snippest for changing the color of current page of top nav bar
+	if ($state.current.name == "reminder") {
+		$scope.navBarColor = "#7d8b8e";
+	} else if ($state.current.name == "home") {
+		$scope.navBarColor = "#fb0";
+	} else if ($state.current.name == "archive") {
+		$scope.navBarColor = '#008B8B';
+	} else if ($state.current.name == "trash") {
+		$scope.navBarColor = "#555";
+	}
+
 	// function to perform trash operation
 	$scope.deleteNotes = function(data) {
-
+		console.log(data);
 		if (data.trash == false)
 			data.trash = true;
 		else
@@ -124,6 +135,7 @@ app.controller('noteController', function($scope, notesService, $location,
 		else
 			data.archive = true;
 
+		data.pin = false;
 		var update = notesService.updateNotes(data);
 		update.then(function(response) {
 			getNotes();
@@ -158,6 +170,7 @@ app.controller('noteController', function($scope, notesService, $location,
 
 	// function to perform update operation
 	$scope.updateNotes = function(data) {
+		console.log("Note Picture--->" + data.notePicture);
 		var update = notesService.updateNotes(data);
 		console.log(data);
 		update.then(function(response) {
@@ -171,14 +184,11 @@ app.controller('noteController', function($scope, notesService, $location,
 	// function to logout
 
 	$scope.logout = function() {
-
-		var logout = loginService.logout();
-
-		logout.then(function(response) {
-			cosnole.log("Inside Logout.......");
-			localStorage.removeItem('token');
-			$loactio.path('login');
-		})
+		console.log("jiojciowjdjwoddwedwefdwefwef");
+		console.log("Inside Logout.......");
+		localStorage.removeItem('token');
+		toastr.success("Logout Successfully...........");
+		$location.path('login');
 	}
 
 	// function to show the dailog box

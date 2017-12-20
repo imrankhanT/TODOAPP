@@ -138,7 +138,7 @@ public class NotesController {
 
 	}
 
-	@RequestMapping(value = "/logout", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+/*	@RequestMapping(value = "/logout", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Response> logout(HttpSession session, HttpServletResponse response1) {
 		Response response = new Response();
 		session.removeAttribute("token");
@@ -150,5 +150,5 @@ public class NotesController {
 		}
 		response.setMessage("Logout sucessfully......");
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
-	}
+	}*/
 }
