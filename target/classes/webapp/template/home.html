@@ -1,13 +1,13 @@
 <div layout="column" layout-fill>
 
 <top-nav-bar></top-nav-bar>
-
 	<div class="container" layout="row" flex>
 <div flex layout="row" style="height:100%;">
 <side-nav-bar></side-nav-bar>
 </div>
 		<div style="height:45%;" flex="40"> 
-			<md-card  ng-style="{'background-color' : data.color}" style="width:75%;" layout="row" layout-align="start center">
+		<div ng-style="{'background-color' : data.color}" style="width:75%;" layout="row" layout-align="start center">
+			<md-card>
 			<form>
 			    <div>
 				 <md-input-container layout="row"> <input
@@ -46,7 +46,7 @@
 	  <div layout="row">              
       <md-button class="md-icon-button test-tooltip" aria-label="Collaborator">
       <md-tooltip md-direction="bottom">collaborator</md-tooltip>
-      <md-icon md-svg-src="images/icon/collaborator.svg" style="width: 24px; height: 24px">
+      <md-icon md-svg-src="images/icon/collaborator.svg">
       </md-icon>
       </md-button>
       </div>
@@ -61,7 +61,7 @@
       <div layout="row">
       <md-button class="md-icon-button test-tooltip" aria-label="Archive">
       <md-tooltip md-direction="bottom">archive</md-tooltip>
-      <md-icon md-svg-src="images/icon/archive.svg" style="width: 24px; height: 24px">
+      <md-icon md-svg-src="images/icon/archive.svg">
       </md-icon>
       </md-button>
       </div>
@@ -69,7 +69,7 @@
       <div layout="row">
       <md-button class="md-icon-button test-tooltip" aria-label="Add Images">
       <md-tooltip md-direction="bottom">Add Images</md-tooltip>
-      <md-icon  md-svg-src="images/icon/photo.svg" style="width: 24px; height: 24px">
+      <md-icon  md-svg-src="images/icon/photo.svg">
       </md-icon>
       </md-button>
       </div>
@@ -100,8 +100,9 @@
 		    </div> 
 			</form>
 			</md-card>
+			</div>
 			
-	 	        <div layout-align="start center">
+	 	        <div layout-align="start center" layout-wrap>
 			    <md-card style="height:220px;width:280px;" ng-style="{'background-color' : data.color}" ng-repeat="data in data | filter :{trash :false} | filter :{archive:false} | filter :{pin:false}">
 				
 				<div style="margin-left:230px;">
@@ -156,7 +157,7 @@
 		        
 
 			   <div layout="row" layout-align="center center">
-               <md-button class="md-icon-button test-tooltip" aria-label="Reminder">
+               <md-button ng-click="collaboratorDailog($events)" class="md-icon-button test-tooltip" aria-label="Reminder">
                <md-tooltip md-direction="bottom">collaborator</md-tooltip>
                <md-icon md-svg-src="images/icon/collaborator.svg" style="width: 24px; height: 24px">
                </md-icon>
@@ -172,7 +173,7 @@
                </div>
                
                <div layout="row" layout-align="center center">
-               <md-tooltip md-direction="bottom">change color</md-tooltip>
+               <md-tooltip md-direction="top">change color</md-tooltip>
                <color-picker color="color" options="options" on-color-changed="colorChanged(newColor,data)">
                </color-picker>
                </div>
@@ -180,15 +181,15 @@
                 <div layout="row" layout-align="center center">
                 <md-menu-bar> <md-menu>
 				<div role="button" ng-click="$mdMenu.open()">
-				<md-icon md-svg-icon="images/icon/photo.svg"  aria-label="Add Image" >
+			 	<img md-card-image ng-src="images/icon/photo.svg" 
+						class="profile-img" ng-click="openHiddenButton(note)"/>
 	 			</div>
 	            <md-menu-content>
 	            <div layout="column">
-	           	<md-input-container>	
-                <input type="file" ngf-select ng-model="data.notePicture" name="file" ngf-pattern="'image/*'"
+	           	<md-input-container>
+                <input id="imageFile" type="file" ngf-select="imageUpload(data)" ng-model="data.notePicture" name="file" ngf-pattern="'image/*'"
                 ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100" 
-                ngf-resize="{width: 100, height: 100}">
-                <md-button ng-click="updateNotes(data)">Add Image</md-button>
+                ngf-resize="{width: 100, height: 100}"/>
                 </md-input-container>
 		        </div>
 		        </md-menu-content> 
@@ -196,6 +197,7 @@
 		        </md-menu-bar>
 		        
 		        
+			      
 			       <md-menu>
 			      <md-button aria-label="Open menu with custom trigger" class="md-icon-button" ng-mouseenter="$mdMenu.open()">
 			        <md-icon md-menu-origin md-svg-src="images/icon/more.svg" style="width: 24px; height: 24px"></md-icon>

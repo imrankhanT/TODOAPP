@@ -38,6 +38,12 @@ ToDo.config([ '$stateProvider', '$urlRouterProvider',
 				templateUrl : 'template/dailog.html',
 				controller : 'noteController'
 			})
+			
+			$stateProvider.state('collaborator', {
+				url : '/collaborator',
+				templateUrl : 'template/collaborator.html',
+				controller : 'noteController'
+			})
 
 			$stateProvider.state('dummy', {
 				url : '/dummy',

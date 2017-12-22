@@ -1,14 +1,12 @@
-	<top-nav-bar></top-nav-bar>
+<top-nav-bar></top-nav-bar>
 	
-	<div class="container" layout="row">
-    <div flex layout="row">
-    <side-nav-bar></side-nav-bar>
-    </div>
-
-	
-		
-	 	        <div flex="70" layout-align="center center">
-			    <md-card style="height:180px;width:280px;" ng-style="{'background-color' : data.color}" ng-repeat="data in data | filter :{trash :false} | filter :{archive:true} | filter :{pin:false}">
+	<div class="container" layout="row" flex>
+   
+    <side-nav-bar></side-nav-bar>		
+		 
+		 <div layout="row" layout-wrap>
+	 	        <div layout-align="center center"  style="height:180px;width:280px;" ng-repeat="data in data | filter :{trash :false} | filter :{archive:true} | filter :{pin:false}">
+			    <md-card ng-style="{'background-color' : data.color}" >
 				
 				<div>
 			   <md-button ng-click="pin(data)" class="md-icon-button test-tooltip" aria-label="Pin">
@@ -19,7 +17,7 @@
                </div>
               
                <div ng-click="showDailog($event,data)">
-				<div layout="row" layout-align="center center">
+				<div layout="row" layout-align="center center" style="height:20%;">
 				<md-input-container layout="row" flex> 
 				<div layout="column">{{data.title}}</div>
 				</md-input-container>
@@ -36,7 +34,7 @@
 			   <md-input-container layout="row" flex>
 			   <div layout="column">{{data.reminderDate | date:'yyyy-MM-dd HH:mm:ss'}}
 			   <span ng-click="deleteReminder(data)">
-			    <md-icon ng-if="data.reminderDate" md-svg-src="images/icon/cancel.svg">
+			    <md-icon ng-if="data.reminderDate" md-svg-src="images/icon/cancel.svg" style="margin-left:100%;margin-top:-15%;">
                </md-icon>
                </span>
 			   </md-input-container>
@@ -70,8 +68,8 @@
                
                <div layout="row" layout-align="center center">
                <md-button class="md-icon-button test-tooltip" aria-label="Archive" ng-click="archive(data)">
-               <md-tooltip md-direction="bottom">unarchive</md-tooltip>
-               <md-icon md-svg-src="images/icon/unarchive.svg" style="width: 24px; height: 24px">
+               <md-tooltip md-direction="bottom">archive</md-tooltip>
+               <md-icon md-svg-src="images/icon/archive.svg" style="width: 24px; height: 24px">
                </md-icon>
                </md-button>
                </div>
@@ -100,8 +98,7 @@
 		        </md-menu> 
 		        </md-menu-bar>
 		        
-		        
-			       <md-menu>
+		      <md-menu>
 			      <md-button aria-label="Open menu with custom trigger" class="md-icon-button" ng-mouseenter="$mdMenu.open()">
 			        <md-icon md-menu-origin md-svg-src="images/icon/more.svg" style="width: 24px; height: 24px"></md-icon>
 			      </md-button>
@@ -126,6 +123,7 @@
 			        
 			      </md-menu-content>
 			    </md-menu> 
+
 		       </div>
                
 		       </md-list>
@@ -133,4 +131,4 @@
                </div>
        </md-card>
        </div>
-		
+       </div>

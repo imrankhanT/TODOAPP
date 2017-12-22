@@ -7,9 +7,9 @@
 <link rel="stylesheet"
 	href="bower_components/material-icons/css/material-icons.min.css">
 
-<link rel="stylesheet" href="directive/colorPickerStyle.css">
 <link rel="stylesheet"
-	href="bower_components/angular-material-datetimepicker/css/material-datetimepicker.css">
+	href="bower_components/colorPicker/css/colorPickerStyle.css">
+
 <link rel="stylesheet" type="text/css"
 	href="bower_components/angular-toastr/dist/angular-toastr.css">
 
@@ -28,12 +28,26 @@
 <script src="bower_components/angular-animate/angular-animate.min.js"></script>
 <script src="bower_components/angular-aria/angular-aria.min.js"></script>
 <script src="bower_components/angular-messages/angular-messages.min.js"></script>
-<script
-	src="bower_components/angular-material-datetimepicker/js/angular-material-datetimepicker.js"></script>
+
 <script src="bower_components/moment/moment.js"></script>
+<!-- JAQUERY -->
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script
 	src="bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
 <script src="bower_components/ng-file-upload/ng-file-upload.min.js"></script>
+
+<link rel="stylesheet" type="text/css"
+	href="bower_components/angular-material-datetimepicker/css/material-datetimepicker.css">
+<link rel="stylesheet" type="text/css"
+	href="bower_components/angular-material-datetimepicker/dist/material-datetimepicker.min.css">
+
+<script type="text/javascript"
+	src="bower_components/angular-material-datetimepicker/dist/angular-material-datetimepicker.min.js"></script>
+<script type="text/javascript"
+	src="bower_components/angular-material-datetimepicker/dist/angular-material-datetimepicker.min.js.map"></script>
+<script type="text/javascript"
+	src="bower_components/angular-material-datetimepicker/js/angular-material-datetimepicker.js"></script>
+
 
 <!-- SCRIPT -->
 <script type="text/javascript" src="script/app.js"></script>
@@ -41,7 +55,7 @@
 <!-- CONTROLLER -->
 <script src="controller/loginController.js"></script>
 <script src="controller/registerController.js"></script>
-<script type="text/javascript " src="controller/noteController.js"></script>
+<script src="controller/noteController.js"></script>
 <script src="controller/dummyController.js"></script>
 
 <!-- Services -->
@@ -51,7 +65,7 @@
 <script src="service/dummyService.js"></script>
 
 <!-- <Directive> -->
-<script src="directive/colorPicker.js"></script>
+<script src="bower_components/colorPicker/js/colorPicker.js"></script>
 <script src="directive/Navbar.js"></script>
 <script src="directive/sideNavBar.js"></script>
 </head>

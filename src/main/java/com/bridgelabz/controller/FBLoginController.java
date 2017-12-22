@@ -81,19 +81,7 @@ public class FBLoginController {
 				service.updateUser(user);
 				session.setAttribute("token", token);
 				response.sendRedirect("http://localhost:8080/TODOAPP/#!/dummy");
-			}
-			
-		
-	}
-
-	@RequestMapping(value = "/dummy", method = RequestMethod.GET)
-	public ResponseEntity<Response> getToken(HttpSession session) {
-
-
-		Response response = new Response();
-		response.setMessage((String)session.getAttribute("token"));
-		session.removeAttribute("token");
-		return  ResponseEntity.ok(response);
+			}	
 		
 	}
 }

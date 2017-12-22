@@ -68,3 +68,16 @@ body {
     -webkit-background-size: 16px 16px;
     background-size: 16px 16px
 }
+
+
+md-dialog md-dialog-content {
+    -webkit-box-ordinal-group: 2;
+    -webkit-order: 1;
+    order: 1;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    overflow: visible;
+    -webkit-overflow-scrolling: touch;
+}

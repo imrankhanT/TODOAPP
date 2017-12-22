@@ -1,14 +1,10 @@
 package com.bridgelabz.controller;
 
-import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.swing.plaf.synth.SynthSpinnerUI;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -54,7 +50,7 @@ public class NotesController {
 
 	@RequestMapping(value = "updateNotes", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Response> updateNotes(@RequestBody Notes notes1) {
-
+    System.out.println("Notes--------->"+notes1.getNotePicture());
 		Notes retNotes = note.getNotesById(notes1.getId());
 		Response response = new Response();
 		if (retNotes == null) {

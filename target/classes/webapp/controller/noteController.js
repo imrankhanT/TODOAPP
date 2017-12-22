@@ -1,8 +1,20 @@
 var app = angular.module('ToDo');
 
 app.controller('noteController', function($scope, $state, notesService,
-		$location, $mdDialog, $mdSidenav, loginService, $interval, $filter,
-		$mdToast, toastr) {
+		$location, $mdDialog, $mdSidenav, mdcDateTimeDialog, loginService,
+		$interval, $filter, $mdToast, toastr,Upload) {
+
+	$scope.displayDialog = function() {
+		mdcDateTimeDialog.show({
+			maxDate : $scope.maxDate,
+			time : false
+		}).then(function(date) {
+			$scope.selectedDateTime = date;
+			console.log('New Date / Time selected:', date);
+		}, function() {
+			console.log('Selection canceled');
+		});
+	};
 
 	$scope.options = [ 'transparent', '#FF8A80', '#FFD180', '#FFFF8D',
 			'#CFD8DC', '#80D8FF', '#A7FFEB', '#CCFF90' ];
@@ -46,7 +58,7 @@ app.controller('noteController', function($scope, $state, notesService,
 						}
 					}
 				}
-			},10000);
+			}, 20000);
 
 		});
 
@@ -54,7 +66,6 @@ app.controller('noteController', function($scope, $state, notesService,
 
 	// function to make a exact copy of notes
 	$scope.makeCopy = function(data) {
-		console.log("sdjhdhghfhfdjgfdkgfdjghkdg" + data);
 		var makeCopies = notesService.addNotes(data);
 		makeCopies.then(function(response) {
 			console.log(response.data);
@@ -64,7 +75,6 @@ app.controller('noteController', function($scope, $state, notesService,
 
 	// function to show the user information like pic,name and Email
 	var getUser = function() {
-		console.log("inside get user controller");
 		var getUsers = notesService.getUser();
 		getUsers.then(function(response) {
 			$scope.user = {};
@@ -121,6 +131,8 @@ app.controller('noteController', function($scope, $state, notesService,
 		else
 			data.trash = false;
 
+		data.archive = false;
+		data.pin = false;
 		var update = notesService.updateNotes(data);
 		update.then(function(response) {
 			getNotes();
@@ -136,6 +148,7 @@ app.controller('noteController', function($scope, $state, notesService,
 			data.archive = true;
 
 		data.pin = false;
+		data.trash = false;
 		var update = notesService.updateNotes(data);
 		update.then(function(response) {
 			getNotes();
@@ -168,6 +181,39 @@ app.controller('noteController', function($scope, $state, notesService,
 		getNotes();
 	}
 
+	/* image uploading */
+
+	$scope.type = {};
+	$scope.openHiddenButton = function(note) {
+		console.log("inside the openHidden");
+		$('#imageFile').trigger('click');
+		$scope.type = note;
+	}
+
+	$scope.stepsModel = [];
+	$scope.imageUpload = function(note) {
+		var reader = new FileReader();
+		console.log("note : " + note);
+		reader.onload = $scope.imageLoader;
+		reader.readAsDataURL(note.notePicture);
+	}
+
+	$scope.imageLoader = function(image) {
+		$scope.$apply(function() {
+			$scope.stepsModel.push(image.target.result);
+			var imageSrc = image.target.result;
+			$scope.type.notePicture = imageSrc;
+			console.log("-------------------------->"+imageSrc);
+			var updateData = notesService.updateNotes($scope.type);
+			updateData.then(function(response) {
+				console.log(response);
+				getNotes();
+			}, function(response) {
+				console.log(response);
+			});
+		});
+	}
+
 	// function to perform update operation
 	$scope.updateNotes = function(data) {
 		console.log("Note Picture--->" + data.notePicture);
@@ -184,8 +230,6 @@ app.controller('noteController', function($scope, $state, notesService,
 	// function to logout
 
 	$scope.logout = function() {
-		console.log("jiojciowjdjwoddwedwefdwefwef");
-		console.log("Inside Logout.......");
 		localStorage.removeItem('token');
 		toastr.success("Logout Successfully...........");
 		$location.path('login');
@@ -201,6 +245,15 @@ app.controller('noteController', function($scope, $state, notesService,
 			locals : {
 				data : data
 			},
+		});
+	}
+
+	$scope.collaboratorDailog = function(events) {
+		$mdDialog.show({
+			templateUrl : 'template/collaborator.html',
+			controller : noteController,
+			parent : angular.element(document.body),
+			targetEvent : events
 		});
 	}
 

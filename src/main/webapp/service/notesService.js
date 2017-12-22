@@ -25,7 +25,7 @@ todo.factory('notesService', function($http, $location) {
 	}
 
 	notes.updateNotes = function(data) {
-		console.log(data);
+		console.log("Inside sERVICE"+data);
 		return $http({
 
 			method : 'POST',

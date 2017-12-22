@@ -136,4 +136,12 @@ public class Notes implements Serializable {
 	public void setReminderDate(String reminderDate) {
 		this.reminderDate = reminderDate;
 	}
+
+	public String getNotePicture() {
+		return notePicture;
+	}
+
+	public void setNotePicture(String notePicture) {
+		this.notePicture = notePicture;
+	}
 }

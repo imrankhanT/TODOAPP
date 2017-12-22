@@ -6,7 +6,8 @@ ToDo.controller('registerController', function($scope, registerService,
 		var register = registerService.registerUser($scope.user, $scope.error);
 		register.then(function(response) {
 			console.log("Registration successfully........" + response.data);
-			localStorage.setItem('token', response.data.responseMessage)
+			localStorage.setItem('token', response.data.responseMessage);
+			toastr.success("Register Sucessfully...........");
 			$location.path('/login')
 		}, function(response) {
 			console.log("Registration Fails........");

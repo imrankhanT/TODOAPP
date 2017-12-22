@@ -1,22 +1,17 @@
-<div layout-fill>
-
-<top-nav-bar class="colorChange"></top-nav-bar>
-
-
+<top-nav-bar></top-nav-bar>
+	
 	<div class="container" layout="row" flex>
-<div flex layout="row" style="height:100%;">
-<side-nav-bar></side-nav-bar>
-</div>
-
-
-
-	 	        <div flex="70" layout-align="center center">
-			    <md-card ng-if="data.reminderDate" style="height:180px;width:280px;" ng-style="{'background-color' : data.color}" ng-repeat="data in data | filter :{trash :false} | filter :{archive:false} | filter :{pin:false}">
+   
+    <side-nav-bar></side-nav-bar>		
+		 
+		 <div layout="row" layout-wrap>
+	 	        <div layout-align="center center" ng-if="data.reminderDate" ng-repeat="data in data | filter :{trash :false} | filter :{archive:false} | filter :{pin:false}">
+			    <md-card ng-style="{'background-color' : data.color}" >
 				
-				<div>
+				<div style="margin-left:220px;">
 			   <md-button ng-click="pin(data)" class="md-icon-button test-tooltip" aria-label="Pin">
                <md-tooltip md-direction="bottom">Pin</md-tooltip>
-               <md-icon md-svg-src="images/icon/pin.svg" style="width: 24px; height: 24px">
+               <md-icon md-svg-src="images/icon/pin.svg">
                </md-icon>
                </md-button>
                </div>
@@ -110,20 +105,14 @@
 			      </md-button>
 			      <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
 			        <md-menu-item >
+			          <md-button ng-click="deleteForver(data)">
+			            DeleteForver
+			          </md-button>
+			        </md-menu-item>
+			        
+			        <md-menu-item >
 			          <md-button ng-click="deleteNotes(data)">
-			            Delete
-			          </md-button>
-			        </md-menu-item>
-			        
-			        <md-menu-item >
-			          <md-button ng-click="">
-			            Add Label
-			          </md-button>
-			        </md-menu-item>
-			        
-			        <md-menu-item >
-			          <md-button ng-click="makeCopy(data)">
-			            Make Copy
+			            Restore
 			          </md-button>
 			        </md-menu-item>
 			        
@@ -135,4 +124,5 @@
 		       </div> 
                </div>
        </md-card>
+       </div>
        </div>
