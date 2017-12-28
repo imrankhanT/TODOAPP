@@ -50,7 +50,7 @@ public class NotesController {
 
 	@RequestMapping(value = "updateNotes", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Response> updateNotes(@RequestBody Notes notes1) {
-    System.out.println("Notes--------->"+notes1.getNotePicture());
+		System.out.println("Notes--------->" + notes1.getNotePicture());
 		Notes retNotes = note.getNotesById(notes1.getId());
 		Response response = new Response();
 		if (retNotes == null) {
@@ -81,9 +81,11 @@ public class NotesController {
 		}
 	}
 
-	@RequestMapping(value = "/getNotesById/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getNotesByUserId/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Notes> getNotesById(@PathVariable int id) {
 		Notes notes = note.getNotesById(id);
+
+		// User user = note.getAllNotes(user.getId());
 		System.out.println("------------------>" + id);
 		if (notes == null) {
 			return new ResponseEntity<Notes>(HttpStatus.BAD_REQUEST);
@@ -134,17 +136,64 @@ public class NotesController {
 
 	}
 
-/*	@RequestMapping(value = "/logout", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Response> logout(HttpSession session, HttpServletResponse response1) {
+	@RequestMapping(value = "/getOwner", method = RequestMethod.POST)
+	public ResponseEntity<?> getOwnerOfNotes(@RequestBody Notes notes) {
+		Notes notes2 = note.getNotesById(notes.getId());
+		User user = notes2.getUser();
 		Response response = new Response();
-		session.removeAttribute("token");
-		session.invalidate();
-		try {
-			response1.sendRedirect("http://localhost:8080/TODOAPP/#!/login");
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (user == null) {
+			response.setMessage("User Not Found......");
+			return new ResponseEntity<Response>(response, HttpStatus.NOT_FOUND);
+		} else {
+			response.setMessage("User Found...");
+			response.setEmail(user.getEmail());
+			response.setName(user.getName());
+			response.setProfilePic(user.getProfilePicture());
+			return new ResponseEntity<Response>(response, HttpStatus.OK);
 		}
-		response.setMessage("Logout sucessfully......");
-		return new ResponseEntity<Response>(response, HttpStatus.OK);
-	}*/
+	}
+
+	@RequestMapping(value = "shareNotes/{notesId}/{email:.+}", method = RequestMethod.PUT)
+	public ResponseEntity<?> insertSharedId(@PathVariable String email, @PathVariable int notesId,
+			HttpServletRequest request) {
+		String token = request.getHeader("accToken");
+		int id = TokenGenerator.verfiyToken(token);
+		Notes notes2 = note.getNotesById(notesId);
+		User user2 = userService.getUserByEmail(email);
+		Response response = new Response();
+
+		if (id > 0) {
+			notes2.getUserId().add(user2);
+			note.updateNote(notes2);
+		} else {
+			response.setMessage("Invalid Token..........");
+			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+		}
+		response.setMessage("Invalid......");
+		return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+	}
+
+	@RequestMapping(value = "/deleteCollaborator", method = RequestMethod.POST)
+	public ResponseEntity<?> deleteCollaborator(@RequestBody Notes notes, HttpServletRequest request) {
+		Notes notes2 = note.getNotesById(notes.getId());
+		User user = userService.getUserByEmail(request.getHeader("accToken"));
+		Response response = new Response();
+		System.out.println("User Info");
+		System.out.println("user email-->" + user.getEmail());
+		System.out.println("User Name-->" + user.getName());
+		System.out.println("User Id----->" + user.getId());
+		System.out.println("NotesId=-->" + notes.getId());
+		System.out.println("before remove " + notes2.getUserId().size());
+
+		if (user != null) {
+			notes2.getUserId().remove(user);
+			note.updateNote(notes2);
+			System.out.println("After remove " + notes2.getUserId().size());
+			response.setMessage("User Removed Sucessfully.......");
+			return new ResponseEntity<Response>(response, HttpStatus.OK);
+		} else {
+			response.setMessage("USer Not Found");
+			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+		}
+	}
 }

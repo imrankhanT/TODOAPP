@@ -7,9 +7,9 @@
 		<h2 md-truncate flex>Google Keep</h2>
 
 		<div flex="50" layout-align="start center" style="margin: 100px;">
-			<md-autocomplete  md-no-cache="true" md-selected-item="selectedItem"
-				md-items="item in items" md-search-text="searchText"
-				md-svg-icon="images/icon/search.svg" md-item-text="item.display" placeholder="Search here">
+		<md-autocomplete  md-no-cache="true" md-selected-item="selectedItem"
+		md-items="item in items" md-search-text="searchText"
+		md-svg-icon="images/icon/search.svg" md-item-text="item.display" placeholder="Search here">
 		</div>
 		 
 		    <div>
@@ -28,8 +28,14 @@
            </md-icon>
            </button>
            <md-menu-content>
+           <div>
+           <img ng-src={{user.profilePic}} style="border-radius : 155px;max-width:20%" layout-padding></img>
+           <div style="margin-top:-50px;">
            <div align="center">{{user.name}}</div>
            <div align="center">{{user.email}}</div>
+           </div>
+           </div>
+         
            <md-menu-divider></md-menu-divider>
                <md-button ng-click="logout()"> 
                 Logout

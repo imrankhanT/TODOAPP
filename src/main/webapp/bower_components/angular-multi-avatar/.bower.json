@@ -1,0 +1,39 @@
+{
+  "name": "angular-multi-avatar",
+  "version": "0.2.1",
+  "homepage": "https://github.com/angleman/angular-multi-avatar-directive",
+  "description": "AngularJS Multi-Avatar Directive supporting facebook, twitter, github and gravatar",
+  "keywords": [
+    "angular",
+    "angularjs",
+    "directive",
+    "social",
+    "avatar",
+    "facebook",
+    "twitter",
+    "gravatar",
+    "github"
+  ],
+  "authors": [
+    "angleman",
+    "jwo"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "0.2.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.2.1",
+    "commit": "7ede3e1475aad650f3b80bc95569b3f44b000afd"
+  },
+  "_source": "https://github.com/angleman/angular-multi-avatar-directive.git",
+  "_target": "^0.2.1",
+  "_originalSource": "angular-multi-avatar",
+  "_direct": true
+}

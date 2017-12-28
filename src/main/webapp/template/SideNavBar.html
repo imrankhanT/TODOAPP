@@ -19,7 +19,7 @@
 		<md-button ui-sref="reminder">
 		<md-icon md-svg-icon="images/icon/reminder.svg" class="avatar">
 		</md-icon>
-		Reminder </md-button> 
+		<a ui-sref="reminder">Reminder</a> </md-button> 
 		</md-list-item> 
 		</md-list>
 		</div> 
@@ -47,11 +47,11 @@
 		</md-list-item> 
 		</md-list>
 		</div> 
-			
+		
 	    <div layout="row">
 		<md-list> 
 		<md-list-item> 
-		<md-button>
+		<md-button ng-click="labelDailog($event,data)">
 		<md-icon md-svg-icon="images/icon/label.svg" class="avatar">
 		</md-icon>
 		Create New Label

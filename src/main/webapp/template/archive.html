@@ -8,10 +8,10 @@
 	 	        <div layout-align="center center"  style="height:180px;width:280px;" ng-repeat="data in data | filter :{trash :false} | filter :{archive:true} | filter :{pin:false}">
 			    <md-card ng-style="{'background-color' : data.color}" >
 				
-				<div>
+				<div style="margin-left:216px;">
 			   <md-button ng-click="pin(data)" class="md-icon-button test-tooltip" aria-label="Pin">
                <md-tooltip md-direction="bottom">Pin</md-tooltip>
-               <md-icon md-svg-src="images/icon/pin.svg" style="width: 24px; height: 24px">
+               <md-icon layout-align="end end" md-svg-src="images/icon/pin.svg">
                </md-icon>
                </md-button>
                </div>

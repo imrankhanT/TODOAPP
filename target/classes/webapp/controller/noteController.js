@@ -2,7 +2,7 @@ var app = angular.module('ToDo');
 
 app.controller('noteController', function($scope, $state, notesService,
 		$location, $mdDialog, $mdSidenav, mdcDateTimeDialog, loginService,
-		$interval, $filter, $mdToast, toastr,Upload) {
+		$interval, $filter, $mdToast, toastr, Upload) {
 
 	$scope.displayDialog = function() {
 		mdcDateTimeDialog.show({
@@ -42,23 +42,22 @@ app.controller('noteController', function($scope, $state, notesService,
 		getAllNotes.then(function(response) {
 			$scope.data = response.data;
 			var notes = response.data;
+			console.log(response.data);
 			$interval(function() {
 				for (var i = 0; i < $scope.data.length; i++) {
 
 					if (notes[i].reminderDate != "") {
 						var reminderNotesDate = notes[i].reminderDate;
 						var dates = $filter('date')(new Date(),
-								'MMM dd yyyy HH:mm');
-						console.log("Date------->" + dates);
-						console.log("ReminderNotesDate---->"
-								+ reminderNotesDate);
+								'MMM dd yyyy HH:mm:ss');
 						if (dates == reminderNotesDate) {
+							++reminderNotesDate;
 							toastr.success("Title : " + notes[i].title + " "
 									+ "Description : " + notes[i].description);
 						}
 					}
 				}
-			}, 20000);
+			});
 
 		});
 
@@ -66,6 +65,8 @@ app.controller('noteController', function($scope, $state, notesService,
 
 	// function to make a exact copy of notes
 	$scope.makeCopy = function(data) {
+		data.trash = false;
+		data.archive = false;
 		var makeCopies = notesService.addNotes(data);
 		makeCopies.then(function(response) {
 			console.log(response.data);
@@ -87,7 +88,6 @@ app.controller('noteController', function($scope, $state, notesService,
 
 	// function to add notes
 	$scope.addNotes = function() {
-		console.log($scope.notes);
 		var notes = notesService.addNotes($scope.notes, $scope.error);
 		notes.then(function(response) {
 			console.log(response.data);
@@ -96,6 +96,7 @@ app.controller('noteController', function($scope, $state, notesService,
 		}, function(response) {
 			if (response.status == 409) {
 				$scope.error = response.data;
+				toastr('')
 			} else {
 				console.log("Fail To created Notes....");
 			}
@@ -203,7 +204,7 @@ app.controller('noteController', function($scope, $state, notesService,
 			$scope.stepsModel.push(image.target.result);
 			var imageSrc = image.target.result;
 			$scope.type.notePicture = imageSrc;
-			console.log("-------------------------->"+imageSrc);
+			console.log("-------------------------->" + imageSrc);
 			var updateData = notesService.updateNotes($scope.type);
 			updateData.then(function(response) {
 				console.log(response);
@@ -248,13 +249,56 @@ app.controller('noteController', function($scope, $state, notesService,
 		});
 	}
 
-	$scope.collaboratorDailog = function(events) {
+	$scope.collaboratorDailog = function(events, data) {
+		console.log("collaborators------->" + events);
 		$mdDialog.show({
-			templateUrl : 'template/collaborator.html',
-			controller : noteController,
+			templateUrl : 'template/collaborators.html',
 			parent : angular.element(document.body),
-			targetEvent : events
+			controller : homeController,
+			clickOutsideToClose : true,
+			targetEvent : events,
+			locals : {
+				data : data
+			},
 		});
+	}
+
+	// collaborator dailog
+	$scope.labelDailog = function(events) {
+		$mdDialog.show({
+			templateUrl : 'template/labels.html',
+			parent : angular.element(document.body),
+			clickOutsideToClose : true,
+			targetEvent : events,
+		});
+	}
+
+	// homeController for Collaborator Dailog
+	function homeController($scope, data) {
+		$scope.data = data;
+		console.log(data);
+		var ownerInfo = notesService.getOwner(data);
+		ownerInfo.then(function(response) {
+
+			$scope.owner = response.data;
+			console.log(response.data);
+		})
+		$scope.saveCollab = function(email, note) {
+			var resp = notesService.storeInfo(email, note);
+			resp.then(function(response) {
+				$mdDialog.hide();
+				console.log(response.data);
+			})
+		}
+
+		$scope.cancel = function() {
+			$mdDialog.hide();
+		}
+
+		$scope.deleteCollabUser = function(email, data) {
+			console.log("Response Date--->" + email);
+			notesService.deleteCollaborator(email,data);
+		}
 	}
 
 	// controller to pass the md-dailog box data into notesController using
@@ -281,7 +325,7 @@ app.controller('noteController', function($scope, $state, notesService,
 		// console.log("Inside Remainder..........");
 		console.log(data);
 		var date = new Date(reminderDateTime);
-		var dates = $filter('date')(new Date(date), 'MMM dd yyyy HH:mm');
+		var dates = $filter('date')(new Date(date), 'MMM dd yyyy HH:mm:ss');
 		// var parseDate = Date.parse();
 		data.reminderDate = dates;
 		var updateReminderTime = notesService.updateNotes(data);

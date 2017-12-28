@@ -3,6 +3,7 @@ com/bridgelabz/DAO/NotesDAOImpl.class
 com/bridgelabz/model/UserDTO.class
 com/bridgelabz/service/UserServiceImpl.class
 com/bridgelabz/validation/EncryptPassword.class
+com/bridgelabz/model/Labels.class
 com/bridgelabz/service/ProducerService.class
 com/bridgelabz/service/NotesImpl.class
 com/bridgelabz/service/ProducerMsg.class
@@ -19,6 +20,7 @@ com/bridgelabz/service/NotesService.class
 com/bridgelabz/DAO/UserDAOImpl.class
 com/bridgelabz/DAO/UserDAO.class
 com/bridgelabz/service/ConsumerMsg.class
+com/bridgelabz/model/Collaborator.class
 com/bridgelabz/utility/EmailSender.class
 com/bridgelabz/model/Response.class
 com/bridgelabz/socialLogin/FBConnection.class

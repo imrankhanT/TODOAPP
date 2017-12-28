@@ -25,7 +25,7 @@ todo.factory('notesService', function($http, $location) {
 	}
 
 	notes.updateNotes = function(data) {
-		console.log("Inside sERVICE"+data);
+		console.log("Inside sERVICE" + data);
 		return $http({
 
 			method : 'POST',
@@ -64,6 +64,37 @@ todo.factory('notesService', function($http, $location) {
 		return $http({
 			method : 'get',
 			url : 'logout'
+		})
+	}
+
+	notes.getOwner = function(data) {
+		console.log("Inside owner Service......");
+		return $http({
+			method : 'post',
+			url : 'getOwner',
+			data : data
+		})
+	}
+
+	notes.storeInfo = function(email, note) {
+		return $http({
+			method : 'put',
+			url : "shareNotes/" + note.id + "/" + email,
+			headers : {
+				'accToken' : localStorage.getItem('token')
+			}
+		})
+
+	}
+
+	notes.deleteCollaborator = function(email, note) {
+		return $http({
+			method : 'post',
+			url : "deleteCollaborator",
+			data : note,
+			headers : {
+				'accToken' : email
+			}
 		})
 	}
 

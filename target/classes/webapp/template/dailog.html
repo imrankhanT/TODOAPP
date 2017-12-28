@@ -9,42 +9,52 @@
 					ng-model="data.description" style="border: 0px;"
 					 layout="column"></textarea> </md-input-container>
 					
-			<div style="float:right;font-size:10px;margin-top:80px;">Edited: {{data.modificationDate}}</div>
+			<div style="float:right;font-size:10px;margin-top:80px;" layout-padding>Edited: {{data.modificationDate}}</div>
 
 				
 	  <div>			
 	  <md-list>
 	  <md-list-item>
+	  
+	  <div layout-align="row">
       <md-button class="md-icon-button test-tooltip" aria-label="Reminder">
       <md-tooltip md-direction="bottom">remind me</md-tooltip>
       <md-icon md-svg-src="images/icon/reminder.svg">
       </md-icon>
       </md-button>
+      </div>
       
+      <div layout-align="row">
       <md-button class="md-icon-button test-tooltip" aria-label="Collaborator">
       <md-tooltip md-direction="bottom">collaborator</md-tooltip>
       <md-icon md-svg-src="images/icon/collaborator.svg">
       </md-icon>
       </md-button>
+      </div>
       
+      <div layout-align="row">
       <md-button class="md-icon-button test-tooltip" aria-label="Collaborator">
       <md-tooltip md-direction="bottom">change color</md-tooltip>
       <md-icon md-svg-src="images/icon/color.svg">
       </md-icon>
       </md-button>
+      </div>
       
+      <div layout-align="row">
       <md-button class="md-icon-button test-tooltip" aria-label="Archive">
       <md-tooltip md-direction="bottom">archive</md-tooltip>
       <md-icon md-svg-src="images/icon/archive.svg">
       </md-icon>
       </md-button>
+      </div>
       
+      <div layout-align="row">
       <md-button class="md-icon-button test-tooltip" aria-label="Add Images">
       <md-tooltip md-direction="bottom">Add Images</md-tooltip>
       <md-icon  md-svg-src="images/icon/photo.svg">
       </md-icon>
       </md-button>
-      
+      </div>
       <md-button style="color:black;background-color:white;float:center"
 					class="md-primary md-raised" ng-click="updateNotes(data)">Done</md-button>
 		    </div> 

@@ -2,15 +2,24 @@ package com.bridgelabz.model;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Fetch;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -35,7 +44,7 @@ public class Notes implements Serializable {
 	private boolean isPin;
 
 	private boolean isTrash;
-
+	
 	private boolean isArchive;
 
 	private String reminderDate;
@@ -48,6 +57,10 @@ public class Notes implements Serializable {
 	@JsonIgnore
 	@JoinColumn(name = "User_Id")
 	private User user;
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "collaborator", joinColumns = @JoinColumn(name = "noteId"), inverseJoinColumns = @JoinColumn(name = "userId"))
+	private List<User> userId = new LinkedList<User>();
 
 	public int getId() {
 		return id;
@@ -144,4 +157,17 @@ public class Notes implements Serializable {
 	public void setNotePicture(String notePicture) {
 		this.notePicture = notePicture;
 	}
+
+	public List<User> getUserId() {
+		return userId;
+	}
+
+	public void setUserId(List<User> userId) {
+		this.userId = userId;
+	}
+
+
+	
+	
+	
 }

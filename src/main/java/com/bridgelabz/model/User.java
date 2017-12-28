@@ -15,10 +15,9 @@ import org.hibernate.annotations.GenericGenerator;
 public class User {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY, generator="idgen")
-	@GenericGenerator(name="idgen", strategy="increment")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "idgen")
+	@GenericGenerator(name = "idgen", strategy = "increment")
 	private int id;
-
 	@Column(name = "name")
 	private String name;
 
@@ -35,7 +34,7 @@ public class User {
 	private boolean isActive;
 
 	@Lob
-	@Column(name="profilePicture",columnDefinition="LONGBLOB")
+	@Column(name = "profilePicture", columnDefinition = "LONGBLOB")
 	private String profilePicture;
 
 	public int getId() {
@@ -94,4 +93,26 @@ public class User {
 		this.profilePicture = profilePicture;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		
+		result = prime * result + id;
+		
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		User user = (User) obj;
+		if(user.getId()==id)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	
+	
 }

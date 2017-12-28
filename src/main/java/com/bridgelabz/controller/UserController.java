@@ -130,7 +130,7 @@ public class UserController {
 			email.setSubject("Register Sucessfull");
 			email.setUrl(url);
 			producer.send(email);
-			response.setMessage("Email verified	Sucessfully......");
+			response.setMessage("Email Sent	Sucessfully......");
 			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 		}
 	}

@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Jesse Wolgamott">
+
+    <title>Example Angular Directives with Facebook, GitHub, and Gravatar Fallback</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="components/html5shiv.js"></script>
+      <script src="components/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body ng-app="YourApp">
+    <div class="container" ng-controller='UsersController'>
+      <div class="row">
+		<div class="col-lg-4">
+			<h2>With Facebook ID</h2>
+			<multi-avatar data-facebook-id="717976707"/>
+		</div>
+		<div class="col-lg-4">
+			<h2>With Twitter profile ID</h2>
+			<multi-avatar data-twitter-id="378800000059934118/19515946deefec8f1e3d6d0c9d47fce6"/>
+		</div>
+		<div class="col-lg-4">
+			<h2>With GitHub Username</h2>
+			<multi-avatar data-github-id="jwo"/>
+		</div>
+		<div class="col-lg-4">
+			<h2>With Email or Gravtar hash id</h2>
+			<multi-avatar data-gravatar-id="jesse@rubyoffrails.com"/>
+		</div>
+      </div>
+    </div> <!-- /container -->
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    <script src="components/jquery.min.js"></script>
+    <script src="components/bootstrap.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="../src/md5.js"></script>
+    <script src="../src/multi-avatar-directive.js"></script>
+  </body>
+</html>
+

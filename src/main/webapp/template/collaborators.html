@@ -1,0 +1,36 @@
+<md-dialog flex="50">
+
+<div flex layout="column" layout-align="start start" layout-padding>
+<h3>Collaborators</h3>
+<md-divider style="width:90%;" layout-padding></md-divider>
+</div>
+
+<div layout-padding layout="row">
+<img style="max:420px;border-radius:45px;margin-top:-15px;" layout-align="start start" ng-src={{owner.profilePic}}>
+<div layout-align="start center" layout-padding>{{owner.name}}(owner)</div>
+<div layout-align="center center" style="font-size:13px;margin-top:13px;margin-left:-145px;padding-top:10px;">{{owner.email}}</div>
+</div>
+
+<div layout="row" layout-padding>
+<input type="email" placeholder="person or email to share with" ng-model="email" name="email" style="border:none;outline: 0;width:100%;">
+</div>
+
+<div layout="row" layout-align="start start" layout-padding>
+<div ng-repeat="userInfo in data.userId">
+
+<div layout="row">
+<md-icon md-svg-icon="images/icon/profile.svg"></md-icon>
+<div layou="row">{{userInfo.email}}</div>
+<md-icon ng-click="deleteCollabUser(userInfo.email,data)" md-svg-icon="images/icon/cancel.svg"></md-icon>
+</div>
+</div>
+</div>
+
+<div layout="row" layout-align="end end" style="background-color:#e8e8e8;">
+<md-button ng-click="cancel()">Cancel</md-button>
+<md-button ng-click="saveCollab(email,data)">Save</md-button>
+</div>
+</md-dialog>
+
+
+

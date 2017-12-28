@@ -1,16 +1,28 @@
 var app = angular.module('ToDo');
 
-app.controller('noteController', function($scope, notesService, $location,
-		$mdDialog) {
+app.controller('noteController', function($scope, $state, notesService,
+		$location, $mdDialog, $mdSidenav, mdcDateTimeDialog, loginService,
+		$interval, $filter, $mdToast, toastr, Upload) {
+
+	$scope.displayDialog = function() {
+		mdcDateTimeDialog.show({
+			maxDate : $scope.maxDate,
+			time : false
+		}).then(function(date) {
+			$scope.selectedDateTime = date;
+			console.log('New Date / Time selected:', date);
+		}, function() {
+			console.log('Selection canceled');
+		});
+	};
 
 	$scope.options = [ 'transparent', '#FF8A80', '#FFD180', '#FFFF8D',
 			'#CFD8DC', '#80D8FF', '#A7FFEB', '#CCFF90' ];
 	$scope.color = '#FF8A80';
 
+	// function to change the color of notes
 	$scope.colorChanged = function(newColor, data) {
 		data.color = newColor;
-		console.log(newColor);
-
 		var update = notesService.updateNotes(data);
 		update.then(function(response) {
 			getNotes();
@@ -18,17 +30,51 @@ app.controller('noteController', function($scope, notesService, $location,
 		});
 
 	}
+
+	$scope.openLeftMenu = function() {
+		console.log("hi.................");
+		$mdSidenav('left').toggle();
+	}
+
 	var getNotes = function() {
 		var getAllNotes = notesService.getAllNotes();
+
 		getAllNotes.then(function(response) {
 			$scope.data = response.data;
-			$scope.user = {};
+			var notes = response.data;
+			$interval(function() {
+				for (var i = 0; i < $scope.data.length; i++) {
+
+					if (notes[i].reminderDate != "") {
+						var reminderNotesDate = notes[i].reminderDate;
+						var dates = $filter('date')(new Date(),
+								'MMM dd yyyy HH:mm:ss');
+						if (dates == reminderNotesDate) {
+							++reminderNotesDate;
+							toastr.success("Title : " + notes[i].title + " "
+									+ "Description : " + notes[i].description);
+						}
+					}
+				}
+			});
+
+		});
+
+	}
+
+	// function to make a exact copy of notes
+	$scope.makeCopy = function(data) {
+		data.trash = false;
+		data.archive = false;
+		var makeCopies = notesService.addNotes(data);
+		makeCopies.then(function(response) {
 			console.log(response.data);
+			getNotes();
 		});
 	}
 
+	// function to show the user information like pic,name and Email
 	var getUser = function() {
-		console.log("inside get user controller");
 		var getUsers = notesService.getUser();
 		getUsers.then(function(response) {
 			$scope.user = {};
@@ -39,8 +85,8 @@ app.controller('noteController', function($scope, notesService, $location,
 		});
 	}
 
+	// function to add notes
 	$scope.addNotes = function() {
-		console.log($scope.notes);
 		var notes = notesService.addNotes($scope.notes, $scope.error);
 		notes.then(function(response) {
 			console.log(response.data);
@@ -49,12 +95,14 @@ app.controller('noteController', function($scope, notesService, $location,
 		}, function(response) {
 			if (response.status == 409) {
 				$scope.error = response.data;
+				toastr('')
 			} else {
 				console.log("Fail To created Notes....");
 			}
 		})
 	}
 
+	// fucnction to read all notes from data base
 	$scope.readNotes = function() {
 		var getAllNotes = notesService.getAllNotes();
 
@@ -64,77 +112,65 @@ app.controller('noteController', function($scope, notesService, $location,
 		})
 	}
 
-	// function to perform trash operaton
-	$scope.deleteNotes = function(data) {
+	// code Snippest for changing the color of current page of top nav bar
+	if ($state.current.name == "reminder") {
+		$scope.navBarColor = "#7d8b8e";
+	} else if ($state.current.name == "home") {
+		$scope.navBarColor = "#fb0";
+	} else if ($state.current.name == "archive") {
+		$scope.navBarColor = '#008B8B';
+	} else if ($state.current.name == "trash") {
+		$scope.navBarColor = "#555";
+	}
 
-		if (data.trash == false) {
+	// function to perform trash operation
+	$scope.deleteNotes = function(data) {
+		console.log(data);
+		if (data.trash == false)
 			data.trash = true;
-			console.log(data);
-			var update = notesService.updateNotes(data);
-			update.then(function(response) {
-				getNotes();
-			}, function(response) {
-				getNotes();
-			})
-		} else {
-			console.log("false................................", data);
+		else
 			data.trash = false;
-			console.log(data.trash);
-			var update = notesService.updateNotes(data);
-			update.then(function(response) {
-				getNotes();
-			}, function(response) {
-				getNotes();
-			})
-		}
+
+		data.archive = false;
+		data.pin = false;
+		var update = notesService.updateNotes(data);
+		update.then(function(response) {
+			getNotes();
+		})
 		getNotes();
 	}
 
 	// function to perform archive
 	$scope.archive = function(data) {
-
-		if (data.archive == false) {
-			data.archive = true;
-			console.log(data);
-			var update = notesService.updateNotes(data);
-			update.then(function(response) {
-				getNotes();
-			}, function(response) {
-				getNotes();
-			})
-		} else {
+		if (data.archive)
 			data.archive = false;
-			console.log(data);
-			var update = notesService.updateNotes(data);
-			update.then(function(response) {
-				getNotes();
-			}, function(response) {
-				getNotes();
-			})
-		}
+		else
+			data.archive = true;
+
+		data.pin = false;
+		data.trash = false;
+		var update = notesService.updateNotes(data);
+		update.then(function(response) {
+			getNotes();
+		})
 		getNotes();
 	}
 
 	// Function To Perform pin operation
 	$scope.pin = function(data) {
-		if (data.pin == false) {
+		if (data.pin == false)
 			data.pin = true;
-			console.log(data);
-
-			var pin = notesService.updateNotes(data);
-			pin.then(function(response) {
-				getNotes();
-			})
-		} else {
+		else
 			data.pin = false;
-			console.log(data);
-			var pin = notesService.updateNotes(data);
-			pin.then(function(response) {
-				getNotes();
-			})
-		}
+
+		var update = notesService.updateNotes(data);
+		update.then(function(response) {
+			getNotes();
+		})
+		getNotes();
 	}
 
+	// function to perform delete operation
 	$scope.deleteForver = function(data) {
 		var deleteNotes = notesService.deleteNotes(data);
 		deleteNotes.then(function(response) {
@@ -145,11 +181,42 @@ app.controller('noteController', function($scope, notesService, $location,
 		getNotes();
 	}
 
-	$scope.openLeftMenu = function() {
-		$mdMenu
+	/* image uploading */
+
+	$scope.type = {};
+	$scope.openHiddenButton = function(note) {
+		console.log("inside the openHidden");
+		$('#imageFile').trigger('click');
+		$scope.type = note;
 	}
 
+	$scope.stepsModel = [];
+	$scope.imageUpload = function(note) {
+		var reader = new FileReader();
+		console.log("note : " + note);
+		reader.onload = $scope.imageLoader;
+		reader.readAsDataURL(note.notePicture);
+	}
+
+	$scope.imageLoader = function(image) {
+		$scope.$apply(function() {
+			$scope.stepsModel.push(image.target.result);
+			var imageSrc = image.target.result;
+			$scope.type.notePicture = imageSrc;
+			console.log("-------------------------->" + imageSrc);
+			var updateData = notesService.updateNotes($scope.type);
+			updateData.then(function(response) {
+				console.log(response);
+				getNotes();
+			}, function(response) {
+				console.log(response);
+			});
+		});
+	}
+
+	// function to perform update operation
 	$scope.updateNotes = function(data) {
+		console.log("Note Picture--->" + data.notePicture);
 		var update = notesService.updateNotes(data);
 		console.log(data);
 		update.then(function(response) {
@@ -160,6 +227,15 @@ app.controller('noteController', function($scope, notesService, $location,
 		getNotes();
 	}
 
+	// function to logout
+
+	$scope.logout = function() {
+		localStorage.removeItem('token');
+		toastr.success("Logout Successfully...........");
+		$location.path('login');
+	}
+
+	// function to show the dailog box
 	$scope.showDailog = function(events, data) {
 		$mdDialog.show({
 			templateUrl : 'template/dailog.html',
@@ -172,6 +248,40 @@ app.controller('noteController', function($scope, notesService, $location,
 		});
 	}
 
+	$scope.collaboratorDailog = function(events, data) {
+		console.log("collaborators------->" + events);
+		$mdDialog.show({
+			templateUrl : 'template/collaborators.html',
+			parent : angular.element(document.body),
+			controller : homeController,
+			clickOutsideToClose:true,
+			targetEvent : events,
+			locals : {
+				data : data
+			},
+		});
+	}
+
+	function homeController($scope, data) {
+		$scope.data = data;
+         console.log(data);
+		var ownerInfo = notesService.getOwner(data);
+		ownerInfo.then(function(response) {
+			//$mdDialog.hide();
+			$scope.owner = response.data;
+			console.log(response.data);
+		})
+		 $scope.saveCollab = function(user,note){
+			
+			console.log("data----------->"+user.email);
+			console.log("Owner-------->"+owner.email);
+		}
+	}
+	
+  
+
+	// controller to pass the md-dailog box data into notesController using
+	// locals
 	function noteController($scope, data) {
 		$scope.data = data;
 
@@ -187,6 +297,33 @@ app.controller('noteController', function($scope, notesService, $location,
 			getNotes();
 		}
 
+	}
+
+	// function to update reminder date
+	$scope.reminder = function(data, reminderDateTime) {
+		// console.log("Inside Remainder..........");
+		console.log(data);
+		var date = new Date(reminderDateTime);
+		var dates = $filter('date')(new Date(date), 'MMM dd yyyy HH:mm:ss');
+		// var parseDate = Date.parse();
+		data.reminderDate = dates;
+		var updateReminderTime = notesService.updateNotes(data);
+
+		updateReminderTime.then(function(response) {
+			getNotes();
+		})
+		console.log("date------>" + data.reminderDate);
+	}
+
+	// fucntion to delete the reminder date
+	$scope.deleteReminder = function(data) {
+		console.log("jkdgkogodgnfodjgnfjdgnfdgjfd");
+		data.reminderDate = "";
+		var updateReminderTime = notesService.updateNotes(data);
+
+		updateReminderTime.then(function(response) {
+			getNotes();
+		})
 	}
 
 	getNotes();

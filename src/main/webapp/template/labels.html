@@ -1,0 +1,20 @@
+<md-dialog flex="20">
+<div flex layout="column" layout-align="start start" layout-padding>
+<h3>Edit labels</h3>
+<md-divider style="width:90%;" layout-padding></md-divider>
+</div>
+
+<div layout="row" layout-padding>
+		</md-icon>
+<md-icon md-svg-icon="images/icon/cancel.svg"></md-icon>
+<input type="text" placeholder="Create new label" ng-model="email" name="email" style="border:none;outline: 0;width:100%;">
+<md-icon md-svg-icon="images/icon/done.svg"> </md-icon>
+</div>
+
+<div layout="row" layout-align="end end" style="background-color:#e8e8e8;">
+<md-button ng-click="saveCollab(email,data)">Done</md-button>
+</div>
+</md-dialog>
+
+
+

@@ -1,4 +1,5 @@
-var ToDo = angular.module('ToDo', [ 'ui.router', 'ngAnimate','ngMaterial','tb-color-picker']);
+var ToDo = angular.module('ToDo', [ 'ui.router', 'ngAnimate', 'ngMaterial',
+		'ngMaterialDatePicker', 'tb-color-picker', 'toastr','ngFileUpload']);
 
 ToDo.config([ '$stateProvider', '$urlRouterProvider',
 		function($stateProvider, $urlRouterProvider) {
@@ -38,10 +39,22 @@ ToDo.config([ '$stateProvider', '$urlRouterProvider',
 				controller : 'noteController'
 			})
 			
+			$stateProvider.state('collaborator', {
+				url : '/collaborator',
+				templateUrl : 'template/collaborator.html',
+				controller : 'noteController'
+			})
+
 			$stateProvider.state('dummy', {
 				url : '/dummy',
 				templateUrl : 'template/dummy.html',
 				controller : 'dummyController'
+			})
+
+			$stateProvider.state('reminder', {
+				url : '/reminder',
+				templateUrl : 'template/reminder.html',
+				controller : 'noteController'
 			})
 			$urlRouterProvider.otherwise('login');
 		} ]);

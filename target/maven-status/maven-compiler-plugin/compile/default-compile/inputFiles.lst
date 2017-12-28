@@ -16,6 +16,7 @@
 /home/bridgeit/Framworks/TODOAPP/src/main/java/com/bridgelabz/controller/FBLoginController.java
 /home/bridgeit/Framworks/TODOAPP/src/main/java/com/bridgelabz/model/Notes.java
 /home/bridgeit/Framworks/TODOAPP/src/main/java/com/bridgelabz/model/UserDTO.java
+/home/bridgeit/Framworks/TODOAPP/src/main/java/com/bridgelabz/model/Collaborator.java
 /home/bridgeit/Framworks/TODOAPP/src/main/java/com/bridgelabz/utility/EmailSender.java
 /home/bridgeit/Framworks/TODOAPP/src/main/java/com/bridgelabz/model/Email.java
 /home/bridgeit/Framworks/TODOAPP/src/main/java/com/bridgelabz/service/NotesImpl.java
@@ -23,4 +24,5 @@
 /home/bridgeit/Framworks/TODOAPP/src/main/java/com/bridgelabz/DAO/UserDAOImpl.java
 /home/bridgeit/Framworks/TODOAPP/src/main/java/com/bridgelabz/service/NotesService.java
 /home/bridgeit/Framworks/TODOAPP/src/main/java/com/bridgelabz/service/UserService.java
+/home/bridgeit/Framworks/TODOAPP/src/main/java/com/bridgelabz/model/Labels.java
 /home/bridgeit/Framworks/TODOAPP/src/main/java/com/bridgelabz/model/Response.java

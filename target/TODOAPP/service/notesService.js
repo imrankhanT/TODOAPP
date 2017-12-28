@@ -25,7 +25,7 @@ todo.factory('notesService', function($http, $location) {
 	}
 
 	notes.updateNotes = function(data) {
-		console.log(data);
+		console.log("Inside sERVICE" + data);
 		return $http({
 
 			method : 'POST',
@@ -40,7 +40,7 @@ todo.factory('notesService', function($http, $location) {
 	notes.deleteNotes = function(data) {
 		return $http({
 			method : 'delete',
-			url : 'deleteNotes/'+ data.id,
+			url : 'deleteNotes/' + data.id,
 			data : data,
 			headers : {
 				'accToken' : localStorage.getItem('token')
@@ -48,8 +48,8 @@ todo.factory('notesService', function($http, $location) {
 		})
 
 	}
-	
-	notes.getUser = function(){
+
+	notes.getUser = function() {
 		console.log("inside get user service");
 		return $http({
 			method : 'get',
@@ -59,5 +59,22 @@ todo.factory('notesService', function($http, $location) {
 			}
 		})
 	}
+
+	notes.logout = function() {
+		return $http({
+			method : 'get',
+			url : 'logout'
+		})
+	}
+
+	notes.getOwner = function(data) {
+		console.log("Inside owner Service......");
+		return $http({
+			method : 'post',
+			url : 'getOwner',
+			data : data
+		})
+	}
+
 	return notes;
 })
