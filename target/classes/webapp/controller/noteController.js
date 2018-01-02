@@ -33,7 +33,7 @@ app.controller('noteController', function($scope, $state, notesService,
 
 	$scope.openLeftMenu = function() {
 		console.log("hi.................");
-		$mdSidenav('left').toggle();
+		$mdSidenav('right').toggle();
 	}
 
 	var getNotes = function() {
@@ -164,6 +164,8 @@ app.controller('noteController', function($scope, $state, notesService,
 		else
 			data.pin = false;
 
+		data.archive = false;
+		data.trash = false;
 		var update = notesService.updateNotes(data);
 		update.then(function(response) {
 			getNotes();
@@ -263,14 +265,39 @@ app.controller('noteController', function($scope, $state, notesService,
 		});
 	}
 
-	// collaborator dailog
+	// Label dailog
 	$scope.labelDailog = function(events) {
 		$mdDialog.show({
 			templateUrl : 'template/labels.html',
 			parent : angular.element(document.body),
+			controller : labelController,
 			clickOutsideToClose : true,
 			targetEvent : events,
 		});
+	}
+
+	// labelController
+	function labelController($scope) {
+		$scope.saveLabel = function(label) {
+			console.log("Inside SaveLabel--->" + label);
+			var label = notesService.saveLabel(label);
+
+			label.then(function(response) {
+				console.log(response.data);
+				getNotes();
+			})
+		}
+
+		var getAllLabels = function() {
+			var getAllLabel = notesService.getAllLabel();
+
+			getAllLabel.then(function(response) {
+				$scope.label = response.data;
+				var label = response.data;
+				console.log(response.data);
+			})
+		}
+		getAllLabels();
 	}
 
 	// homeController for Collaborator Dailog
@@ -297,7 +324,7 @@ app.controller('noteController', function($scope, $state, notesService,
 
 		$scope.deleteCollabUser = function(email, data) {
 			console.log("Response Date--->" + email);
-			notesService.deleteCollaborator(email,data);
+			notesService.deleteCollaborator(email, data);
 		}
 	}
 
@@ -317,7 +344,6 @@ app.controller('noteController', function($scope, $state, notesService,
 			})
 			getNotes();
 		}
-
 	}
 
 	// function to update reminder date

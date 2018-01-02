@@ -1,5 +1,5 @@
  <div flex layout="row">
-<md-sidenav style="height:100%;" flex md-component-id="right" md-is-locked-open="$mdMedia('min-width: 333px')" class="md-sidenav-right" class="md-whiteframe-5dp"> 
+<md-sidenav style="height:100%;" md-is-locked-open="$mdMedia('min-width: 333px')" md-component-id="right"> 
 	   
 	    <div layout="row">
 	    <md-list>
@@ -51,13 +51,17 @@
 	    <div layout="row">
 		<md-list> 
 		<md-list-item> 
-		<md-button ng-click="labelDailog($event,data)">
+		<md-button ng-click="labelDailog($event)">
 		<md-icon md-svg-icon="images/icon/label.svg" class="avatar">
 		</md-icon>
 		Create New Label
 		</md-button> 
 		</md-list-item> 
 		</md-list> 
+		</div>
+		
+		<div ng-repeat="labels in labels">
+		<div>{{label.labelName}}</div>
 		</div>
 		</md-sidenav>
 		</div>

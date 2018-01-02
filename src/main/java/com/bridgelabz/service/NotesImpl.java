@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bridgelabz.DAO.NotesDAO;
+import com.bridgelabz.model.Labels;
 import com.bridgelabz.model.Notes;
 import com.bridgelabz.model.User;
 import com.bridgelabz.utility.TokenGenerator;
@@ -56,5 +57,29 @@ public class NotesImpl implements NotesService {
 	public Notes getNotesById(int id) {
 		Notes notes = dao.getNotesById(id);
 		return notes;
+	}
+
+	@Transactional
+	public boolean insertLable(Labels labels) {
+		boolean isInsert = dao.insertLabel(labels);
+		return isInsert;
+	}
+
+	@Transactional
+	public int deleteLabels(Labels labels) {
+		int count = dao.deletLabels(labels);
+		return count;
+	}
+
+	@Transactional
+	public List<Labels> getAllLabels(User user) {
+		List<Labels> labels = dao.getAllLabels(user);
+		return labels;
+	}
+
+	@Transactional
+	public List<Labels> getAllLables(User user) {
+		List<Labels> labels = dao.getAllLabels(user);
+		return labels;
 	}
 }

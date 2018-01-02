@@ -1,9 +1,10 @@
 package com.bridgelabz.DAO;
 
 import java.util.List;
-import java.util.Set;
 
+import com.bridgelabz.model.Labels;
 import com.bridgelabz.model.Notes;
+import com.bridgelabz.model.User;
 
 public interface NotesDAO {
 	public String addNotes(Notes notes);
@@ -15,4 +16,10 @@ public interface NotesDAO {
 	public List<Notes> getAllNotes(int id);
 
 	public Notes getNotesById(int id);
-	}
+
+	public boolean insertLabel(Labels labels);
+
+	public int deletLabels(Labels labels);
+	
+	public List<Labels> getAllLabels(User user);
+}

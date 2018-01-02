@@ -1,14 +1,14 @@
 <top-nav-bar></top-nav-bar>
 	
 	<div class="container" layout="row" flex>
-   
+   <div layout="row" layout-align="start start">
     <side-nav-bar></side-nav-bar>		
-		 
-		 <div layout="row" layout-wrap>
-	 	        <div layout-align="center center"  style="height:180px;width:280px;" ng-repeat="data in data | filter :{trash :false} | filter :{archive:true} | filter :{pin:false}">
+	</div>	 
+		 <div layout="row" layout-wrap >
+	 	        <div layout-align="center center" ng-repeat="data in data | filter :{trash :false} | filter :{archive:true} | filter :{pin:false}">
 			    <md-card ng-style="{'background-color' : data.color}" >
 				
-				<div style="margin-left:216px;">
+				<div style="margin-left:230px;">
 			   <md-button ng-click="pin(data)" class="md-icon-button test-tooltip" aria-label="Pin">
                <md-tooltip md-direction="bottom">Pin</md-tooltip>
                <md-icon layout-align="end end" md-svg-src="images/icon/pin.svg">

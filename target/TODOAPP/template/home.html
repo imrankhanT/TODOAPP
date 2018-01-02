@@ -3,22 +3,26 @@
 <top-nav-bar></top-nav-bar>
 	<div class="container" layout="row" flex>
 <div flex layout="row" style="height:100%;">
-<side-nav-bar></side-nav-bar>
+<side-nav-bar ></side-nav-bar>
 </div>
 		<div layout="row" style="height:45%;" flex="55"> 
-		<div style="width:75%;margin-left:100px;" layout="row" layout-align="center center">
+		<div flex layout="row" layout-align="center center">
 			<md-card ng-style="{'background-color' : data.color}">
 			<form>
 			    <div>
-				 <md-input-container layout="row"> <input
-					ng-model="notes.title" style="border: 0px;" placeholder="Title"
-					layout="column"> </md-input-container>
+				<md-input-container> <input
+				ng-model="notes.title" style="border: 0px;" placeholder="Title"
+				layout="column"> 
+				</md-input-container>
                 </div>
                 
                 <div style="height:10%">  
-				<md-input-container> <textarea
-					ng-model="notes.description" style="border: 0px;"
-					placeholder="Take a notes" layout="column"></textarea> </md-input-container>
+				<md-input-container> 
+				<textarea
+				ng-model="notes.description" style="border: 0px;"
+			    placeholder="Take a notes" layout="column">
+				</textarea> 
+				</md-input-container>
                 </div>
                 
 		<div style="width:350px;">			
@@ -90,8 +94,8 @@
 			    </div>
 			    
 			    
-			    <div style="width:20%;margin-left:-45px;">
-				<md-button style="color:black;width:20px;" layout-align="center center"
+			    <div style="margin-left:-40px;" layout="row" layout-align="end end">
+				<md-button layout-align="center center"
 				ng-click="addNotes()">Done</md-button>
 				</div>
 		    </div>
@@ -104,9 +108,9 @@
 			 
 			 <div layout-align="start center" layout-wrap>
 	 	        <div layout="row" ng-repeat="data in data | filter :{trash :false} | filter :{archive:false} | filter :{pin:false}">
-			    <md-card style="height:220px;width:280px;" ng-style="{'background-color' : data.color}">
+			    <md-card layout="column" ng-style="{'background-color' : data.color}">
 				
-				<div style="margin-left:230px;">
+				<div layout="row" layout-align="end end">
 			   <md-button ng-click="pin(data)" class="md-icon-button test-tooltip" aria-label="Pin">
                <md-tooltip md-direction="bottom">Pin</md-tooltip>
                <md-icon md-svg-src="images/icon/pin.svg">
@@ -137,7 +141,7 @@
                </span>
 			   </md-input-container>
 			   </div>
-			   </div>
+		
                
                <div layout="row" layout-align="center center">
                <md-menu-bar> <md-menu>
@@ -232,6 +236,7 @@
                </div>
        </md-card>
 	</div>
+		   </div>
 	
 	<div ng-repeat="data in data | filter :{trash :false} | filter :{archive:false} | filter :{pin:true}">
         <md-card ng-style="{'background-color' : data.color}" style="width:30%;margin-left:400px;" ng-click="showDailog($event,data)" layout-align="center center" class="cards">

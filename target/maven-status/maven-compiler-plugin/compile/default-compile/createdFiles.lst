@@ -20,7 +20,6 @@ com/bridgelabz/service/NotesService.class
 com/bridgelabz/DAO/UserDAOImpl.class
 com/bridgelabz/DAO/UserDAO.class
 com/bridgelabz/service/ConsumerMsg.class
-com/bridgelabz/model/Collaborator.class
 com/bridgelabz/utility/EmailSender.class
 com/bridgelabz/model/Response.class
 com/bridgelabz/socialLogin/FBConnection.class

@@ -1,7 +1,9 @@
 <md-toolbar>
 	<div class="md-toolbar-tools" ng-style="{'background-color':navBarColor}">
-		<md-button class="md-icon-button" aria-label="Menu"
-			style="color:black;" ng-click="openLeftMenu()"> <md-icon
+		<md-button class="md-icon-button" aria-label="Side Panel"
+			style="color:black;" ng-click="openLeftMenu()">
+			 <md-tooltip md-direction="bottom">Main Menu</md-tooltip>
+			 <md-icon
 			md-svg-icon="images/icon/menu.svg"></md-icon> </md-button>
 		<div flex="5"></div>
 		<h2 md-truncate flex>Google Keep</h2>
@@ -13,8 +15,9 @@
 		</div>
 		 
 		    <div>
-		    <md-button class="md-icon-button test-tooltip" ng-click="openLeftMenu()" aria-label="Menu"
+		    <md-button class="md-icon-button test-tooltip" aria-label="Menu"
 			style="color:black;"> 
+			 <md-tooltip md-direction="bottom">Grid View</md-tooltip>
 			<md-icon md-svg-icon="images/icon/list.svg">
 			</md-icon> 
 			</md-button>
@@ -23,6 +26,13 @@
 		   <md-menu-bar>
            <md-menu>
            <button ng-click="$mdMenu.open()">
+            <md-tooltip style="height:65px;" md-direction="bottom">
+            User Account:
+            <br>
+            {{user.name}}
+            <br>
+            {{user.email}}
+            </md-tooltip>
            <md-icon>
            <img ng-src={{user.profilePic}} style="border-radius : 45px;max-width:150%" ></img>
            </md-icon>

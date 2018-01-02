@@ -1,14 +1,22 @@
 package com.bridgelabz.model;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "USER")
@@ -37,6 +45,8 @@ public class User {
 	@Column(name = "profilePicture", columnDefinition = "LONGBLOB")
 	private String profilePicture;
 
+	@OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
+	private List<Labels> lables;
 	public int getId() {
 		return id;
 	}
@@ -91,6 +101,15 @@ public class User {
 
 	public void setProfilePicture(String profilePicture) {
 		this.profilePicture = profilePicture;
+	}
+
+	
+	public List<Labels> getLables() {
+		return lables;
+	}
+
+	public void setLables(List<Labels> lables) {
+		this.lables = lables;
 	}
 
 	@Override

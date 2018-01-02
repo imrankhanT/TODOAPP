@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bridgelabz.model.Labels;
 import com.bridgelabz.model.Notes;
 import com.bridgelabz.model.Response;
 import com.bridgelabz.model.User;
@@ -81,29 +82,30 @@ public class NotesController {
 		}
 	}
 
-	@RequestMapping(value = "/getNotesByUserId/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Notes> getNotesById(@PathVariable int id) {
-		Notes notes = note.getNotesById(id);
-
-		// User user = note.getAllNotes(user.getId());
-		System.out.println("------------------>" + id);
-		if (notes == null) {
-			return new ResponseEntity<Notes>(HttpStatus.BAD_REQUEST);
-		}
-
-		return new ResponseEntity<Notes>(notes, HttpStatus.OK);
-	}
+	/*
+	 * @RequestMapping(value = "/getNotesByUserId/{id}", method = RequestMethod.GET,
+	 * produces = MediaType.APPLICATION_JSON_VALUE, consumes =
+	 * MediaType.APPLICATION_JSON_VALUE) public ResponseEntity<Notes>
+	 * getNotesById(@PathVariable int id) { Notes notes = note.getNotesById(id);
+	 * 
+	 * // User user = note.getAllNotes(user.getId());
+	 * System.out.println("------------------>" + id); if (notes == null) { return
+	 * new ResponseEntity<Notes>(HttpStatus.BAD_REQUEST); }
+	 * 
+	 * return new ResponseEntity<Notes>(notes, HttpStatus.OK); }
+	 */
 
 	@RequestMapping(value = "/getAllNotes", method = RequestMethod.GET)
 	public ResponseEntity<List<Notes>> getAllNotes(HttpServletRequest request) {
-		System.out.println("Hi......");
+		System.out.println("Hi......fgjfgjjtrtjdjtyjytjdjtnjhnjdnjtd");
 		String token = request.getHeader("accToken");
 		System.out.println("Token---------> " + token);
 		int id = TokenGenerator.verfiyToken(token);
 		System.out.println("id--------->" + id);
 		List<Notes> list = note.getAllNotes(id);
-
+		System.out.println("list " + list);
 		if (list == null) {
+
 			return new ResponseEntity<List<Notes>>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<List<Notes>>(list, HttpStatus.OK);
@@ -165,12 +167,12 @@ public class NotesController {
 		if (id > 0) {
 			notes2.getUserId().add(user2);
 			note.updateNote(notes2);
+			response.setMessage("User Found....");
+			return new ResponseEntity<Response>(response, HttpStatus.OK);
 		} else {
 			response.setMessage("Invalid Token..........");
 			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 		}
-		response.setMessage("Invalid......");
-		return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 	}
 
 	@RequestMapping(value = "/deleteCollaborator", method = RequestMethod.POST)
@@ -178,12 +180,6 @@ public class NotesController {
 		Notes notes2 = note.getNotesById(notes.getId());
 		User user = userService.getUserByEmail(request.getHeader("accToken"));
 		Response response = new Response();
-		System.out.println("User Info");
-		System.out.println("user email-->" + user.getEmail());
-		System.out.println("User Name-->" + user.getName());
-		System.out.println("User Id----->" + user.getId());
-		System.out.println("NotesId=-->" + notes.getId());
-		System.out.println("before remove " + notes2.getUserId().size());
 
 		if (user != null) {
 			notes2.getUserId().remove(user);
@@ -196,4 +192,56 @@ public class NotesController {
 			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 		}
 	}
+
+	@RequestMapping(value = "/insertLabel/{labels}", method = RequestMethod.POST)
+	public ResponseEntity<?> insertLabel(@PathVariable String labels, HttpServletRequest request) {
+		System.out.println("Insert Label...........");
+		int id = TokenGenerator.verfiyToken(request.getHeader("accToken"));
+		User user = userService.getUserById(id);
+		Labels labels2 = new Labels();
+		labels2.setLabelName(labels);
+		labels2.setUser(user);
+		labels2.setNotes(null);
+		Response response = new Response();
+		boolean isInsert = note.insertLable(labels2);
+		System.out.println("Insert----->" + isInsert);
+		if (isInsert) {
+			response.setMessage("Labels Inserted Sucessfully..........");
+			return new ResponseEntity<Response>(response, HttpStatus.OK);
+		} else {
+			response.setMessage("Insertion Fails.........");
+			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+		}
+
+	}
+
+	@RequestMapping(value = "/deleteLabels", method = RequestMethod.DELETE)
+	public ResponseEntity<?> deleteLabels(@RequestBody Labels labels) {
+		Response response = new Response();
+		int count = note.deleteLabels(labels);
+
+		if (count > 0) {
+			response.setMessage("Lables Deleted Sucessfully......");
+			return new ResponseEntity<Response>(response, HttpStatus.OK);
+		} else {
+			response.setMessage("Labels Not Found......");
+			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+		}
+
+	}
+
+	@RequestMapping(value = "getAllLabels", method = RequestMethod.GET)
+	public ResponseEntity<List<Labels>> getAllLabels(HttpServletRequest request) {
+		int id = TokenGenerator.verfiyToken(request.getHeader("accToken"));
+		User user = userService.getUserById(id);
+
+		List<Labels> lables = note.getAllLables(user);
+
+		if (lables == null) {
+			return new ResponseEntity<List<Labels>>(HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<List<Labels>>(lables, HttpStatus.OK);
+		}
+	}
+
 }

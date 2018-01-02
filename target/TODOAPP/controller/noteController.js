@@ -33,7 +33,7 @@ app.controller('noteController', function($scope, $state, notesService,
 
 	$scope.openLeftMenu = function() {
 		console.log("hi.................");
-		$mdSidenav('left').toggle();
+		$mdSidenav('right').toggle();
 	}
 
 	var getNotes = function() {
@@ -42,6 +42,7 @@ app.controller('noteController', function($scope, $state, notesService,
 		getAllNotes.then(function(response) {
 			$scope.data = response.data;
 			var notes = response.data;
+			console.log(response.data);
 			$interval(function() {
 				for (var i = 0; i < $scope.data.length; i++) {
 
@@ -163,6 +164,8 @@ app.controller('noteController', function($scope, $state, notesService,
 		else
 			data.pin = false;
 
+		data.archive = false;
+		data.trash = false;
 		var update = notesService.updateNotes(data);
 		update.then(function(response) {
 			getNotes();
@@ -254,7 +257,7 @@ app.controller('noteController', function($scope, $state, notesService,
 			templateUrl : 'template/collaborators.html',
 			parent : angular.element(document.body),
 			controller : homeController,
-			clickOutsideToClose:true,
+			clickOutsideToClose : true,
 			targetEvent : events,
 			locals : {
 				data : data
@@ -262,23 +265,43 @@ app.controller('noteController', function($scope, $state, notesService,
 		});
 	}
 
+	// collaborator dailog
+	$scope.labelDailog = function(events) {
+		$mdDialog.show({
+			templateUrl : 'template/labels.html',
+			parent : angular.element(document.body),
+			clickOutsideToClose : true,
+			targetEvent : events,
+		});
+	}
+
+	// homeController for Collaborator Dailog
 	function homeController($scope, data) {
 		$scope.data = data;
-         console.log(data);
+		console.log(data);
 		var ownerInfo = notesService.getOwner(data);
 		ownerInfo.then(function(response) {
-			//$mdDialog.hide();
+
 			$scope.owner = response.data;
 			console.log(response.data);
 		})
-		 $scope.saveCollab = function(user,note){
-			
-			console.log("data----------->"+user.email);
-			console.log("Owner-------->"+owner.email);
+		$scope.saveCollab = function(email, note) {
+			var resp = notesService.storeInfo(email, note);
+			resp.then(function(response) {
+				$mdDialog.hide();
+				console.log(response.data);
+			})
+		}
+
+		$scope.cancel = function() {
+			$mdDialog.hide();
+		}
+
+		$scope.deleteCollabUser = function(email, data) {
+			console.log("Response Date--->" + email);
+			notesService.deleteCollaborator(email, data);
 		}
 	}
-	
-  
 
 	// controller to pass the md-dailog box data into notesController using
 	// locals
@@ -296,7 +319,6 @@ app.controller('noteController', function($scope, $state, notesService,
 			})
 			getNotes();
 		}
-
 	}
 
 	// function to update reminder date

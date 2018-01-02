@@ -76,5 +76,27 @@ todo.factory('notesService', function($http, $location) {
 		})
 	}
 
+	notes.storeInfo = function(email, note) {
+		return $http({
+			method : 'put',
+			url : "shareNotes/" + note.id + "/" + email,
+			headers : {
+				'accToken' : localStorage.getItem('token')
+			}
+		})
+
+	}
+
+	notes.deleteCollaborator = function(email, note) {
+		return $http({
+			method : 'post',
+			url : "deleteCollaborator",
+			data : note,
+			headers : {
+				'accToken' : email
+			}
+		})
+	}
+
 	return notes;
 })
