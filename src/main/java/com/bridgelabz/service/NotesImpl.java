@@ -66,8 +66,8 @@ public class NotesImpl implements NotesService {
 	}
 
 	@Transactional
-	public int deleteLabels(Labels labels) {
-		int count = dao.deletLabels(labels);
+	public int deleteLabels(int id) {
+		int count = dao.deletLabels(id);
 		return count;
 	}
 

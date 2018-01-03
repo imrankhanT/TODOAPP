@@ -118,5 +118,14 @@ todo.factory('notesService', function($http, $location) {
 			}
 		})
 	}
+	
+	notes.deleteLabels = function(label){
+		console.log("Label---->    "+label.id);
+		return $http({
+			method : "delete",
+			url : "deleteLabels/"+label.id,
+			data : label
+		})
+	}
 	return notes;
 })

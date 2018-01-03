@@ -51,7 +51,6 @@ app.controller('noteController', function($scope, $state, notesService,
 						var dates = $filter('date')(new Date(),
 								'MMM dd yyyy HH:mm:ss');
 						if (dates == reminderNotesDate) {
-							++reminderNotesDate;
 							toastr.success("Title : " + notes[i].title + " "
 									+ "Description : " + notes[i].description);
 						}
@@ -271,13 +270,36 @@ app.controller('noteController', function($scope, $state, notesService,
 			templateUrl : 'template/labels.html',
 			parent : angular.element(document.body),
 			controller : labelController,
-			clickOutsideToClose : true,
 			targetEvent : events,
+			locals : {
+				labels : $scope.labels
+			},
 		});
 	}
 
+	
+	$scope.openLabelDailog = function(events) {
+		$mdDialog.show({
+			templateUrl : 'template/noteLabel.html',
+			parent : angular.element(document.body),
+		    controller : noteLabelController,
+			clickOutsideToClose : true,
+			targetEvent : events,
+			locals : {
+				labels : $scope.labels
+			},
+		});
+	}
+	
+	function noteLabelController($scope,labels){
+		$scope.labels = labels;
+		getAllLabels();
+	}
+	
 	// labelController
-	function labelController($scope) {
+	function labelController($scope, labels) {
+		$scope.labels = labels;
+		
 		$scope.saveLabel = function(label) {
 			console.log("Inside SaveLabel--->" + label);
 			var label = notesService.saveLabel(label);
@@ -285,21 +307,35 @@ app.controller('noteController', function($scope, $state, notesService,
 			label.then(function(response) {
 				console.log(response.data);
 				getNotes();
+				getAllLabels();
+
 			})
 		}
 
-		var getAllLabels = function() {
-			var getAllLabel = notesService.getAllLabel();
+		$scope.done = function() {
+			$mdDialog.hide();
+		}
+		$scope.deleteLabel = function(label) {
+			var label = notesService.deleteLabels(label);
 
-			getAllLabel.then(function(response) {
-				$scope.label = response.data;
-				var label = response.data;
-				console.log(response.data);
+			label.then(function(response) {
+				console.log("Deleted Sucessfully......." + label);
+				getNotes();
+				getAllLabels();
 			})
 		}
-		getAllLabels();
 	}
 
+	var getAllLabels = function() {
+		var getAllLabel = notesService.getAllLabel();
+
+		getAllLabel.then(function(response) {
+			$scope.labels = response.data;
+			var label = response.data;
+			console.log($scope.labels);
+		})
+	}
+	getAllLabels();
 	// homeController for Collaborator Dailog
 	function homeController($scope, data) {
 		$scope.data = data;
@@ -312,6 +348,7 @@ app.controller('noteController', function($scope, $state, notesService,
 		})
 		$scope.saveCollab = function(email, note) {
 			var resp = notesService.storeInfo(email, note);
+
 			resp.then(function(response) {
 				$mdDialog.hide();
 				console.log(response.data);

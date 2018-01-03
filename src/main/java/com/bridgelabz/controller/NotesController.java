@@ -51,7 +51,6 @@ public class NotesController {
 
 	@RequestMapping(value = "updateNotes", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Response> updateNotes(@RequestBody Notes notes1) {
-		System.out.println("Notes--------->" + notes1.getNotePicture());
 		Notes retNotes = note.getNotesById(notes1.getId());
 		Response response = new Response();
 		if (retNotes == null) {
@@ -71,7 +70,6 @@ public class NotesController {
 	@RequestMapping(value = "/deleteNotes/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Response> deleteNotes(@PathVariable int id) {
 		Response response = new Response();
-		System.out.println("hi......");
 		int count = note.deleteNotes(id);
 		if (count != 0) {
 			response.setMessage("Id Not Exsist");
@@ -82,28 +80,11 @@ public class NotesController {
 		}
 	}
 
-	/*
-	 * @RequestMapping(value = "/getNotesByUserId/{id}", method = RequestMethod.GET,
-	 * produces = MediaType.APPLICATION_JSON_VALUE, consumes =
-	 * MediaType.APPLICATION_JSON_VALUE) public ResponseEntity<Notes>
-	 * getNotesById(@PathVariable int id) { Notes notes = note.getNotesById(id);
-	 * 
-	 * // User user = note.getAllNotes(user.getId());
-	 * System.out.println("------------------>" + id); if (notes == null) { return
-	 * new ResponseEntity<Notes>(HttpStatus.BAD_REQUEST); }
-	 * 
-	 * return new ResponseEntity<Notes>(notes, HttpStatus.OK); }
-	 */
-
 	@RequestMapping(value = "/getAllNotes", method = RequestMethod.GET)
 	public ResponseEntity<List<Notes>> getAllNotes(HttpServletRequest request) {
-		System.out.println("Hi......fgjfgjjtrtjdjtyjytjdjtnjhnjdnjtd");
 		String token = request.getHeader("accToken");
-		System.out.println("Token---------> " + token);
 		int id = TokenGenerator.verfiyToken(token);
-		System.out.println("id--------->" + id);
 		List<Notes> list = note.getAllNotes(id);
-		System.out.println("list " + list);
 		if (list == null) {
 
 			return new ResponseEntity<List<Notes>>(HttpStatus.NOT_FOUND);
@@ -114,13 +95,10 @@ public class NotesController {
 
 	@RequestMapping(value = "/getUser", method = RequestMethod.GET)
 	public ResponseEntity<?> getUser(HttpServletRequest request, HttpSession session) {
-		System.out.println("inside get user");
 		String token = request.getHeader("accToken");
 		session.setAttribute("token", token);
 		int id = TokenGenerator.verfiyToken(token);
-		System.out.println("inside get user token ==" + id);
 		User user = userService.getUserById(id);
-		/* System.out.println(user.getId()); */
 
 		if (user == null) {
 			Response response = new Response();
@@ -156,10 +134,12 @@ public class NotesController {
 	}
 
 	@RequestMapping(value = "shareNotes/{notesId}/{email:.+}", method = RequestMethod.PUT)
-	public ResponseEntity<?> insertSharedId(@PathVariable String email, @PathVariable int notesId,
+	public ResponseEntity<?> insertSharedId(@PathVariable int notesId,@PathVariable String email,
 			HttpServletRequest request) {
+		
 		String token = request.getHeader("accToken");
 		int id = TokenGenerator.verfiyToken(token);
+		System.out.println("id-->"+id);
 		Notes notes2 = note.getNotesById(notesId);
 		User user2 = userService.getUserByEmail(email);
 		Response response = new Response();
@@ -184,7 +164,6 @@ public class NotesController {
 		if (user != null) {
 			notes2.getUserId().remove(user);
 			note.updateNote(notes2);
-			System.out.println("After remove " + notes2.getUserId().size());
 			response.setMessage("User Removed Sucessfully.......");
 			return new ResponseEntity<Response>(response, HttpStatus.OK);
 		} else {
@@ -195,7 +174,6 @@ public class NotesController {
 
 	@RequestMapping(value = "/insertLabel/{labels}", method = RequestMethod.POST)
 	public ResponseEntity<?> insertLabel(@PathVariable String labels, HttpServletRequest request) {
-		System.out.println("Insert Label...........");
 		int id = TokenGenerator.verfiyToken(request.getHeader("accToken"));
 		User user = userService.getUserById(id);
 		Labels labels2 = new Labels();
@@ -204,7 +182,6 @@ public class NotesController {
 		labels2.setNotes(null);
 		Response response = new Response();
 		boolean isInsert = note.insertLable(labels2);
-		System.out.println("Insert----->" + isInsert);
 		if (isInsert) {
 			response.setMessage("Labels Inserted Sucessfully..........");
 			return new ResponseEntity<Response>(response, HttpStatus.OK);
@@ -215,17 +192,18 @@ public class NotesController {
 
 	}
 
-	@RequestMapping(value = "/deleteLabels", method = RequestMethod.DELETE)
-	public ResponseEntity<?> deleteLabels(@RequestBody Labels labels) {
+	@RequestMapping(value = "/deleteLabels/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<?> deleteLabels(@PathVariable int id) {
+		System.out.println("DeleteLabel..........." + id);
 		Response response = new Response();
-		int count = note.deleteLabels(labels);
+		int count = note.deleteLabels(id);
 
 		if (count > 0) {
 			response.setMessage("Lables Deleted Sucessfully......");
 			return new ResponseEntity<Response>(response, HttpStatus.OK);
 		} else {
 			response.setMessage("Labels Not Found......");
-			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Response>(response, HttpStatus.NOT_FOUND);
 		}
 
 	}
@@ -242,6 +220,13 @@ public class NotesController {
 		} else {
 			return new ResponseEntity<List<Labels>>(lables, HttpStatus.OK);
 		}
+	}
+
+	@RequestMapping(value = "updateLabel", method = RequestMethod.PUT)
+	public ResponseEntity<?> updateLabel(@PathVariable int id) {
+		Response response = new Response();
+		response.setMessage("Updated Sucessfully.....");
+		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 
 }

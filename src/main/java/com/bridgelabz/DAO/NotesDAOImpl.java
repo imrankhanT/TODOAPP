@@ -80,11 +80,11 @@ public class NotesDAOImpl implements NotesDAO {
 
 			List<Notes> list1 = criteria.list();
 			allNotes.addAll(list1);
-			
+
 			for (Notes notes : allNotes) {
 				notes.getLables().size();
 			}
-			
+
 			System.out.println(allNotes);
 			return allNotes;
 		} catch (Exception e) {
@@ -104,7 +104,6 @@ public class NotesDAOImpl implements NotesDAO {
 		return false;
 	}
 
-	@Override
 	public boolean insertLabel(Labels labels) {
 		Session session = sessionFactory.getCurrentSession();
 		try {
@@ -116,12 +115,12 @@ public class NotesDAOImpl implements NotesDAO {
 		}
 	}
 
-	@Override
-	public int deletLabels(Labels labels) {
+	public int deletLabels(int id) {
 		Session session = sessionFactory.getCurrentSession();
 
 		try {
-			Query<?> query = session.createQuery("delete from Label");
+			Query<?> query = session.createQuery("delete from Labels where id =:id");
+			query.setParameter("id", id);
 			int count = query.executeUpdate();
 			return count;
 		} catch (Exception e) {
@@ -130,16 +129,15 @@ public class NotesDAOImpl implements NotesDAO {
 		}
 	}
 
-	@Override
 	public List<Labels> getAllLabels(User user) {
 		Session session = sessionFactory.getCurrentSession();
-		Query<?> query = session.createQuery("from Label where user =:user");
+		Query<?> query = session.createQuery("from Labels where user =:user");
 		query.setParameter("user", user);
 		List<Labels> lables = (List<Labels>) query.list();
-		
+
 		try {
 			return lables;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;

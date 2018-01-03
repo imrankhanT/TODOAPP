@@ -98,5 +98,32 @@ todo.factory('notesService', function($http, $location) {
 		})
 	}
 
+	notes.saveLabel = function(labels) {
+		console.log("inside Service of Save Label" + labels);
+		return $http({
+			method : "POST",
+			url : "insertLabel/"+labels,
+			headers : {
+				'accToken' : localStorage.getItem('token')
+			}
+		})
+	}
+	
+	notes.getAllLabel = function(){
+		return $http({
+			method : "get",
+			url : 'getAllLabels',
+			headers : {
+				'accToken' : localStorage.getItem('token')
+			}
+		})
+	}
+	
+	notes.deleteLabels = function(){
+		return $http({
+			method : "delete",
+			url : "deleteLabels"
+		})
+	}
 	return notes;
 })

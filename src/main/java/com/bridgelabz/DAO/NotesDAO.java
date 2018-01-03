@@ -19,7 +19,7 @@ public interface NotesDAO {
 
 	public boolean insertLabel(Labels labels);
 
-	public int deletLabels(Labels labels);
+	public int deletLabels(int id);
 	
 	public List<Labels> getAllLabels(User user);
 }

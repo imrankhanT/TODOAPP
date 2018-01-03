@@ -1,0 +1,14 @@
+<md-dialog>
+
+<div layout="row" layout-padding>
+Label note
+<input type="text" placeholder="Enter Label Name" style="border:none;outline: 0;width:100%;">
+</div>
+
+<div ng-repeat="label in labels" layout="row" layout-align="space-between center">
+<div layout="row" layout-padding>
+<input type="checkbox" ng-model="check">
+<div style="margin-top:-8px;" layout-padding>{{label.labelName}}</div>
+</div>
+
+</md-dialog>

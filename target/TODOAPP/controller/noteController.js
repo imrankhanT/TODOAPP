@@ -265,16 +265,43 @@ app.controller('noteController', function($scope, $state, notesService,
 		});
 	}
 
-	// collaborator dailog
+	// Label dailog
 	$scope.labelDailog = function(events) {
 		$mdDialog.show({
 			templateUrl : 'template/labels.html',
 			parent : angular.element(document.body),
+			controller : labelController,
 			clickOutsideToClose : true,
 			targetEvent : events,
 		});
 	}
 
+	// labelController
+	function labelController($scope) {
+		$scope.saveLabel = function(label) {
+			console.log("Inside SaveLabel--->" + label);
+			var label = notesService.saveLabel(label);
+
+			label.then(function(response) {
+				console.log(response.data);
+				getNotes();
+				getAllLabels();
+
+			})
+		}
+
+	}
+
+	var getAllLabels = function() {
+		var getAllLabel = notesService.getAllLabel();
+
+		getAllLabel.then(function(response) {
+			$scope.label = response.data;
+			var label = response.data;
+			console.log($scope.label);
+		})
+	}
+	getAllLabels();
 	// homeController for Collaborator Dailog
 	function homeController($scope, data) {
 		$scope.data = data;
@@ -287,6 +314,7 @@ app.controller('noteController', function($scope, $state, notesService,
 		})
 		$scope.saveCollab = function(email, note) {
 			var resp = notesService.storeInfo(email, note);
+
 			resp.then(function(response) {
 				$mdDialog.hide();
 				console.log(response.data);

@@ -20,7 +20,7 @@ public interface NotesService {
 	
 	public boolean insertLable(Labels labels);
 	
-	public int deleteLabels(Labels labels);
+	public int deleteLabels(int id);
 	
 	public List<Labels> getAllLables(User user);
 }
