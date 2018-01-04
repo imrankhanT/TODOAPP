@@ -1,5 +1,5 @@
  <div flex layout="row">
-<md-sidenav style="height:100%;" md-is-locked-open="$mdMedia('min-width: 333px')" md-component-id="right"> 
+<md-sidenav md-is-locked-open="$mdMedia('min-width: 333px')" md-component-id="right"> 
 	   
 	    <div layout="row">
 	    <md-list>
@@ -60,32 +60,18 @@
 		</md-list> 
 		</div>
 		
+		 <md-divider layout-padding style="width:100%;"></md-divider>
+	
 		
-	 <!--   <div layout="row">
-		<md-list> 
-		<md-list-item> 
-		<div layout-padding ng-repeat="label in labels | filter : {label : '!'}">
-		<div layout-align="start center" layout="row">
-		<md-icon md-svg-icon="images/icon/label_black.svg">
-		</md-icon>
-		<div layout="column"><h5 layout-padding >{{label.labelName}}</h5></div>
-		</div>
-		</div>
-		</md-list-item>
-		</md-list>
-		</div> -->
-		
-		<div layout-align="start center" layout="row">
+		<div layout="row" ng-repeat="label in labels | filter : {label : '!'}">
 		<md-list>
 		<md-list-item>
-		<div layout="row" ng-repeat="label in labels | filter : {label : '!'}">
 		<md-icon md-svg-icon="images/icon/label_black.svg">
 		</md-icon>
 		<h5>{{label.labelName}}</h5>
-		</div> 
 		</md-list-item>
 		</md-list>
-		</div>
+		</div> 
 		
 		</md-sidenav>
 		</div>

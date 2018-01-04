@@ -23,4 +23,8 @@ public interface NotesService {
 	public int deleteLabels(int id);
 	
 	public List<Labels> getAllLables(User user);
+	
+	public Labels getLabelById(int id);
+	
+	public void updateLabel(Labels labels);
 }

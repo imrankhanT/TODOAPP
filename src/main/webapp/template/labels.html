@@ -4,21 +4,15 @@
 </div>
 
 <div layout="row" layout-padding>
-<md-icon md-svg-icon="images/icon/cancel.svg"></md-icon>
-<input type="text" placeholder="Create new label" ng-model="label" name="label" style="border:none;outline: 0;width:100%;">
+<md-icon ng-click="deleteLabels()" md-svg-icon="images/icon/cancel.svg"></md-icon>
+<input type="text" id="inputLabel" placeholder="Create new label" ng-model="label" name="label" style="border:none;outline: 0;width:100%;">
 <md-icon ng-click="saveLabel(label)" md-svg-icon="images/icon/done.svg"> </md-icon>
 </div>
 
 <div ng-repeat="label in labels" layout="row" layout-align="space-between center">
-
-<md-button ng-click="deleteLabel(label)">
-<md-icon md-svg-icon="images/icon/trash.svg"></md-icon>
-</md-button>
-<div layout-align="center center">{{label.labelName}}</div>
-<md-button layout-padding ng-click="updateLabel(label)">
-<md-icon md-svg-icon="images/icon/edit.svg"></md-icon>
-</md-button>
-
+<md-icon ng-click="deleteLabel(label)" md-svg-icon="images/icon/trash.svg"></md-icon>
+<input type="text=" ng-model="label.labelName" style="border:none;outline: 0;width:100%;">
+<md-icon ng-click="updateLabel(label)" md-svg-icon="images/icon/edit.svg"></md-icon>
 </div>
 
 <div layout="row" layout-align="end end" style="background-color:#e8e8e8;">

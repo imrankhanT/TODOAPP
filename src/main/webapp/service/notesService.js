@@ -102,14 +102,14 @@ todo.factory('notesService', function($http, $location) {
 		console.log("inside Service of Save Label" + labels);
 		return $http({
 			method : "POST",
-			url : "insertLabel/"+labels,
+			url : "insertLabel/" + labels,
 			headers : {
 				'accToken' : localStorage.getItem('token')
 			}
 		})
 	}
-	
-	notes.getAllLabel = function(){
+
+	notes.getAllLabel = function() {
 		return $http({
 			method : "get",
 			url : 'getAllLabels',
@@ -118,13 +118,23 @@ todo.factory('notesService', function($http, $location) {
 			}
 		})
 	}
-	
-	notes.deleteLabels = function(label){
-		console.log("Label---->    "+label.id);
+
+	notes.deleteLabels = function(label) {
+		console.log("Label---->    " + label.id);
 		return $http({
 			method : "delete",
-			url : "deleteLabels/"+label.id,
+			url : "deleteLabels/" + label.id,
 			data : label
+		})
+	}
+
+	notes.updateLabel = function(label) {
+		return $http({
+			method : "PUT",
+			url : "updateLabel/" + label.id + "/" + label.labelName,
+			headers : {
+				'accToken' : localStorage.getItem('token')
+			}
 		})
 	}
 	return notes;

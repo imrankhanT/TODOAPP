@@ -82,4 +82,15 @@ public class NotesImpl implements NotesService {
 		List<Labels> labels = dao.getAllLabels(user);
 		return labels;
 	}
+
+	@Transactional
+	public Labels getLabelById(int id) {
+		Labels labels = dao.getLabelById(id);
+		return labels;
+	}
+
+	@Transactional
+	public void updateLabel(Labels labels) {
+		dao.updateLable(labels);
+	}
 }

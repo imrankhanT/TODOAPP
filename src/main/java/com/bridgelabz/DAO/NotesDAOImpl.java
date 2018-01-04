@@ -143,4 +143,20 @@ public class NotesDAOImpl implements NotesDAO {
 		return null;
 	}
 
+	public Labels getLabelById(int id) {
+		Session session = sessionFactory.getCurrentSession();
+		Query<?> query = session.createQuery("from Labels where id =:id");
+		query.setParameter("id", id);
+		Labels labels = (Labels) query.uniqueResult();
+		if (labels != null)
+			return (Labels) labels;
+		else
+			return null;
+	}
+
+	public void updateLable(Labels labels) {
+		Session session = sessionFactory.getCurrentSession();
+		session.saveOrUpdate(labels);
+	}
+
 }

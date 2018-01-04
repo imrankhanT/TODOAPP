@@ -134,12 +134,12 @@ public class NotesController {
 	}
 
 	@RequestMapping(value = "shareNotes/{notesId}/{email:.+}", method = RequestMethod.PUT)
-	public ResponseEntity<?> insertSharedId(@PathVariable int notesId,@PathVariable String email,
+	public ResponseEntity<?> insertSharedId(@PathVariable int notesId, @PathVariable String email,
 			HttpServletRequest request) {
-		
+
 		String token = request.getHeader("accToken");
 		int id = TokenGenerator.verfiyToken(token);
-		System.out.println("id-->"+id);
+		System.out.println("id-->" + id);
 		Notes notes2 = note.getNotesById(notesId);
 		User user2 = userService.getUserByEmail(email);
 		Response response = new Response();
@@ -222,11 +222,42 @@ public class NotesController {
 		}
 	}
 
-	@RequestMapping(value = "updateLabel", method = RequestMethod.PUT)
-	public ResponseEntity<?> updateLabel(@PathVariable int id) {
+	@RequestMapping(value = "updateLabel/{id}/{labelName}", method = RequestMethod.PUT)
+	public ResponseEntity<?> updateLabel(@PathVariable int id, @PathVariable String labelName,
+			HttpServletRequest request) {
 		Response response = new Response();
-		response.setMessage("Updated Sucessfully.....");
-		return new ResponseEntity<Response>(response, HttpStatus.OK);
+		System.out.println("LabelName----------->" + labelName);
+		Labels label = note.getLabelById(id);
+		String token = request.getHeader("accToken");
+		int ids = TokenGenerator.verfiyToken(token);
+		User user = userService.getUserById(ids);
+		System.out.println("User-------->" + user.getName());
+		label.setLabelName(labelName);
+		label.setUser(user);
+		label.setNotes(null);
+		if (ids > 0) {
+			note.updateLabel(label);
+			response.setMessage("Label Updated Sucessfully.....");
+			return new ResponseEntity<Response>(response, HttpStatus.OK);
+		} else {
+			response.setMessage("Label Not Found........");
+			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+		}
 	}
 
+	@RequestMapping(value = "updateNotesLabels/{noteId}/{labelId}", method = RequestMethod.POST)
+	public ResponseEntity<?> updateNotesLabels(@PathVariable int noteId, @PathVariable int labelId) {
+		Response response = new Response();
+		Notes notes = note.getNotesById(noteId);
+		Labels labels = note.getLabelById(labelId);
+		notes.getLables().add(labels);
+		if (note != null) {
+			note.updateNote(notes);
+			response.setMessage("Notes Id");
+			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+		} else {
+			response.setMessage("Notes And Labels Updates");
+			return new ResponseEntity<Response>(response, HttpStatus.OK);
+		}
+	}
 }

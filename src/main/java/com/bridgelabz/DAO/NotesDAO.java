@@ -22,4 +22,8 @@ public interface NotesDAO {
 	public int deletLabels(int id);
 	
 	public List<Labels> getAllLabels(User user);
+	
+	public Labels getLabelById(int id);
+	
+	public void updateLable(Labels labels);
 }

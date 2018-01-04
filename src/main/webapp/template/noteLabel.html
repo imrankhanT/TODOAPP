@@ -1,14 +1,23 @@
 <md-dialog>
 
 <div layout="row" layout-padding>
+<div layout="row">
 Label note
+</div>
+<div layout="row">
 <input type="text" placeholder="Enter Label Name" style="border:none;outline: 0;width:100%;">
+</div>
 </div>
 
 <div ng-repeat="label in labels" layout="row" layout-align="space-between center">
 <div layout="row" layout-padding>
-<input type="checkbox" ng-model="check">
+<input type="checkbox" id="labelCheck" ng-model="label.checked">
 <div style="margin-top:-8px;" layout-padding>{{label.labelName}}</div>
+</div>
+</div>
+
+<div layout="row" layout-align="end end" layout-padding>
+<md-button ng-click="updateNoteLabel(notes,label)">Done</md-button>
 </div>
 
 </md-dialog>

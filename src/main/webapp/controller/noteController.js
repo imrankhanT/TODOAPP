@@ -277,32 +277,44 @@ app.controller('noteController', function($scope, $state, notesService,
 		});
 	}
 
-	
-	$scope.openLabelDailog = function(events) {
+	$scope.openLabelDailog = function(events, note) {
 		$mdDialog.show({
 			templateUrl : 'template/noteLabel.html',
 			parent : angular.element(document.body),
-		    controller : noteLabelController,
+			controller : noteLabelController,
 			clickOutsideToClose : true,
 			targetEvent : events,
 			locals : {
-				labels : $scope.labels
+				labels : $scope.labels,
+				note : note
 			},
 		});
 	}
-	
-	function noteLabelController($scope,labels){
+
+	function noteLabelController($scope, labels, note) {
+		$scope.label = labels;
+		$scope.notes = note;
+		$scope.updateNoteLabel = function(note, label) {
+			console.log("Note----->" + note);
+			console.log("Label----->" + label);
+			if (document.getElementById('labelCheck').checked) {
+				$mdDialog.hide();
+			} else {
+				console.log("Please Check the Check Box..........");
+				$mdDialog.hide();
+			}
+		}
 		$scope.labels = labels;
 		getAllLabels();
 	}
-	
+
 	// labelController
 	function labelController($scope, labels) {
 		$scope.labels = labels;
-		
-		$scope.saveLabel = function(label) {
-			console.log("Inside SaveLabel--->" + label);
-			var label = notesService.saveLabel(label);
+
+		$scope.saveLabel = function(labels) {
+			console.log("Inside SaveLabel--->" + labels);
+			var label = notesService.saveLabel(labels);
 
 			label.then(function(response) {
 				console.log(response.data);
@@ -310,6 +322,11 @@ app.controller('noteController', function($scope, $state, notesService,
 				getAllLabels();
 
 			})
+
+			$scope.updateLabel = function(label) {
+				console.log("Update labels");
+				var label = notesService.updateLabel(label);
+			}
 		}
 
 		$scope.done = function() {
@@ -324,6 +341,25 @@ app.controller('noteController', function($scope, $state, notesService,
 				getAllLabels();
 			})
 		}
+		var getAllLabels = function() {
+			var getAllLabel = notesService.getAllLabel();
+
+			getAllLabel.then(function(response) {
+				$scope.labels = response.data;
+				var label = response.data;
+				console.log($scope.labels);
+			})
+		}
+
+		$scope.updateLabel = function(label) {
+			var updateLabel = notesService.updateLabel(label);
+			updateLabel.then(function(response) {
+				$scope.labels = response.data;
+				console.log("Update Sucessfullyu....");
+				getAllLabels();
+			})
+		}
+		getAllLabels();
 	}
 
 	var getAllLabels = function() {

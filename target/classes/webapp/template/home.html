@@ -145,7 +145,7 @@
 			   
 			   <div layout="row" layout-align="start center">
 			   <md-input-container layout="row" flex>
-			   <div layout="column">{{data.reminderDate | date:'yyyy-MM-dd HH:mm:ss'}}
+			   <div layout="column">{{data.reminderDate | date:'yyyy-MM-dd HH:mm:ss'}}</div>
 			   <span ng-click="deleteReminder(data)">
 			    <md-icon ng-if="data.reminderDate" md-svg-src="images/icon/cancel.svg" style="margin-left:100%;margin-top:-15%;">
                </md-icon>
@@ -227,7 +227,7 @@
 			        </md-menu-item>
 			        
 			        <md-menu-item >
-			          <md-button ng-click="openLabelDailog($event)">
+			          <md-button ng-click="openLabelDailog($event,data)">
 			            Add Label
 			          </md-button>
 			        </md-menu-item>
