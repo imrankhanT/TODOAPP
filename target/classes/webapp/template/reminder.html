@@ -4,6 +4,13 @@
    
     <side-nav-bar></side-nav-bar>		
 		 
+		 <!-- <div layout="row" layout-align="center center" ng-if="data.reminderDate == null">
+	 <md-icon style="width:100%;height:100%;margin-left:300px;" md-svg-src="images/icon/notifictaion.svg"></md-icon>
+	    <div layout="row">
+		 <h1 style="margin-left:100px;background-color:#EBEDEF;">Notes with upcoming reminders appear here</h1>
+		</div>
+		 </div> -->
+		 
 		 <div layout="row" layout-wrap>
 	 	        <div layout-align="center center" ng-if="data.reminderDate" ng-repeat="data in data | filter :{trash :false} | filter :{archive:false} | filter :{pin:false}">
 			    <md-card ng-style="{'background-color' : data.color}" >

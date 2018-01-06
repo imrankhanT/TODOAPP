@@ -55,7 +55,6 @@ public class Notes implements Serializable {
 	private User user;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JsonIgnore
 	private Set<User> userId;
 
 	@ManyToMany

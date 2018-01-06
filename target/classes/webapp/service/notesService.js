@@ -25,7 +25,6 @@ todo.factory('notesService', function($http, $location) {
 	}
 
 	notes.updateNotes = function(data) {
-		console.log("Inside sERVICE" + data);
 		return $http({
 
 			method : 'POST',
@@ -79,9 +78,10 @@ todo.factory('notesService', function($http, $location) {
 	notes.storeInfo = function(email, note) {
 		return $http({
 			method : 'put',
-			url : "shareNotes/" + note.id + "/" + email,
+			url : "shareNotes/" + note.id,
 			headers : {
-				'accToken' : localStorage.getItem('token')
+				'accToken' : localStorage.getItem('token'),
+				'email' : email
 			}
 		})
 
@@ -135,6 +135,13 @@ todo.factory('notesService', function($http, $location) {
 			headers : {
 				'accToken' : localStorage.getItem('token')
 			}
+		})
+	}
+
+	notes.updateNotesLabels = function(note, label) {
+		return $http({
+			method : "POST",
+			url : "updateNotesLabels/" + noteId.id + "/" + labelId.id
 		})
 	}
 	return notes;

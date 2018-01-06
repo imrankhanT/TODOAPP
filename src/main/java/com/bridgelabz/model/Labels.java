@@ -29,6 +29,8 @@ public class Labels {
 	@JsonIgnore
 	private List<Notes> notes;
 
+	private boolean isChecked;
+
 	@ManyToOne
 	@JoinColumn(name = "userId")
 	@JsonIgnore
@@ -64,5 +66,13 @@ public class Labels {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public boolean isChecked() {
+		return isChecked;
+	}
+
+	public void setChecked(boolean isChecked) {
+		this.isChecked = isChecked;
 	}
 }

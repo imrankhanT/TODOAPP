@@ -49,8 +49,9 @@ public class NotesController {
 			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 	}
 
-	@RequestMapping(value = "updateNotes", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/updateNotes", method = RequestMethod.POST)
 	public ResponseEntity<Response> updateNotes(@RequestBody Notes notes1) {
+		System.out.println("Update Notes--------->" + notes1);
 		Notes retNotes = note.getNotesById(notes1.getId());
 		Response response = new Response();
 		if (retNotes == null) {
@@ -133,21 +134,21 @@ public class NotesController {
 		}
 	}
 
-	@RequestMapping(value = "shareNotes/{notesId}/{email:.+}", method = RequestMethod.PUT)
-	public ResponseEntity<?> insertSharedId(@PathVariable int notesId, @PathVariable String email,
-			HttpServletRequest request) {
-
+	@RequestMapping(value = "shareNotes/{notesId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> insertSharedId(@PathVariable int notesId, HttpServletRequest request) {
 		String token = request.getHeader("accToken");
 		int id = TokenGenerator.verfiyToken(token);
 		System.out.println("id-->" + id);
 		Notes notes2 = note.getNotesById(notesId);
-		User user2 = userService.getUserByEmail(email);
+		User user2 = userService.getUserByEmail(request.getHeader("email"));
 		Response response = new Response();
 
 		if (id > 0) {
 			notes2.getUserId().add(user2);
 			note.updateNote(notes2);
 			response.setMessage("User Found....");
+			response.setEmail(user2.getEmail());
+			response.setProfilePic(user2.getProfilePicture());
 			return new ResponseEntity<Response>(response, HttpStatus.OK);
 		} else {
 			response.setMessage("Invalid Token..........");
@@ -208,7 +209,7 @@ public class NotesController {
 
 	}
 
-	@RequestMapping(value = "getAllLabels", method = RequestMethod.GET)
+	@RequestMapping(value = "/getAllLabels", method = RequestMethod.GET)
 	public ResponseEntity<List<Labels>> getAllLabels(HttpServletRequest request) {
 		int id = TokenGenerator.verfiyToken(request.getHeader("accToken"));
 		User user = userService.getUserById(id);
@@ -222,7 +223,7 @@ public class NotesController {
 		}
 	}
 
-	@RequestMapping(value = "updateLabel/{id}/{labelName}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/updateLabel/{id}/{labelName}", method = RequestMethod.PUT)
 	public ResponseEntity<?> updateLabel(@PathVariable int id, @PathVariable String labelName,
 			HttpServletRequest request) {
 		Response response = new Response();
@@ -245,19 +246,37 @@ public class NotesController {
 		}
 	}
 
-	@RequestMapping(value = "updateNotesLabels/{noteId}/{labelId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/updateNotesLabels/{noteId}/{labelId}", method = RequestMethod.POST)
 	public ResponseEntity<?> updateNotesLabels(@PathVariable int noteId, @PathVariable int labelId) {
 		Response response = new Response();
 		Notes notes = note.getNotesById(noteId);
 		Labels labels = note.getLabelById(labelId);
-		notes.getLables().add(labels);
+
 		if (note != null) {
+			notes.getLables().add(labels);
 			note.updateNote(notes);
 			response.setMessage("Notes Id");
 			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 		} else {
 			response.setMessage("Notes And Labels Updates");
 			return new ResponseEntity<Response>(response, HttpStatus.OK);
+		}
+	}
+
+	@RequestMapping(value = "/deleteLabels/{notesId}/{labelId}", method = RequestMethod.DELETE)
+	public ResponseEntity<?> deleteNotesLabels(@PathVariable int notesId, @PathVariable int labelId) {
+		Response response = new Response();
+		Notes notes = note.getNotesById(notesId);
+		Labels labels = note.getLabelById(labelId);
+
+		if (note != null) {
+			notes.getLables().remove(labels);
+			note.updateNote(notes);
+			response.setMessage("Labels Removed Sucessfully from Notes");
+			return new ResponseEntity<Response>(response, HttpStatus.OK);
+		} else {
+			response.setMessage("Notes Not Found.........");
+			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 		}
 	}
 }

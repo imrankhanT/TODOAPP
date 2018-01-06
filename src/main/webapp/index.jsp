@@ -13,6 +13,10 @@
 <link rel="stylesheet" type="text/css"
 	href="bower_components/angular-toastr/dist/angular-toastr.css">
 
+<link rel="stylesheet" type="text/css"
+	href="bower_components/angular-material-datetimepicker/css/material-datetimepicker.css">
+<link rel="stylesheet" type="text/css"
+	href="bower_components/angular-material-datetimepicker/dist/material-datetimepicker.min.css">
 <!-- STYLE CSS -->
 <link rel="stylesheet" type="text/css" href="css/login.css">
 <link rel="stylesheet" type="text/css" href="css/register.css">
@@ -21,7 +25,7 @@
 <link rel="stylesheet" type="text/css" href="css/reminder.css">
 
 
-<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular/angular.min.js"></script>
 <script
 	src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 <script src="bower_components/angular-material/angular-material.min.js"></script>
@@ -36,21 +40,15 @@
 	src="bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
 <script src="bower_components/ng-file-upload/ng-file-upload.min.js"></script>
 
-<link rel="stylesheet" type="text/css"
-	href="bower_components/angular-material-datetimepicker/css/material-datetimepicker.css">
-<link rel="stylesheet" type="text/css"
-	href="bower_components/angular-material-datetimepicker/dist/material-datetimepicker.min.css">
 
-<script type="text/javascript"
+<script
 	src="bower_components/angular-material-datetimepicker/dist/angular-material-datetimepicker.min.js"></script>
-<script type="text/javascript"
-	src="bower_components/angular-material-datetimepicker/dist/angular-material-datetimepicker.min.js.map"></script>
-<script type="text/javascript"
-	src="bower_components/angular-material-datetimepicker/js/angular-material-datetimepicker.js"></script>
+<script	src="bower_components/angular-material-datetimepicker/dist/angular-material-datetimepicker.min.js.map"></script>
+<script src="bower_components/angular-material-datetimepicker/js/angular-material-datetimepicker.js"></script>
 
 
 <!-- SCRIPT -->
-<script type="text/javascript" src="script/app.js"></script>
+<script src="script/app.js"></script>
 
 <!-- CONTROLLER -->
 <script src="controller/loginController.js"></script>

@@ -11,13 +11,13 @@ Label note
 
 <div ng-repeat="label in labels" layout="row" layout-align="space-between center">
 <div layout="row" layout-padding>
-<input type="checkbox" id="labelCheck" ng-model="label.checked">
+<input type="checkbox" id="labelCheck" ng-model="label.checked" ng-click="updateNoteLabel(notes,label)">
 <div style="margin-top:-8px;" layout-padding>{{label.labelName}}</div>
 </div>
 </div>
 
 <div layout="row" layout-align="end end" layout-padding>
-<md-button ng-click="updateNoteLabel(notes,label)">Done</md-button>
+<md-button>Done</md-button>
 </div>
 
 </md-dialog>

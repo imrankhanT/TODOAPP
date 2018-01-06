@@ -1,5 +1,5 @@
- <div flex layout="row">
-<md-sidenav md-is-locked-open="$mdMedia('min-width: 333px')" md-component-id="right"> 
+ <div  flex layout="row">
+<md-sidenav style="height:150%;" md-is-locked-open="$mdMedia('min-width: 33px')" md-component-id="right"> 
 	   
 	    <div layout="row">
 	    <md-list>
@@ -68,7 +68,7 @@
 		<md-list-item>
 		<md-icon md-svg-icon="images/icon/label_black.svg">
 		</md-icon>
-		<h5>{{label.labelName}}</h5>
+		<h5><a ui-sref="label">{{label.labelName}}</a></h5>
 		</md-list-item>
 		</md-list>
 		</div> 
