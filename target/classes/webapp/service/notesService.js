@@ -3,11 +3,11 @@ var todo = angular.module('ToDo');
 todo.factory('notesService', function($http, $location) {
 	var notes = {};
 
-	notes.addNotes = function(notes) {
+	notes.addNotes = function(note) {
 		return $http({
 			method : 'post',
 			url : 'addNotes',
-			data : notes,
+			data : note,
 			headers : {
 				'accToken' : localStorage.getItem('token')
 			}
@@ -141,7 +141,10 @@ todo.factory('notesService', function($http, $location) {
 	notes.updateNotesLabels = function(note, label) {
 		return $http({
 			method : "POST",
-			url : "updateNotesLabels/" + noteId.id + "/" + labelId.id
+			url : "updateNotesLabels/" + note.id + "/" + label.id,
+			headers : {
+				'accToken' : localStorage.getItem('token')
+			}
 		})
 	}
 	return notes;

@@ -247,12 +247,18 @@ public class NotesController {
 	}
 
 	@RequestMapping(value = "/updateNotesLabels/{noteId}/{labelId}", method = RequestMethod.POST)
-	public ResponseEntity<?> updateNotesLabels(@PathVariable int noteId, @PathVariable int labelId) {
+	public ResponseEntity<?> updateNotesLabels(@PathVariable int noteId, @PathVariable int labelId,
+			HttpServletRequest request) {
+		System.out.println("UpdateNotesLabels--------------------------------------------->");
 		Response response = new Response();
 		Notes notes = note.getNotesById(noteId);
 		Labels labels = note.getLabelById(labelId);
-
+		int id = TokenGenerator.verfiyToken(request.getHeader("accToken"));
+		User user = userService.getUserById(id);
 		if (note != null) {
+			labels.setId(labelId);
+			user.setId(id);
+			notes.getUserId().add(user);
 			notes.getLables().add(labels);
 			note.updateNote(notes);
 			response.setMessage("Notes Id");

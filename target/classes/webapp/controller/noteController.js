@@ -95,7 +95,8 @@ app.controller('noteController',
 
 			// function to add notes
 			$scope.addNotes = function() {
-				var notes = notesService.addNotes($scope.notes, $scope.error);
+				console.log("notes------>" + $scope.notes);
+				var notes = notesService.addNotes($scope.notes);
 				notes.then(function(response) {
 					console.log(response.data);
 					console.log('Notes Created Sucessfully...........');
@@ -103,7 +104,6 @@ app.controller('noteController',
 				}, function(response) {
 					if (response.status == 409) {
 						$scope.error = response.data;
-						toastr('')
 					} else {
 						console.log("Fail To created Notes....");
 					}
@@ -339,14 +339,14 @@ app.controller('noteController',
 				$scope.label = labels;
 				$scope.notes = note;
 				var notes7 = $scope.notes;
-				$scope.updateNoteLabel = function(label) {
+				$scope.updateNoteLabel = function(note, labels) {
 					console.log("Note----->" + note);
-					console.log("Label----->" + label);
-					console.log("checked----------->" + label.checked);
-					if (label.checked) {
+					console.log("Label----->" + labels);
+					console.log("checked----------->" + labels.checked);
+					if (labels.checked) {
 						console.log("The Labels Are Checked.............");
 						var updateNotesLabels = notesService.updateNotesLabels(
-								notes7, label);
+								notes7, labels);
 						updateNotesLabels.then(function(response) {
 							console.log("Labels----->" + response.data);
 							getAllLabels();
@@ -356,6 +356,14 @@ app.controller('noteController',
 
 						$mdDialog.hide();
 					} else {
+						var updateNotesLabels = notesService.updateNotesLabels(
+								notes7, labels);
+						updateNotesLabels.then(function(response) {
+							console.log("Labels----->" + response.data);
+							getAllLabels();
+							getNotes();
+							console.log("Notes Updated Sucessfully........");
+						})
 						console.log("Please Check the Check Box..........");
 						$mdDialog.hide();
 					}
@@ -475,8 +483,6 @@ app.controller('noteController',
 			}
 			$scope.searchFun = function() {
 				$location.path('search');
-				getNotes();
-				getUser();
 
 			}
 

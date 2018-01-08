@@ -12,12 +12,4 @@ todo.service('loginService', function($http, $location) {
 
 	}
 
-	this.logout = function() {
-		return $http({
-			method : 'get',
-			url : 'logout',
-		})
-
-	}
-
 })

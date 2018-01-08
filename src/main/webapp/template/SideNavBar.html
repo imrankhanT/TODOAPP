@@ -1,5 +1,5 @@
- <div  flex layout="row">
-<md-sidenav style="height:150%;" md-is-locked-open="$mdMedia('min-width: 33px')" md-component-id="right"> 
+ <div layout-align="start start">
+<md-sidenav style="height:150%;padding:5px;overflow:hidden;"  md-is-locked-open="$mdMedia('min-width: 0px')" md-component-id="right"> 
 	   
 	    <div layout="row">
 	    <md-list>
@@ -25,6 +25,44 @@
 		</div> 
 		
 		<div layout="row">
+		<md-list>
+		<md-list-item>
+		<div>
+		Label
+		<md-button ng-click="labelDailog($event)">
+		<div style="margin-left:100px;">Edit</div>
+		</md-button> 
+		</div>
+		</md-list-item>
+		</md-list>
+		</div>
+		
+		<div layout="row" ng-repeat="label in labels | filter : {label : '!'}">
+		<md-list>
+		<md-list-item>
+		<md-icon md-svg-icon="images/icon/label_black.svg">
+		</md-icon>
+		<h5><a ui-sref="label">{{label.labelName}}</a></h5>
+		</md-list-item>
+		</md-list>
+		</div> 
+		
+	    <div layout="row">
+		<md-list> 
+		<md-list-item> 
+		<md-button ng-click="labelDailog($event)">
+		<md-icon md-svg-icon="images/icon/label.svg" class="avatar">
+		</md-icon>
+		Create New Label
+		</md-button> 
+		</md-list-item> 
+		</md-list> 
+		</div>
+		
+		 <md-divider layout-padding style="width:100%;"></md-divider>
+	
+		
+	    <div layout="row">
 		<md-list> 
 		<md-list-item> 
 		<md-button>
@@ -45,31 +83,6 @@
 		<a ui-sref="trash">Trash </a>
 		</md-button> 
 		</md-list-item> 
-		</md-list>
-		</div> 
-		
-	    <div layout="row">
-		<md-list> 
-		<md-list-item> 
-		<md-button ng-click="labelDailog($event)">
-		<md-icon md-svg-icon="images/icon/label.svg" class="avatar">
-		</md-icon>
-		Create New Label
-		</md-button> 
-		</md-list-item> 
-		</md-list> 
-		</div>
-		
-		 <md-divider layout-padding style="width:100%;"></md-divider>
-	
-		
-		<div layout="row" ng-repeat="label in labels | filter : {label : '!'}">
-		<md-list>
-		<md-list-item>
-		<md-icon md-svg-icon="images/icon/label_black.svg">
-		</md-icon>
-		<h5><a ui-sref="label">{{label.labelName}}</a></h5>
-		</md-list-item>
 		</md-list>
 		</div> 
 		

@@ -66,6 +66,7 @@
 <script src="bower_components/colorPicker/js/colorPicker.js"></script>
 <script src="directive/Navbar.js"></script>
 <script src="directive/sideNavBar.js"></script>
+<script src="directive/divDirective.js"></script>
 </head>
 <body ng-app="ToDo">
 	<div ui-view></div>

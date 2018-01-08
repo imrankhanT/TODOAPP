@@ -83,7 +83,7 @@
              <div>
 			  <md-menu>
 			      <md-button aria-label="Open menu with custom trigger" class="md-icon-button" ng-mouseenter="$mdMenu.open()">
-			        <md-icon md-menu-origin md-svg-src="images/icon/more.svg" style="width: 24px; height: 24px"></md-icon>
+			        <md-icon md-menu-origin md-svg-src="images/icon/more.svg"></md-icon>
 			      </md-button>
 			      <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
 			        <md-menu-item ng-repeat="item in ['Add Label', 'Show Checkbox']">
@@ -111,28 +111,23 @@
 			 <div layout-align="start center" layout-wrap>
 	 	        <div layout="row" ng-repeat="data in data | filter :{trash :false} | filter :{archive:false} | filter :{pin:false}">
 			    <md-card layout="column" ng-style="{'background-color' : data.color}">
-				
-				<div layout="row" layout-align="end end">
-			   <md-button ng-click="pin(data)" class="md-icon-button test-tooltip" aria-label="Pin">
-               <md-tooltip md-direction="bottom">Pin</md-tooltip>
-               <md-icon md-svg-src="images/icon/pin.svg">
-               </md-icon>
-               </md-button>
-               </div>
               
                <div ng-click="showDailog($event,data)">
-				<div layout="row" layout-align="center center">
-				<md-input-container layout="row" flex> 
-				<div layout="column">{{data.title}}</div>
-				</md-input-container>
+				<div layout="row">
+				{{data.title}}
+				
+				
+			   <div layout-align="end end">
+               <md-tooltip md-direction="bottom">Pin</md-tooltip>
+               <md-icon ng-click="pin(data)"  md-svg-src="images/icon/pin.svg">
+               </md-icon>
+               </div>
 				</div>
 
                 <div layout="row" layout-align="center center">
-				<md-input-container layout="row" flex> 
-				<div layout="column">{{data.description}}</div>
-			    </md-input-container>
-			    </div>
-			   </div>
+				{{data.description}}
+				</div>
+				</div>
 			   
 			   <div layout="row" layout-align="start center">
 			   <md-input-container layout="row" flex>

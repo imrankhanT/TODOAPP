@@ -11,7 +11,6 @@ todo.controller('loginController', function($scope, loginService, $location) {
 			// $scope.user = response.data;
 			$location.path('home');
 			console.log('Login Sucessfully...........');
-			toastr.success("Login Sucessfully...........");
 		}, function(response) {
 			if (response.status == 409) {
 				$scope.error = response.data.message;
